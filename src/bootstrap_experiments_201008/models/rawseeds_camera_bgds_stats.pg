@@ -1,0 +1,70 @@
+--- model rawseeds_camera_bgds_stats
+""" Computes several statistics for the camera stream.
+
+    Uses rawseeds_synchronized_camera as a source. """
+config logdir                              "Directory containing Rawseeds logs."
+config prefix   = rawseeds_camera_stats    "Subdirectory inside logdir where to put files."
+config image_op = rgb2gray                 "How to obtain a scalar from RGB"
+config grad_op  = identity                 "Scalar operation after gradient."
+config deriv_op = identity                 "Scalar operation after derivative."
+#config display_fps = 0.2                   "Frames per second for movie"
+
+import procgraph.components.cv
+
+
+outdir = "${logdir}/out/${prefix}/"
+
+
+
+|rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
+
+y --> |derivative| --> |$deriv_op | --> y_dot_op
+y --> |gradient| --> gx, gy
+
+gx --> |$grad_op| --> gx_op
+gy --> |$grad_op| --> gy_op
+
+
+y_dot_op --> |abs|    --> |expectation| -> y_dot_abs  --> |save w='${outdir}/y_dot_abs'|
+y_dot_op --> |square| --> |expectation| -> y_dot_var  --> |save w='${outdir}/y_dot_var'|
+gx_op    --> |abs|    --> |expectation| -> gx_abs     --> |save w='${outdir}/gx_abs'|
+gx_op    --> |square| --> |expectation| -> gx_var     --> |save w='${outdir}/gx_var'|
+gy_op    --> |abs|    --> |expectation| -> gy_abs     --> |save w='${outdir}/gy_abs'|
+gy_op    --> |square| --> |expectation| -> gy_var     --> |save w='${outdir}/gy_var'|
+
+---- model save
+""" Saves the input to the given pickle file at a certain interval. """
+config w "The file name, without the '.pickle' extension which is added automatically."
+config fps = 0.2
+
+|input name=x| --> |fps_data_limit fps=$fps| --> |pickle file='${w}.pickle'|
+
+------------ model rawseeds_camera_bgds_stats_combinations
+""" Tries all possible combinations of ops for BGDS bootstrapping.
+"""
+config logdir "Directory containing Rawseeds logs."
+config image_op  "Operation to get a scalar from RGB."
+config base "Base output directory"
+
+|rawseeds_camera_bgds_stats image_op=$image_op logdir=$logdir deriv_op=identity  grad_op=identity prefix="${base}/GI_DI"|
+|rawseeds_camera_bgds_stats image_op=$image_op  logdir=$logdir deriv_op=sign      grad_op=identity  prefix="${base}/GI_DS"|
+|rawseeds_camera_bgds_stats image_op=$image_op  logdir=$logdir deriv_op=identity  grad_op=sign      prefix="${base}/GS_DI"|
+|rawseeds_camera_bgds_stats image_op=$image_op  logdir=$logdir deriv_op=sign      grad_op=sign      prefix="${base}/GS_DS"|
+
+------------ model rawseeds_camera_bgds_stats_all
+""" Tries all possible combinations of ops for BGDS bootstrapping.
+"""
+config logdir "Directory containing Rawseeds logs."
+
+|gray:rawseeds_camera_bgds_stats_combinations|
+
+gray.logdir = $logdir
+gray.base="camera_bgds_stats/gray" 
+gray.image_op = rgb2gray
+
+|contrast:rawseeds_camera_bgds_stats_combinations|
+
+contrast.logdir = $logdir
+contrast.base="camera_bgds_stats/contrast" 
+contrast.image_op = contrast 
+
