@@ -1,0 +1,47 @@
+---- model rawseeds_camera_bgds_predict
+''' Compares the BGDS prediction with reality.     
+
+    Uses rawseeds_synchronized_camera as a source. '''
+config logdir                              "Directory containing Rawseeds logs."
+config prefix   = camera_bgds_predict      "Subdirectory inside logdir where to put files."
+config image_op = rgb2gray                 "How to obtain a scalar from RGB"
+config grad_op  = identity                 "Scalar operation after gradient."
+config deriv_op = identity                 "Scalar operation after derivative."
+
+outdir = "${logdir}/out/${prefix}"
+
+import bootstrap_experiments_201008
+
+
+|rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
+|odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
+odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+
+
+
+
+y --> |derivative2| --> |$deriv_op | --> y_dot
+y --> |gradient| --> gxp, gyp
+
+gxp --> |$grad_op| --> gx
+gyp --> |$grad_op| --> gy
+
+
+
+gx[gx], gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_predictor| --> y_dot_pred, error
+
+#error --> |print|
+
+bgds_predictor.G = '${logdir}/../gray_GI_DI:G.pickle'
+
+
+    y_dot      --> |posneg| --> y_dot_rgb
+    y_dot_pred --> |posneg| --> y_dot_pred_rgb
+    error      --> |scale| --> error_rgb
+    
+    y_dot_rgb, y_dot_pred_rgb,error_rgb --> |sync| --> |grid cols=2| --> |mencoder file='${outdir}/y_dot.avi'|
+    error_rgb -->  |mencoder file='${outdir}/error.avi'| 
+    
+    
+    
+    
