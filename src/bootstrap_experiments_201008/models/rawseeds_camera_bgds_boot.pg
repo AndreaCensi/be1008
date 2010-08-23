@@ -38,7 +38,7 @@ dyg2, lvel --> |sync| --> |outer| --> Gyl_k --> |expectation| --> Gyl
 dyg1, avel --> |sync| --> |outer| --> Gxa_k --> |expectation| --> Gxa
 dyg2, avel --> |sync| --> |outer| --> Gya_k --> |expectation| --> Gya
 
-
+# FIXME: change to pickle
 on finish: save Gxl to "${outdir}/Gxl.pickle" 
 on finish: save Gyl to "${outdir}/Gyl.pickle" 
 on finish: save Gxa to "${outdir}/Gxa.pickle" 
