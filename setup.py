@@ -14,6 +14,8 @@ setup(
         'bootstrap_experiments_201008.average_logs_results:average_logs_results',
        'camera_bgds_boot_display = '
         'bootstrap_experiments_201008.camera_bgds_boot_display:camera_bgds_boot_display',
+       'laser_bgds_boot_display = '
+        'bootstrap_experiments_201008.laser_bgds_boot_display:laser_bgds_boot_display',
        'be_all = '
         'bootstrap_experiments_201008.be_all:be_all'
        ]

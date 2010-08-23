@@ -1,0 +1,6 @@
+* Bovisa_2008-10-06 - Type: mixed, dynamic, natural lighting.   02
+* Bovisa_2008-09-01 - Type: mixed, static, natural lighting.
+* Bovisa_2008-10-11a - Type: mixed, static, natural lighting.
+* Bovisa_2008-10-04 - Type: outdoor, static, natural lighting. 02
+* Bovisa_2008-10-07 - Type: outdoor, dynamic, natural lighting. 02
+* Bovisa_2008-10-11b - Type: outdoor, static, natural lighting.

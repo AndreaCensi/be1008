@@ -46,6 +46,17 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
 #on finish: save B to "${logdir}/out/${outdir}/B.pickle" 
   B  --> |rawseeds_laser_bgds_boot_save w='${outdir}/B'|
   G  --> |rawseeds_laser_bgds_boot_save w='${outdir}/G'|
+  
+  
+# now statistics
+
+
+y_dot --> |abs|    --> |expectation|  --> |save w='${outdir}/y_dot_svar'|
+y_dot --> |square| --> |expectation|  --> |save w='${outdir}/y_dot_var'|
+gy    --> |abs|    --> |expectation|  --> |save w='${outdir}/gy_svar'|
+gy    --> |square| --> |expectation|  --> |save w='${outdir}/gy_var'|
+
+  
 
 ---- model rawseeds_laser_bgds_boot_save
 """ Saves the input to the given pickle file at a certain interval. """
