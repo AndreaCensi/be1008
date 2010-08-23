@@ -1,0 +1,37 @@
+--- model rawseeds_laser_covariance
+# Computes and compares the covariance of y, y_dot and sign(y_dot)
+# Params:
+# - logdir
+# - out = $logdir/rawseeds_laser_covariance.avi
+
+out = "${logdir}/out/laser_covariance/covariance.avi"
+
+import procgraph.components.rawseeds
+import procgraph.components.pil
+
+# data source
+|rawseeds_synchronized_laser logdir=$logdir| --> y
+
+# pipeline
+y --> |derivative| --> y_dot --> |sign|  --> z 
+
+# compute the covariance of all three
+y     --> |covariance| --> cov_y      --> |cov_display| --> cov_y_rgb
+y_dot --> |covariance| --> cov_y_dot  --> |cov_display| --> cov_y_dot_rgb
+z     --> |covariance| --> cov_z      --> |cov_display| --> cov_z_rgb
+
+# synchronize and arrange in a grid
+cov_y_rgb, cov_y_dot_rgb, cov_z_rgb --> |sync| --> |grid cols=3| --> rgb
+
+rgb --> |mencoder file=$out|
+
+# |resize width=1280 height=640|
+
+--- model cov_display
+# displays the covariance as an image
+display_fps = 1
+
+|input name=x| --> |fps_data_limit fps=$display_fps| --> |cov2corr| --> |posneg| --> i
+
+i --> |resize width=400 height=400| --> |output name=y|
+

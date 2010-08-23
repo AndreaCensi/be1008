@@ -7,7 +7,7 @@ setup(
     author_email="andrea@cds.caltech.edu",
     version="0.1",
     package_dir={'':'src'},
-    packages=find_packages(),
+    packages=['bootstrap_experiments_201008'],
     entry_points={
      'console_scripts': [
        'average_logs_results = '
@@ -21,6 +21,10 @@ setup(
     #'multiprocessing':  ['redis']
     # TODO: learn how to use this feature
     # TODO: add gvgen
+    },
+    include_package_data=True,
+    package_data={
+        'bootstrap_experiments_201008': ['models/*.pg', '*.pg']
     }
 )
 

@@ -1,0 +1,84 @@
+--- model rawseeds_camera_bgds_boot
+""" Uses rawseeds_synchronized_camera as a source. """
+config logdir                              "Directory containing Rawseeds logs."
+config prefix   = camera_bgds_boot "Subdirectory inside logdir where to put files."
+config image_op = rgb2gray                 "How to obtain a scalar from RGB"
+config grad_op  = identity                 "Scalar operation after gradient."
+config deriv_op = identity                 "Scalar operation after derivative."
+config display_fps = 0.2                   "Frames per second for movie"
+
+
+outdir = "${logdir}/out/${prefix}/"
+odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+
+
+|rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
+
+|odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
+
+
+import procgraph.components.cv
+
+y --> |derivative| --> |$deriv_op | --> y_dot
+y --> |gradient| --> grad1, grad2
+
+grad1 --> |$grad_op| --> grad1op
+grad2 --> |$grad_op| --> grad2op
+
+
+y_dot, grad1 --> |sync| --> |*| --> dyg1
+y_dot, grad2 --> |sync| --> |*| --> dyg2
+
+commands --> |take indices=[0]| --> lvel
+commands --> |take indices=[2]| --> avel
+
+dyg1, lvel --> |sync| --> |outer| --> Gxl_k --> |expectation| --> Gxl
+dyg2, lvel --> |sync| --> |outer| --> Gyl_k --> |expectation| --> Gyl
+dyg1, avel --> |sync| --> |outer| --> Gxa_k --> |expectation| --> Gxa
+dyg2, avel --> |sync| --> |outer| --> Gya_k --> |expectation| --> Gya
+
+
+on finish: save Gxl to "${outdir}/Gxl.pickle" 
+on finish: save Gyl to "${outdir}/Gyl.pickle" 
+on finish: save Gxa to "${outdir}/Gxa.pickle" 
+on finish: save Gya to "${outdir}/Gya.pickle" 
+
+Gxl --> |posneg| --> |mencoder file="${outdir}/Gxl.avi"|
+Gyl --> |posneg| --> |mencoder file="${outdir}/Gyl.avi"|
+Gxa --> |posneg| --> |mencoder file="${outdir}/Gxa.avi"|
+Gya --> |posneg| --> |mencoder file="${outdir}/Gya.avi"|
+Gxl_k --> |posneg| --> |mencoder file="${outdir}/Gxl_k.avi"|
+Gyl_k --> |posneg| --> |mencoder file="${outdir}/Gyl_k.avi"|
+Gxa_k --> |posneg| --> |mencoder file="${outdir}/Gxa_k.avi"|
+Gya_k --> |posneg| --> |mencoder file="${outdir}/Gya_k.avi"|
+     
+------------ model rawseeds_camera_bgds_boot_combinations
+""" Tries all possible combinations of ops for BGDS bootstrapping.
+"""
+config logdir "Directory containing Rawseeds logs."
+config image_op  "Operation to get a scalar from RGB."
+config base "Base output directory"
+
+|rawseeds_camera_bgds_boot image_op=$image_op logdir=$logdir deriv_op=identity  grad_op=identity prefix="${base}/GI_DI"|
+|rawseeds_camera_bgds_boot image_op=$image_op  logdir=$logdir deriv_op=sign      grad_op=identity  prefix="${base}/GI_DS"|
+|rawseeds_camera_bgds_boot image_op=$image_op  logdir=$logdir deriv_op=identity  grad_op=sign      prefix="${base}/GS_DI"|
+|rawseeds_camera_bgds_boot image_op=$image_op  logdir=$logdir deriv_op=sign      grad_op=sign      prefix="${base}/GS_DS"|
+
+------------ model rawseeds_camera_bgds_boot_all
+""" Tries all possible combinations of ops for BGDS bootstrapping.
+ """
+config logdir "Directory containing Rawseeds logs."
+
+|gray:rawseeds_camera_bgds_boot_combinations|
+
+    gray.logdir = $logdir
+    gray.base="camera_bgds_boot/gray" 
+    gray.image_op = rgb2gray
+    
+|contrast:rawseeds_camera_bgds_boot_combinations|
+    
+    contrast.logdir = $logdir
+    contrast.base="camera_bgds_boot/contrast" 
+    contrast.image_op = contrast 
+
+

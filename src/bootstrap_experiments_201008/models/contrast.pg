@@ -1,0 +1,13 @@
+# Standard pipeline for extracting contrast from images.  
+--- model contrast
+|input name=image| --> y
+
+         y  --> |grayscale| --> |gradient| --> gx, gy
+
+         gx --> |square| --> gx_square
+         gy --> |square| --> gy_square
+
+         gx_square, gy_square --> |+| --> contrast
+
+
+                         contrast --> |output name=contrast|

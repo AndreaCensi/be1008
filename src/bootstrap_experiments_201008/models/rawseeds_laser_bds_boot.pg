@@ -1,0 +1,35 @@
+--- model rawseeds_laser_bds_boot
+""" This is an attempt to do bootstrapping of range finder data.
+    Uses rawseeds_synchronized_laser as a source. """
+config logdir "Rawseeds log directory"
+
+outdir = "${logdir}/out/laser_bds_boot/"
+movie = "${outdir}/movie.avi"
+odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+
+on finish: save T to "${outdir}/T.pickle"
+
+import procgraph.components.rawseeds
+import procgraph.components.pil
+
+|rawseeds_synchronized_laser logdir=$logdir| --> y
+
+|odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
+
+    
+# compute derivative 
+# y --> |derivative| --> |sign| --> y_dot
+y --> |derivative| -->  y_dot
+
+# subtract mean
+y --> |normalize| --> y_n
+
+# Estimate tensor T
+y_dot, y_n --> |sync| --> |outer| --> y_y_n 
+
+y_y_n, commands --> |sync| -> a,b --> |outer| --> Ti 
+
+Ti --> |expectation| --> T 
+
+T --> |tensor_display_simple out=$movie|
+  

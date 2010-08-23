@@ -1,0 +1,48 @@
+--- model rawseeds_laser_covcorr
+"""Computes and compares the covariance of y, y_dot and sign(y_dot)"""
+config logdir "Rawseeds log directory"
+
+outdir = "${logdir}/out/laser_covcorr"
+mencoder.file = "${outdir}/covcorr.avi"
+
+on finish: save cov_y to "${outdir}/cov_y.pickle"
+on finish: save cov_y_dot to "${outdir}/cov_y_dot.pickle"
+on finish: save cov_z to "${outdir}/cov_z.pickle"
+
+import procgraph.components.rawseeds
+import procgraph.components.pil
+
+# data source
+|rawseeds_synchronized_laser logdir=$logdir| --> y
+
+# pipeline
+y --> |derivative| --> y_dot --> |sign|  --> z 
+
+# compute the covariance of all three
+y     --> |covariance| --> cov_y      --> |covcorr_display| --> cov_y_rgb
+y_dot --> |covariance| --> cov_y_dot  --> |covcorr_display| --> cov_y_dot_rgb
+z     --> |covariance| --> cov_z      --> |covcorr_display| --> cov_z_rgb
+
+# synchronize and arrange in a grid
+cov_y_rgb, cov_y_dot_rgb, cov_z_rgb --> |sync| --> |grid cols=3| --> rgb
+
+rgb --> |mencoder|
+
+# |resize width=1280 height=640|
+
+--- model covcorr_display
+""" Displays the covariance/correlation as an image """
+display_fps = 1
+
+|input name=x| --> |fps_data_limit fps=$display_fps| --> cov 
+
+cov --> |cov2corr| --> corr 
+
+cov --> |posneg| --> cov_rgb
+corr --> |posneg| --> corr_rgb
+
+cov_rgb, corr_rgb --> |sync| --> |grid cols=1| --> i
+
+
+i --> |resize width=360 height=720| --> |output name=y|
+

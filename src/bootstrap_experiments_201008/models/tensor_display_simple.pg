@@ -1,0 +1,19 @@
+
+--- model tensor_display_simple
+""" Creates an animation of learning for a 3xnxn tensor"""
+config out "Output filename (.avi)"
+config fps= 1 "FPS data limit"
+# input T "Tensor matrix"
+
+|input name=T| --> T
+
+# Extract the components of T and display them
+w=360
+T --> |fps_data_limit fps=$fps| --> Tc
+Tc --> |take axis=2 indices=[0]| --> T_x --> |posneg| --> |resize width=$w  height=$w| --> T_x_rgb
+Tc --> |take axis=2 indices=[1]| --> T_y  --> |posneg| -->  |resize width=$w  height=$w| --> T_y_rgb
+Tc --> |take axis=2 indices=[2]| --> T_theta--> |posneg| --> |resize width=$w height=$w| --> T_theta_rgb
+
+# Create output video
+T_x_rgb, T_y_rgb, T_theta_rgb --> |sync| --> |grid cols=3| --> |mencoder file=$out|
+
