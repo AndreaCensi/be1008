@@ -1,4 +1,4 @@
-#import predictor
+import predictor
 import os
 
 
