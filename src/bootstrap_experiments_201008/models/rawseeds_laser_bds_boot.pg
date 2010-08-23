@@ -9,7 +9,7 @@ odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 on finish: save T to "${outdir}/T.pickle"
 
-import procgraph.components.rawseeds
+import procgraph_rawseeds
 import procgraph.components.pil
 
 |rawseeds_synchronized_laser logdir=$logdir| --> y

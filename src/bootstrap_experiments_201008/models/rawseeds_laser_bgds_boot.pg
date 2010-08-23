@@ -6,19 +6,20 @@ config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
 config display_fps = 0.2                   "Frames per second for movie"
 
+# FIXME: use pickle block instead
 on finish: save G to "${logdir}/out/${outdir}/G.pickle" 
 on finish: save B to "${logdir}/out/${outdir}/B.pickle" 
 
 mencoder.file = "${logdir}/out/${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
+import procgraph_rawseeds
+import procgraph.components.cv
+
 
 |rawseeds_synchronized_laser logdir=$logdir| --> y
 
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
-
-
-import procgraph.components.cv
 
 y --> |derivative| --> |$grad_op | --> y_dot
 y --> |gradient1d| --> |$deriv_op| --> gy

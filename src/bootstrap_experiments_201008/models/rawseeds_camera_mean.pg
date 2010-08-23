@@ -6,6 +6,8 @@ config fps = 0.1 "frame rate for learning video"
 config before_op = identity "Operation to be applied to y"
 config after_op = scale "How to visualize the result"
 
+import procgraph_rawseeds
+
 |rawseeds_synchronized_camera logdir=$logdir| --> y
 
     y --> |before:$before_op| --> |expectation| --> y_mean

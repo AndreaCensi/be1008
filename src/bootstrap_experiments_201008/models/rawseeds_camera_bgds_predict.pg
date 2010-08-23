@@ -10,14 +10,11 @@ config deriv_op = identity                 "Scalar operation after derivative."
 
 outdir = "${logdir}/out/${prefix}"
 
-import bootstrap_experiments_201008
-
+import procgraph_rawseeds
 
 |rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
-
-
 
 
 y --> |derivative2| --> |$deriv_op | --> y_dot

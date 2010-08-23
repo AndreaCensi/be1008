@@ -10,6 +10,7 @@ config deriv_op = identity                 "Scalar operation after derivative."
 #config display_fps = 0.2                   "Frames per second for movie"
 
 import procgraph.components.cv
+import procgraph_rawseeds
 
 
 outdir = "${logdir}/out/${prefix}/"

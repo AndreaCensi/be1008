@@ -1,4 +1,3 @@
-
 --- model tensor_display_simple
 """ Creates an animation of learning for a 3xnxn tensor"""
 config out "Output filename (.avi)"
