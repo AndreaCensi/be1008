@@ -41,7 +41,7 @@ def average_logs_results():
 
     variants = {}
     
-    for dirpath, dirnames, files in os.walk(options.dir):
+    for dirpath, dirnames, files in os.walk(options.dir): #@UnusedVariable
         for f in files:
             complete = os.path.join(dirpath, f)
             relative = os.path.relpath(complete, options.dir)
