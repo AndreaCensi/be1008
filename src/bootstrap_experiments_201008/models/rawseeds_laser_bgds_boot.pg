@@ -4,14 +4,13 @@ config logdir                              "Directory containing Rawseeds logs."
 config outdir   = laser_bgds_boot          "Subdirectory inside logdir where to put files."
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
-config display_fps = 0.2                   "Frames per second for movie"
+config display_fps = 0.1                   "Frames per second for movie"
 
 
 mencoder.file = "${logdir}/out/${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 import procgraph_rawseeds
-import procgraph.components.cv
 
 |rawseeds_synchronized_laser logdir=$logdir| --> y
 
@@ -42,8 +41,6 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
     G_x,G_y,G_th,B_x,B_y,B_th, gy_rgb --> |sync| --> |grid cols=3| --> rgb
     rgb --> |mencoder| 
      
-#on finish: save G to "${logdir}/out/${outdir}/G.pickle" 
-#on finish: save B to "${logdir}/out/${outdir}/B.pickle" 
   B  --> |rawseeds_laser_bgds_boot_save w='${outdir}/B'|
   G  --> |rawseeds_laser_bgds_boot_save w='${outdir}/G'|
   
@@ -51,11 +48,13 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
 # now statistics
 
 
-y_dot --> |abs|    --> |expectation|  --> |save w='${outdir}/y_dot_svar'|
-y_dot --> |square| --> |expectation|  --> |save w='${outdir}/y_dot_var'|
-gy    --> |abs|    --> |expectation|  --> |save w='${outdir}/gy_svar'|
-gy    --> |square| --> |expectation|  --> |save w='${outdir}/gy_var'|
-
+y_dot --> |abs|    --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_svar'|
+y_dot --> |square| --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_var'|
+gy    --> |abs|    --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_svar'|
+gy    --> |square| --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_var'|
+gy    --> |expectation|               --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_mean'|
+y    --> |expectation|                --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_mean'|
+y    --> |one_over| --> |expectation| --> |rawseeds_laser_bgds_boot_save w='${outdir}/one_over_y_mean'|
   
 
 ---- model rawseeds_laser_bgds_boot_save

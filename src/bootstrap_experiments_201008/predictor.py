@@ -1,8 +1,10 @@
 from procgraph.core.block import Block
 import cPickle as pickle
 from numpy import sign
-from procgraph.components.basic import register_block
+from procgraph.components.basic import register_block, register_simple_block
 import numpy
+
+register_simple_block(lambda x: 1.0 / x, 'one_over')
 
 
 class BGDSPredictor(Block):
