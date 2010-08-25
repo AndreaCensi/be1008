@@ -55,6 +55,7 @@ gy    --> |square| --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${ou
 gy    --> |expectation|               --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_mean'|
 y    --> |expectation|                --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_mean'|
 y    --> |one_over| --> |expectation| --> |rawseeds_laser_bgds_boot_save w='${outdir}/one_over_y_mean'|
+y_dot --> |expectation|               --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_mean'|
   
 
 ---- model rawseeds_laser_bgds_boot_save

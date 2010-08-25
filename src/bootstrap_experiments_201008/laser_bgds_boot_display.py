@@ -27,6 +27,9 @@ def laser_bgds_boot_display():
         G = data['G']
         B = data['B']
         
+        gy_mean = data['gy_mean']
+        y_mean = data['y_mean']
+        one_over_y_mean = data['one_over_y_mean']
         y_dot_var = data['y_dot_var']
         y_dot_svar = data['y_dot_svar']
         gy_var = data['gy_var']
@@ -61,12 +64,17 @@ def laser_bgds_boot_display():
             
             pylab.axis([0, N, 0, 1])
             pylab.legend()
-
             
-        
+            
         f = n.figure('stats')
         f.sub('y_dot_var')
         f.sub('gy_var')
+        
+        for var in ['y_dot_mean', 'gy_mean', 'y_mean', 'one_over_y_mean']:
+            with n.data_pylab(var) as pylab:
+                pylab.plot(data[var][readings])
+            f.sub(var)
+            
         
         
         for k in [0, 2]:
