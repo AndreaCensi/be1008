@@ -5,6 +5,9 @@ from numpy import nonzero, array, abs
 
 from reprep.node import Node
 from reprep.out.html import node_to_html_document
+from numpy.lib.function_base import linspace
+import math
+from numpy.ma.core import cos, sin
 
 def laser_bgds_boot_display():
     """
@@ -19,6 +22,8 @@ def laser_bgds_boot_display():
 
     
     report = Node('laser_bgds_boot') 
+    
+    
     
     k = 1
     variants = sorted(results.keys())
@@ -42,12 +47,80 @@ def laser_bgds_boot_display():
         #readings = range(0, 300)
         readings = range(360, G.shape[0])
         N = len(readings)
+        
+        theta = linspace(0, 2 * math.pi, N) - math.pi / 2
+        with n.data_pylab('B_v') as pylab:
+            pylab.plot(-cos(theta))
+            pylab.axis([0, N, -2, 2])
+        with n.data_pylab('B_omega') as pylab:
+            pylab.plot(0 * theta)
+            pylab.axis([0, N, -2, 2])
+        with n.data_pylab('G_v') as pylab:
+            pylab.plot(-sin(theta))
+            pylab.axis([0, N, -2, 2])
+        with n.data_pylab('G_omega') as pylab:
+            pylab.plot(numpy.ones((N)))
+            pylab.axis([0, N, -2, 2])
+            
+        n.figure('expected', sub=['B_v', 'B_omega', 'G_v', 'G_omega'])
+        
+        
         G = G[readings, :]
         B = B[readings, :]
         y_dot_var = y_dot_var[readings]
         y_dot_svar = y_dot_svar[readings]
         gy_var = gy_var[readings]
         gy_svar = gy_svar[readings]
+        
+        
+        for k in [0, 2]:
+            var = 'G[%s]' % k
+            G_k = n.data(var, G[:, k])
+            G_k_n = G[:, k] / gy_var
+            with G_k.data_pylab('original') as pylab:
+                pylab.plot(G[:, k])
+                pylab.title(var + ' original')
+                M = abs(G[:, k]).max()
+                pylab.axis([0, N, -M, M])
+                           
+            with G_k.data_pylab('normalized') as pylab:
+                pylab.plot(G_k_n)
+                pylab.title(var + ' normalized')
+                M = abs(G_k_n).max()
+                pylab.axis([0, N, -M, M])            
+
+        for k in [0, 2]:
+            var = 'B[%s]' % k
+            B_k = n.data(var, B[:, k])
+            B_k_n = B[:, k] / gy_var
+            
+            with B_k.data_pylab('original') as pylab:
+                pylab.plot(B[:, k])
+                pylab.title(var + ' original')
+                M = abs(B[:, k]).max()
+                pylab.axis([0, N, -M, M])            
+
+            with B_k.data_pylab('normalized') as pylab:
+                pylab.plot(B_k_n)
+                pylab.title(var + ' normalized')            
+                M = abs(B_k_n).max()
+                pylab.axis([0, N, -M, M])            
+
+
+        n.figure('obtained', sub=['B[0]/normalized', 'B[2]/normalized',
+        'G[0]/normalized', 'G[2]/normalized', ])
+
+
+        n.figure('G', sub=['G[0]/original', 'G[0]/normalized',
+        'G[2]/original', 'G[2]/normalized'])
+
+
+        n.figure('B', sub=['B[0]/original', 'B[0]/normalized',
+        'B[2]/original', 'B[2]/normalized'])
+
+         
+        
+        
         
         norm = lambda x: x / x.max()
      #   norm = lambda x : x
@@ -70,60 +143,20 @@ def laser_bgds_boot_display():
         f.sub('y_dot_var')
         f.sub('gy_var')
         
-        for var in ['y_dot_mean', 'gy_mean', 'y_mean', 'one_over_y_mean']:
+        for var in ['y_dot_mean', 'gy_mean', 'y_mean', 'y_var', 'one_over_y_mean']:
             with n.data_pylab(var) as pylab:
                 pylab.plot(data[var][readings])
             f.sub(var)
             
-        
-        
-        for k in [0, 2]:
-            var = 'G[%s]' % k
-            G_k = n.data(var, G[:, k])
-            G_k_n = G[:, k] / gy_var
-            with G_k.data_pylab('original') as pylab:
-                pylab.plot(G[:, k])
-                pylab.title(var + ' original')
-                M = abs(G[:, k]).max()
-                pylab.axis([0, N, -M, M])
-                           
-            with G_k.data_pylab('normalized') as pylab:
-                pylab.plot(G_k_n)
-                pylab.title(var + ' normalized')
-                M = abs(G_k_n).max()
-                pylab.axis([0, N, -M, M])            
-
-
-        fG = n.figure('G')
-        fG.sub('G[0]/original')
-        fG.sub('G[0]/normalized')
-        fG.sub('G[2]/original')
-        fG.sub('G[2]/normalized')
-
-        for k in [0, 2]:
-            var = 'B[%s]' % k
-            B_k = n.data(var, B[:, k])
-            B_k_n = B[:, k] / gy_var
-            
-            with B_k.data_pylab('original') as pylab:
-                pylab.plot(B[:, k])
-                pylab.title(var + ' original')
-                M = abs(B[:, k]).max()
-                pylab.axis([0, N, -M, M])            
-
-            with B_k.data_pylab('normalized') as pylab:
-                pylab.plot(B_k_n)
-                pylab.title(var + ' normalized')            
-                M = abs(B_k_n).max()
-                pylab.axis([0, N, -M, M])            
+        with n.data_pylab('y_mean+var') as pylab:
+            y = data['y_mean'][readings]
+            var = data['y_var'][readings]
+            pylab.errorbar(range(0, N), y, yerr=3 * numpy.sqrt(var), fmt='ro')
+                
+        f.sub('y_mean+var')
 
         
         
-        fB = n.figure('B')
-        fB.sub('B[0]/original')
-        fB.sub('B[0]/normalized')
-        fB.sub('B[2]/original')
-        fB.sub('B[2]/normalized')
 
     node_to_html_document(report, 'laser_bgds_boot.html')
 

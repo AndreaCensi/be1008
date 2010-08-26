@@ -4,15 +4,17 @@ config logdir                              "Directory containing Rawseeds logs."
 config outdir   = laser_bgds_boot          "Subdirectory inside logdir where to put files."
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
-config display_fps = 0.1                   "Frames per second for movie"
-
+config display_fps = 0.1                   "Frames per second for movie."
+config rangefinder_fps = 2.5                     "Cap on laser frame rate."
 
 mencoder.file = "${logdir}/out/${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 import procgraph_rawseeds
 
-|rawseeds_synchronized_laser logdir=$logdir| --> y
+|rawseeds_synchronized_laser logdir=$logdir fps=$rangefinder_fps| --> y
+
+y --> |fps_print|
 
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
 
