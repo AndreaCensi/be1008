@@ -14,7 +14,7 @@ import procgraph_rawseeds
 
 |rawseeds_synchronized_laser logdir=$logdir fps=$rangefinder_fps| --> y
 
-y --> |fps_print|
+#y --> |fps_print|
 
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
 
