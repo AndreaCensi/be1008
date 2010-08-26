@@ -50,12 +50,13 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
 
 y_dot --> |abs|    --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_svar'|
 y_dot --> |square| --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_var'|
+y_dot --> |expectation|               --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_mean'|
 gy    --> |abs|    --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_svar'|
 gy    --> |square| --> |expectation|  --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_var'|
 gy    --> |expectation|               --> |rawseeds_laser_bgds_boot_save w='${outdir}/gy_mean'|
 y    --> |expectation|                --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_mean'|
+y    --> |variance|                   --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_var'|
 y    --> |one_over| --> |expectation| --> |rawseeds_laser_bgds_boot_save w='${outdir}/one_over_y_mean'|
-y_dot --> |expectation|               --> |rawseeds_laser_bgds_boot_save w='${outdir}/y_dot_mean'|
   
 
 ---- model rawseeds_laser_bgds_boot_save
