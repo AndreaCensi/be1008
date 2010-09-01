@@ -4,6 +4,7 @@ from procgraph.scripts.pg import pg
 
 scripts = """
 rawseeds_synchronized_camera_test
+rawseeds_synchronized_laser_test
 rawseeds_camera_mean
 rawseeds_camera_mean_contrast
 rawseeds_big_movie
@@ -13,6 +14,7 @@ rawseeds_laser_covcorr
 rawseeds_camera_bgds_boot_all
 rawseeds_camera_bgds_stats_all
 rawseeds_camera_bgds_predict
+rawseeds_laser_bgds_predict_all
 """.split()
 
 logs = """

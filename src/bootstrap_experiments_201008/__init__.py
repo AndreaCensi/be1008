@@ -1,8 +1,10 @@
 import predictor
-import os
+import bgds_1d_predictor 
+
 
 
 # FIXME, make this easier
+import os
 from procgraph.core.registrar import default_library
 from procgraph.core.model_loader import pg_look_for_models
 dir = os.path.join(os.path.dirname(__file__), 'models')
