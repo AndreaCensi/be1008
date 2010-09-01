@@ -14,63 +14,78 @@ import procgraph_rawseeds
 
 outdir = "${logdir}/out/${prefix}"
 
-
+# Get the data
 |rawseeds_synchronized_laser logdir=$logdir| --> y
-
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+# Get the camera for visualization purposes. Also flip it.
+|omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=320| --> |flipud| --> omni
 
 
+
+# Process the data
 y --> |derivative2| --> |$deriv_op | --> y_dot
 y --> |gradient1d| --> |$grad_op| --> gy
 
-
+# Run the prediction
 gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_1d_predictor| --> y_dot_pred, error
-
-
 bgds_1d_predictor.BG = '${logdir}/../${tensors}'
 
 
-    y --> |rawseeds_synchronized_laser_plot| --> rgb1
-    
+# Extract the sick part, we are not interested in the Hokuyo
+y          --> |slice start=342 end=703|--> y_sick
+gy         --> |slice start=342 end=703|--> gy_sick
+y_dot      --> |slice start=342 end=703|--> y_dot_sick
+y_dot_pred --> |slice start=342 end=703|--> y_dot_pred_sick
+error      --> |slice start=342 end=703|--> error_sick
 
-    y_dot      --> |low_pass alpha=0.1| -->  |organic_scale| --> |plot title=y_dot format='.'| --> y_dot_rgb
-    y_dot_pred --> |low_pass alpha=0.1| -->  |organic_scale| --> |plot title=y_dot_pred format='.'| --> y_dot_pred_rgb
-    error      --> |low_pass alpha=0.1| --> |organic_scale| --> |plot title=error  format='.'| --> error_rgb
-    
-    y_dot_rgb, y_dot_pred_rgb, error_rgb --> |sync| --> |grid cols=1| --> rgb2
- 
-    
-# Display the error for the hokuyo
-    error --> |slice start=342 end=703|--> error_sick
-    
-    error_sick   --> |low_pass alpha=0.5|--> |organic_scale| --> error_sick_smooth
-    
+
+# Visualization 
+
+    # This variable describes the sensor configuration
     sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,0]}]
+    sick_groups_lines = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b', origin: [0,0,0]}]
 
-    error_sick_smooth --> |laser_dot_display groups=$sick_groups| --> error_sick_rgb
-    |omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=320|->  |flipud| --> omni
+    # Limit the readings to 20m
+    y_sick     --> |laser_display     title='readings'   max_readings=20 groups=$sick_groups_lines| --> y_sick_rgb
+    
+    y_dot_sick --> |skim percent=1| --> |normalize_Linf| --> |laser_dot_display title='derivative' groups=$sick_groups| --> y_dot_sick_rgb
+    gy_sick    --> |skim percent=1| --> |normalize_Linf| --> |laser_dot_display title='gradient'  groups=$sick_groups| --> gy_sick_rgb
+    
+                   
+    y_dot_sick      --> |smooth_and_scale| --> |plot height=320 symmetric=1 title=derivative format='-'| --> y_dot_rgb
+    y_dot_pred_sick --> |smooth_and_scale| --> |plot height=320 symmetric=1 title=prediction format='-'| --> y_dot_pred_rgb
+    error_sick      --> |smooth_and_scale| --> |plot height=320  title=error  format='.'| --> error_rgb
+    error_sick      --> |smooth_and_scale| --> |laser_dot_display  groups=$sick_groups title=error  | --> error_rgb2
+    
+    omni, y_sick_rgb, y_dot_sick_rgb, gy_sick_rgb, y_dot_rgb, y_dot_pred_rgb, error_rgb,error_rgb2 --> |sync| --> |grid cols=4| --> rgb
  
+    rgb --> |mencoder vbitrate=2000000 file='${outdir}/movie.avi'|
+    
+--- model smooth_and_scale
+''' A primitive way of having better display. '''
+input x 'Some sequence of value'
+output y 'Smoothed, scaled version of x.'
+|input name=x| --> |low_pass alpha=0.5| -->  |organic_scale| --> |output name=y|
 
-    omni, error_sick_rgb --> |sync| --> |grid cols=1| -->rgb3
-    rgb1,rgb2,rgb3 -->|sync|-->|grid cols=3| --> movie
-    
-    
-    movie --> |mencoder vbitrate=2000000 file='${outdir}/movie.avi'|
-    
-    
+  
 --- model rawseeds_laser_bgds_predict_all
 config logdir                              "Directory containing Rawseeds logs."
 
 |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-II' grad_op=identity deriv_op=identity tensors='GI_DI:GB.pickle'|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DS-II' grad_op=identity deriv_op=identity tensors='GI_DS:GB.pickle'|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DI-II' grad_op=identity deriv_op=identity tensors='GS_DI:GB.pickle'|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-II' grad_op=identity deriv_op=identity tensors='GS_DS:GB.pickle'|
+
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-IF' grad_op=identity deriv_op=deriv_filter tensors='GI_DI:GB.pickle'|
 
 |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SS' grad_op=sign deriv_op=sign tensors='GS_DS:GB.pickle'|
 
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SF' grad_op=sign deriv_op=deriv_filter tensors='GS_DS:GB.pickle'|
 
 
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-II' grad_op=identity deriv_op=identity tensors='GS_DS:GB.pickle'|
+
+
+--- model deriv_filter
+|input name=x| --> |sign|--> |low_pass alpha=0.1| ---> |output name=y|
 
 
 
