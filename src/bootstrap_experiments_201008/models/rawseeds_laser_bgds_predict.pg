@@ -1,0 +1,76 @@
+---- model rawseeds_laser_bgds_predict
+''' Compares the BGDS prediction with reality.     
+
+    Uses :ref:`block:rawseeds_synchronized_laser` as a source. 
+    
+'''
+config logdir                              "Directory containing Rawseeds logs."
+config prefix   = laser_bgds_predict       "Subdirectory inside logdir where to put files."
+config grad_op  = identity                 "Scalar operation after gradient."
+config deriv_op = identity                 "Scalar operation after derivative."
+config tensors  = 'GS_DS:GB.pickle'        "Tensors configuration to use."
+
+import procgraph_rawseeds
+
+outdir = "${logdir}/out/${prefix}"
+
+
+|rawseeds_synchronized_laser logdir=$logdir| --> y
+
+|odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
+odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+
+
+y --> |derivative2| --> |$deriv_op | --> y_dot
+y --> |gradient1d| --> |$grad_op| --> gy
+
+
+gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_1d_predictor| --> y_dot_pred, error
+
+
+bgds_1d_predictor.BG = '${logdir}/../${tensors}'
+
+
+    y --> |rawseeds_synchronized_laser_plot| --> rgb1
+    
+
+    y_dot      --> |low_pass alpha=0.1| -->  |organic_scale| --> |plot title=y_dot format='.'| --> y_dot_rgb
+    y_dot_pred --> |low_pass alpha=0.1| -->  |organic_scale| --> |plot title=y_dot_pred format='.'| --> y_dot_pred_rgb
+    error      --> |low_pass alpha=0.1| --> |organic_scale| --> |plot title=error  format='.'| --> error_rgb
+    
+    y_dot_rgb, y_dot_pred_rgb, error_rgb --> |sync| --> |grid cols=1| --> rgb2
+ 
+    
+# Display the error for the hokuyo
+    error --> |slice start=342 end=703|--> error_sick
+    
+    error_sick   --> |low_pass alpha=0.5|--> |organic_scale| --> error_sick_smooth
+    
+    sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,0]}]
+
+    error_sick_smooth --> |laser_dot_display groups=$sick_groups| --> error_sick_rgb
+    |omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=320|->  |flipud| --> omni
+ 
+
+    omni, error_sick_rgb --> |sync| --> |grid cols=1| -->rgb3
+    rgb1,rgb2,rgb3 -->|sync|-->|grid cols=3| --> movie
+    
+    
+    movie --> |mencoder vbitrate=2000000 file='${outdir}/movie.avi'|
+    
+    
+--- model rawseeds_laser_bgds_predict_all
+config logdir                              "Directory containing Rawseeds logs."
+
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-II' grad_op=identity deriv_op=identity tensors='GI_DI:GB.pickle'|
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DS-II' grad_op=identity deriv_op=identity tensors='GI_DS:GB.pickle'|
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DI-II' grad_op=identity deriv_op=identity tensors='GS_DI:GB.pickle'|
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-II' grad_op=identity deriv_op=identity tensors='GS_DS:GB.pickle'|
+
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SS' grad_op=sign deriv_op=sign tensors='GS_DS:GB.pickle'|
+
+
+
+
+
+

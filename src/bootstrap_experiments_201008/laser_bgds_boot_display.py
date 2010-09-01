@@ -19,11 +19,7 @@ def laser_bgds_boot_display():
     print "Loading first..."
     results = pickle.load(open('laser_bgds_boot.pickle', 'rb'))
 
-
-    
     report = Node('laser_bgds_boot') 
-    
-    
     
     k = 1
     variants = sorted(results.keys())
@@ -44,8 +40,8 @@ def laser_bgds_boot_display():
         
         n = report.node(variant)
         
-        #readings = range(0, 300)
-        readings = range(360, G.shape[0])
+        #readings = range(360, G.shape[0])
+        readings = range(0, G.shape[0])
         N = len(readings)
         
         theta = linspace(0, 2 * math.pi, N) - math.pi / 2
@@ -70,8 +66,7 @@ def laser_bgds_boot_display():
         y_dot_var = y_dot_var[readings]
         y_dot_svar = y_dot_svar[readings]
         gy_var = gy_var[readings]
-        gy_svar = gy_svar[readings]
-        
+        gy_svar = gy_svar[readings] 
         
         for k in [0, 2]:
             var = 'G[%s]' % k
@@ -116,10 +111,7 @@ def laser_bgds_boot_display():
 
 
         n.figure('B', sub=['B[0]/original', 'B[0]/normalized',
-        'B[2]/original', 'B[2]/normalized'])
-
-         
-        
+        'B[2]/original', 'B[2]/normalized']) 
         
         
         norm = lambda x: x / x.max()
@@ -155,7 +147,17 @@ def laser_bgds_boot_display():
                 
         f.sub('y_mean+var')
 
+        print variant
         
+        if True: #variant == 'GS_DS':
+            s = {'variant': variant,
+                 'Gl':G[:, 0] / gy_var,
+                 'Ga':G[:, 2] / gy_var,
+                 'Bl':B[:, 0] / gy_var,
+                 'Ba':B[:, 2] / gy_var }
+            filename = "%s:GB.pickle" % variant.replace('/', '_')
+            pickle.dump(s, open(filename, 'wb'))
+            print 'Written on %s' % filename
         
 
     node_to_html_document(report, 'laser_bgds_boot.html')
