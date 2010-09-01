@@ -1,4 +1,6 @@
 
+import procgraph_rawseeds # otherwise we cannot call rawseeds_synchor_test
+
 from compmake import comp, compmake_console
 from procgraph.scripts.pg import pg
 
