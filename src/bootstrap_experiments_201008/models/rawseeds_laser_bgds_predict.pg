@@ -43,8 +43,8 @@ error      --> |slice start=342 end=703|--> error_sick
 # Visualization 
 
     # This variable describes the sensor configuration
-    sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,0]}]
-    sick_groups_lines = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b', origin: [0,0,0]}]
+    sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,-0.2]}]
+    sick_groups_lines = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b', origin: [0,0,-0.2]}]
 
     # Limit the readings to 20m
     y_sick     --> |laser_display     title='readings'   max_readings=20 groups=$sick_groups_lines| --> y_sick_rgb
@@ -55,8 +55,8 @@ error      --> |slice start=342 end=703|--> error_sick
                    
     y_dot_sick      --> |smooth_and_scale| --> |plot height=320 symmetric=1 title=derivative format='-'| --> y_dot_rgb
     y_dot_pred_sick --> |smooth_and_scale| --> |plot height=320 symmetric=1 title=prediction format='-'| --> y_dot_pred_rgb
-    error_sick      --> |smooth_and_scale| --> |plot height=320  title=error  format='.'| --> error_rgb
-    error_sick      --> |smooth_and_scale| --> |laser_dot_display  groups=$sick_groups title=error  | --> error_rgb2
+    y_dot_pred_sick -->  |smooth_and_scale| --> |laser_dot_display groups=$sick_groups   title='prediction (polar)'   format='.'| --> error_rgb
+    error_sick      --> |smooth_and_scale| --> |laser_dot_display  groups=$sick_groups title='error (polar)'   | --> error_rgb2
     
     omni, y_sick_rgb, y_dot_sick_rgb, gy_sick_rgb, y_dot_rgb, y_dot_pred_rgb, error_rgb,error_rgb2 --> |sync| --> |grid cols=4| --> rgb
  
