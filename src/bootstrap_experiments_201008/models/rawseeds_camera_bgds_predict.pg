@@ -7,6 +7,8 @@ config prefix   = camera_bgds_predict      "Subdirectory inside logdir where to 
 config image_op = rgb2gray                 "How to obtain a scalar from RGB"
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
+config tensors = "out/camera_bgds_boot/gray_GI_DI:G.pickle" '''Tensor to use. path relative to ``logdir/..``. '''
+
 
 outdir = "${logdir}/out/${prefix}"
 
@@ -29,16 +31,27 @@ gx[gx], gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_predictor|
 
 #error --> |print|
 
-bgds_predictor.G = '${logdir}/../gray_GI_DI:G.pickle'
+bgds_predictor.G = '${logdir}/../${tensors}'
 
 
     y_dot      --> |posneg| --> y_dot_rgb
     y_dot_pred --> |posneg| --> y_dot_pred_rgb
+
+
     error      --> |scale| --> error_rgb
+    error --> |low_pass alpha=0.2| --> |scale| --> error_rgb2
     
-    y_dot_rgb, y_dot_pred_rgb,error_rgb --> |sync| --> |grid cols=2| --> |mencoder file='${outdir}/y_dot.avi'|
-    error_rgb -->  |mencoder file='${outdir}/error.avi'| 
+    y_dot_rgb, y_dot_pred_rgb --> |sync| --> |grid cols=2| --> |mencoder vbitrate=2000000 file='${outdir}/y_dot.avi'|
+    error_rgb, error_rgb2 --> |sync| --> |grid cols=2| --> |mencoder  vbitrate=2000000 file='${outdir}/error.avi'| 
     
+    # Just get the negative
+    y_dot, y_dot_pred --> |sync| --> |*| --> |minimum threshold=0| --> |posneg| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
+    
+---- model rawseeds_camera_bgds_predict_all
+config logdir "Rawseeds log directory"
+
+|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/gray_GS_DS" tensors="out/camera_bgds_boot/gray_GS_DS:G.pickle"| 
+|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/gray_GI_DI" tensors="out/camera_bgds_boot/gray_GI_DI:G.pickle"| 
     
     
     
