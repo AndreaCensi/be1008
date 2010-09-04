@@ -37,7 +37,8 @@ def be_all():
     for log in logs:
         for script in scripts:
             job_id = '%s-%s' % (script, log)
-            config = {'logdir': "${PBENV_DATA}/rawseeds/%s" % log}
+            #config = {'logdir': "${PBENV_DATA}/rawseeds/%s" % log}
+            config = {'logdir':  log}
             comp(pg, script, config=config, job_id=job_id)
 
     compmake_console()
