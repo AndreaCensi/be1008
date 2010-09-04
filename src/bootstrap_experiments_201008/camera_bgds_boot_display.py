@@ -3,6 +3,7 @@ from reprep.node import Node
 from reprep.out.html import node_to_html_document
 import numpy
 from numpy import nonzero
+import os
 
 def camera_bgds_boot_display():
     """
@@ -90,13 +91,17 @@ def camera_bgds_boot_display():
             # break
             
             
-        if variant == 'gray/GI_DI':
+        #if variant == 'gray/GS_DS':
+        if True:
             s = {'variant': variant,
                  'Gxl':Gxl_norm,
                  'Gyl':Gyl_norm,
                  'Gxa':Gxa_norm,
                  'Gya':Gya_norm }
-            filename = "%s:G.pickle" % variant.replace('/', '_')
+            filename = "out/camera_bgds_boot/%s:G.pickle" % variant.replace('/', '_')
+            dir = os.path.dirname(filename)
+            if not os.path.exists(dir):
+                os.makedirs(dir)
             pickle.dump(s, open(filename, 'wb'))
             print 'Written on %s' % filename
     
