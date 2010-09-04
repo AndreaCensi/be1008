@@ -45,7 +45,7 @@ bgds_predictor.G = '${logdir}/../${tensors}'
     error_rgb, error_rgb2 --> |sync| --> |grid cols=2| --> |mencoder  vbitrate=2000000 file='${outdir}/error.avi'| 
     
     # Just get the negative
-    y_dot, y_dot_pred --> |sync| --> |*| --> |minimum threshold=0| --> |posneg| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
+    y_dot, y_dot_pred --> |sync| --> |*| --> |minimum threshold=0| --> |scale| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
     
 ---- model rawseeds_camera_bgds_predict_all
 config logdir "Rawseeds log directory"
