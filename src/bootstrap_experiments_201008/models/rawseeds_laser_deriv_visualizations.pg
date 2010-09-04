@@ -1,0 +1,66 @@
+--- model rawseeds_laser_deriv_visualizations
+''' Displays the effect of several kind of filtering for visualization the derivative. '''
+config logdir      "Directory containing Rawseeds logs."
+config prefix  = laser_deriv_visualizations   "Subdirectory of 'out/' where to put results."
+
+outdir = "${logdir}/out/${prefix}"
+
+# Get the camera for visualization purposes. Also flip it.
+import procgraph_rawseeds
+
+|omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=$w| --> |flipud| --> omni
+
+
+# Get the data
+|rawseeds_synchronized_laser logdir=$logdir| --> y
+
+
+# Process the data
+y --> |derivative2| -->  y_dot
+
+
+# Extract the sick part, we are not interested in the Hokuyo
+y          --> |sick_extract|--> y_sick
+y_dot      --> |sick_extract|--> y_dot_sick
+
+
+# This variable describes the sensor configuration
+w=200
+sick_groups_lines = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b', origin: [0,0,-0.2]}]
+
+# Visualizations
+y_sick     --> |laser_display width=$w height=$w title='readings' max_readings=20 groups=$sick_groups_lines| --> y_sick_rgb
+
+y_dot_sick --> |normalize_Linf| --> |y_dot_vis  title='norm' | --> y_dot_1
+y_dot_sick --> |skim percent=2| --> |normalize_Linf|      --> |y_dot_vis title='skim2+norm'   | --> y_dot_2
+y_dot_sick --> |skim percent=10| --> |normalize_Linf|     --> |y_dot_vis  title='skim10+norm' | --> y_dot_3
+y_dot_sick --> |low_pass  alpha=0.1| --> |normalize_Linf| --> |y_dot_vis title='low01+norm'   | --> y_dot_4
+y_dot_sick --> |low_pass  alpha=0.2| --> |normalize_Linf| --> |y_dot_vis title='low0.2+norm'  | --> y_dot_5
+y_dot_sick --> |low_pass  alpha=0.5| --> |normalize_Linf| --> |y_dot_vis title='low0.5+norm'  | --> y_dot_6
+y_dot_sick --> |low_pass  alpha=0.5| --> |normalize_Linf| --> |y_dot_vis title='organic'      | --> y_dot_7
+y_dot_sick --> |sign| -> |low_pass alpha=0.1| --> |normalize_Linf| --> |y_dot_vis title='sign+low0.1'      | --> y_dot_8
+y_dot_sick --> |sign| -> |low_pass alpha=0.5| --> |normalize_Linf| --> |y_dot_vis title='sign+low0.5'| --> y_dot_9
+y_dot_sick -->  |low_pass alpha=0.1| --> |sign| --> |normalize_Linf| --> |y_dot_vis title='low0.1+sign'| --> y_dot_10
+y_dot_sick -->  |low_pass alpha=0.5| --> |sign| --> |normalize_Linf| --> |y_dot_vis title='low0.1+sign'| --> y_dot_11
+y_dot_sick -->  |low_pass alpha=0.5| --> |sign| -->  |low_pass alpha=0.5| --> |normalize_Linf| --> |y_dot_vis title='low0.5+sign+low0.5'| --> y_dot_12
+y_dot_sick -->  |low_pass alpha=0.1| --> |sign| -->  |low_pass alpha=0.1| --> |normalize_Linf| --> |y_dot_vis title='low0.1+sign+low0.1'| --> y_dot_13
+
+
+omni, y_sick_rgb, y_dot_1, y_dot_2, y_dot_3, y_dot_4, y_dot_5, y_dot_6, y_dot_7, y_dot_8, y_dot_9, y_dot_10, y_dot_11, y_dot_12, y_dot_13  --> |sync| --> |grid cols=5| --> rgb
+
+rgb --> |mencoder vbitrate=2000000 file='${outdir}/movie.avi'|
+
+--- model y_dot_vis
+''' Widget for displaying y_dot. '''
+input y_dot "Normalized in [-1,1]."
+config title 'Title for the plot'
+
+groups  = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,-0.2]}]
+
+|input name=y_dot| --> |laser_dot_display width=200 height=200 groups=$groups title=$title| --> |output name=rgb|
+
+--- model sick_extract
+''' Extracts the Sick data '''
+|input name=y| -> |slice start=342 end=703| --> |output name=y_sick|
+
+

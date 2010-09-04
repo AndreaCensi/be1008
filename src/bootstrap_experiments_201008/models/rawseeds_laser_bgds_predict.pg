@@ -66,22 +66,30 @@ error      --> |slice start=342 end=703|--> error_sick
 ''' A primitive way of having better display. '''
 input x 'Some sequence of value'
 output y 'Smoothed, scaled version of x.'
-|input name=x| --> |low_pass alpha=0.5| -->  |organic_scale| --> |output name=y|
+|input name=x| --> |low_pass alpha=0.5| -->  |normalize_Linf| --> |output name=y|
 
   
 --- model rawseeds_laser_bgds_predict_all
 config logdir                              "Directory containing Rawseeds logs."
 
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-II' grad_op=identity deriv_op=identity tensors='GI_DI:GB.pickle'|
-
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-IF' grad_op=identity deriv_op=deriv_filter tensors='GI_DI:GB.pickle'|
-
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SS' grad_op=sign deriv_op=sign tensors='GS_DS:GB.pickle'|
-
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SF' grad_op=sign deriv_op=deriv_filter tensors='GS_DS:GB.pickle'|
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/manual1' grad_op=identity deriv_op=my_filter tensors='GS_DS:GB.pickle'|
 
 
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-II' grad_op=identity deriv_op=identity tensors='GS_DS:GB.pickle'|
+--- model my_filter
+
+|input name=x| --> |low_pass alpha=0.5| --> |sign| -->  |low_pass alpha=0.5|  --> |output name=y|
+
+# 
+# |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-II' grad_op=identity deriv_op=identity tensors='GI_DI:GB.pickle'|
+# 
+# |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GI_DI-IF' grad_op=identity deriv_op=deriv_filter tensors='GI_DI:GB.pickle'|
+
+# |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SS' grad_op=sign deriv_op=sign tensors='GS_DS:GB.pickle'|
+
+# |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-SF' grad_op=sign deriv_op=deriv_filter tensors='GS_DS:GB.pickle'|
+# 
+# 
+# |rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/GS_DS-II' grad_op=identity deriv_op=identity tensors='GS_DS:GB.pickle'|
 
 
 --- model deriv_filter

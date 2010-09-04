@@ -46,6 +46,7 @@ class BGDS1dPredictor(Block):
         
         self.output.y_dot_pred = y_dot_pred
         #self.output.error = numpy.maximum(0, -y_dot_pred * y_dot)
-        self.output.error = (abs(sign(y_dot_pred) - sign(y_dot))) * (abs(y_dot) + abs(y_dot_pred)) 
+        self.output.error = abs(sign(y_dot_pred) - sign(y_dot))
+        #self.output.error =         (abs(sign(y_dot_pred) - sign(y_dot))) * (abs(y_dot) + abs(y_dot_pred)) 
         
  
