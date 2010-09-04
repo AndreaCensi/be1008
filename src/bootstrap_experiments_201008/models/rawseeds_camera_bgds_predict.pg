@@ -41,11 +41,23 @@ bgds_predictor.G = '${logdir}/../${tensors}'
     error      --> |scale| --> error_rgb
     error --> |low_pass alpha=0.2| --> |scale| --> error_rgb2
     
-    y_dot_rgb, y_dot_pred_rgb --> |sync| --> |grid cols=2| --> |mencoder vbitrate=2000000 file='${outdir}/y_dot.avi'|
-    error_rgb, error_rgb2 --> |sync| --> |grid cols=2| --> |mencoder  vbitrate=2000000 file='${outdir}/error.avi'| 
+    y_dot_rgb, y_dot_pred_rgb --> |sync| --> |grid cols=2| --> |watermark logdir=$logdir title='Derivative vs prediction'| --> |mencoder vbitrate=2000000 file='${outdir}/y_dot.avi'|
     
-    # Just get the negative
-    y_dot, y_dot_pred --> |sync| --> |*| --> |minimum threshold=0| --> |scale| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
+#    error_rgb, error_rgb2 --> |sync| --> |grid cols=2| --> |mencoder  vbitrate=2000000 file='${outdir}/error.avi'| 
+    
+    y_dot, y_dot_pred --> |sync| --> |*| --> |gain k=-1| --> detect --> |minimum threshold=0| --> |gain k=-1| --> |scale| --> prod
+    
+    
+# Compute and display success rate
+    detect --> |count_less_than_zero| --> success --> |historyt interval=5| --> success_history
+    success_history --> |plot title='Success fraction'| --> success_history_rgb
+
+
+#    prod, success_history_rgb --> |sync| --> |grid cols=1| --> 
+    
+    prod --> |watermark logdir=$logdir title='Detected inconsistencies'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
+   
+    
     
 ---- model rawseeds_camera_bgds_predict_all
 config logdir "Rawseeds log directory"

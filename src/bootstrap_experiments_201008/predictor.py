@@ -1,4 +1,4 @@
-from procgraph import Block, block_alias, block_config, block_input, block_output 
+from procgraph import Block 
 
 import cPickle as pickle
 from numpy import sign
@@ -7,19 +7,26 @@ import numpy
 
 register_simple_block(lambda x: 1.0 / x, 'one_over')
 
+def count_less_than_zero(values):
+    ''' Returns the fraction of zero elements in the array. '''
+    ok = (values <= 0).mean()
+    return ok
+
+register_simple_block(count_less_than_zero)
+
 
 class BGDSPredictor(Block):
     
-    block_alias('bgds_predictor')
+    Block.alias('bgds_predictor')
     
-    block_config('G', 'Data produced by camera_bgds_boot_display')
-    block_input('gx', 'Gradient of image along direction x.')
-    block_input('gy', 'Gradient of image along direction y.')
-    block_input('y_dot', 'Derivative of y.')
-    block_input('commands', 'Commands (``[vx,vy,omega]``).')
+    Block.config('G', 'Data produced by camera_bgds_boot_display')
+    Block.input('gx', 'Gradient of image along direction x.')
+    Block.input('gy', 'Gradient of image along direction y.')
+    Block.input('y_dot', 'Derivative of y.')
+    Block.input('commands', 'Commands (``[vx,vy,omega]``).')
     
-    block_output('y_dot_pred', 'Predicted y_dot')
-    block_output('error', 'Disagreement between actual and predicted y_dot.')
+    Block.output('y_dot_pred', 'Predicted y_dot')
+    Block.output('error', 'Disagreement between actual and predicted y_dot.')
     
     def init(self):
         # XXX not compatible with saving procedure
