@@ -43,7 +43,7 @@ bgds_predictor.G = '${logdir}/../${tensors}'
     error      --> |scale| --> error_rgb
     error --> |low_pass alpha=0.2| --> |scale| --> error_rgb2
     
-    y_dot_rgb, y_dot_pred_rgb --> |sync| --> |grid cols=2| --> |watermark logdir=$logdir title='Derivative vs prediction'| --> |mencoder vbitrate=2000000 file='${outdir}/y_dot.avi'|
+    y_dot_rgb, y_dot_pred_rgb --> |sync| --> |grid cols=2| --> |watermark logdir=$logdir title='Derivative vs BGDS  prediction'| --> |mencoder vbitrate=2000000 file='${outdir}/y_dot.avi'|
     
 #    error_rgb, error_rgb2 --> |sync| --> |grid cols=2| --> |mencoder  vbitrate=2000000 file='${outdir}/error.avi'| 
     
@@ -62,7 +62,7 @@ bgds_predictor.G = '${logdir}/../${tensors}'
 
 #    prod, success_history_rgb --> |sync| --> |grid cols=1| --> 
     
-    prod_rgb --> |watermark logdir=$logdir title='Detected inconsistencies'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
+    prod_rgb --> |watermark logdir=$logdir title='Detected inconsistencies using BGDS model'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
    
     
     # Save some memories of this beautiful day
