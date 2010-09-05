@@ -1,6 +1,6 @@
 import predictor
 import bgds_1d_predictor 
-
+import memories
 
 
 # FIXME, make this easier

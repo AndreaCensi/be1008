@@ -20,4 +20,4 @@ font = 'Candara'
 color = orange
 bg =  black
 
-text.texts = [{string:'A. Censi - CDS - Caltech', valign: bottom, halign: right, font: $font, size: $size, color: $color, bg: $bg, position: [-5,-5]}, {string: '${title}       (${logdir} time {time:.2f})', valign: bottom, halign: left, position:[5,-5], font: $font, size: $size, color: $color, bg: $bg} ]
+text.texts = [{string:'A. Censi - CDS - Caltech', valign: bottom, halign: right, font: $font, size: $size, color: $color, bg: $bg, position: [-5,-5]}, {string: '${title}          ${logdir}   time {time:.2f}', valign: bottom, halign: left, position:[5,-5], font: $font, size: $size, color: $color, bg: $bg} ]

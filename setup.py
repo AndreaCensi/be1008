@@ -17,7 +17,9 @@ setup(
        'laser_bgds_boot_display = '
         'bootstrap_experiments_201008.laser_bgds_boot_display:laser_bgds_boot_display',
        'be_all = '
-        'bootstrap_experiments_201008.be_all:be_all'
+        'bootstrap_experiments_201008.be_all:be_all',
+       'memories_display = '
+        'bootstrap_experiments_201008.memories_display:memories_display'
        ]
        },
     install_requires=[],
