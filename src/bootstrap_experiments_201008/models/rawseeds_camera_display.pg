@@ -1,0 +1,7 @@
+--- model rawseeds_camera_display
+""" Display the raw video with a watermark """
+config logdir "Rawseeds log directory"
+
+out = "${logdir}/out/camera_display/rgb.avi"
+
+|rawseeds_synchronized_camera logdir=$logdir| --> |watermark logdir=$logdir title='Raw camera input'| --> |mencoder file=$out|
