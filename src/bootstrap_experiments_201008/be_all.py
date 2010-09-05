@@ -17,6 +17,7 @@ rawseeds_camera_bgds_boot_all
 rawseeds_camera_bgds_stats_all
 rawseeds_camera_bgds_predict_all
 rawseeds_laser_bgds_predict_all
+rawseeds_camera_display
 """.split()
 
 logs = """
