@@ -13,6 +13,8 @@ config tensors = "out/camera_bgds_boot/gray_GI_DI:G.pickle" '''Tensor to use. pa
 outdir = "${logdir}/out/${prefix}"
 
 import procgraph_rawseeds
+import procgraph.components.cv
+
 
 |rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
@@ -45,18 +47,26 @@ bgds_predictor.G = '${logdir}/../${tensors}'
     
 #    error_rgb, error_rgb2 --> |sync| --> |grid cols=2| --> |mencoder  vbitrate=2000000 file='${outdir}/error.avi'| 
     
-    y_dot, y_dot_pred --> |sync| --> |*| --> |gain k=-1| --> detect --> |minimum threshold=0| --> |gain k=-1| --> |scale| --> prod
+    y_dot --> |smooth gaussian_std=2| --> y_dot_s
+    y_dot_pred --> |smooth gaussian_std=2| --> y_dot_pred_s
+    
+    
+    
+    y_dot_s, y_dot_pred_s --> |sync| --> |*| -->  detect --> |minimum threshold=0| --> |gain k=-1|  --> prod --> |scale| --> prod_rgb
     
     
 # Compute and display success rate
-    detect --> |count_less_than_zero| --> success --> |historyt interval=5| --> success_history
-    success_history --> |plot title='Success fraction'| --> success_history_rgb
+#    detect --> |count_less_than_zero| --> success --> |historyt interval=5| --> success_history
+#    success_history --> |plot title='Success fraction'| --> success_history_rgb
 
 
 #    prod, success_history_rgb --> |sync| --> |grid cols=1| --> 
     
-    prod --> |watermark logdir=$logdir title='Detected inconsistencies'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
+    prod_rgb --> |watermark logdir=$logdir title='Detected inconsistencies'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod.avi'| 
    
+    
+    # Save some memories of this beautiful day
+    y, gx, gy, y_dot, y_dot_pred, y_dot_s, y_dot_pred_s, prod --> |sync| --> |memories logdir=$logdir|
     
     
 ---- model rawseeds_camera_bgds_predict_all

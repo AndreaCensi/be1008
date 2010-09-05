@@ -20,6 +20,7 @@ class BGDSPredictor(Block):
     Block.alias('bgds_predictor')
     
     Block.config('G', 'Data produced by camera_bgds_boot_display')
+   
     Block.input('gx', 'Gradient of image along direction x.')
     Block.input('gy', 'Gradient of image along direction y.')
     Block.input('y_dot', 'Derivative of y.')
