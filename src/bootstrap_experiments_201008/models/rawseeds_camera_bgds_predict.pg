@@ -16,7 +16,7 @@ import procgraph_rawseeds
 import procgraph.components.cv
 
 
-|rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
+|rawseeds_synchronized_camera logdir=$logdir| --> raw_rgb --> |image_op:$image_op|--> y
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
@@ -55,8 +55,20 @@ bgds_predictor.G = '${logdir}/../${tensors}'
     y_dot_s, y_dot_pred_s --> |sync| --> |*| -->  detect --> |minimum threshold=0| --> |gain k=-1|  --> prod --> |scale| --> prod_rgb
     
     
-# Compute and display success rate
-#    detect --> |count_less_than_zero| --> success --> |historyt interval=5| --> success_history
+# Compute and display statistics
+w = 250 
+h = 150
+T = 5
+      prod --> |count_less_than_zero| --> success --> |historyt interval=$T| --> |plot title='percentage' width=$w height=$h y_min=0 y_max=1 | --> success_rgb
+      prod --> |max| -->  |historyt interval=$T| --> |plot title='Maximum' y_min=0 width=$w height=$h| -->  maximum_rgb
+      prod --> |sum| -->  |historyt interval=$T| --> |plot title='Sum' y_min=0 width=$w height=$h| --> sum_rgb
+      
+      success_rgb, maximum_rgb, sum_rgb --> |sync| --> |grid cols=3| --> stats
+      
+      prod_rgb, stats --> |sync| --> |grid cols=1| -->  |watermark logdir=$logdir title='Detected inconsistencies using BGDS model'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod_stats.avi'| 
+
+      
+      
 #    success_history --> |plot title='Success fraction'| --> success_history_rgb
 
 
@@ -66,7 +78,7 @@ bgds_predictor.G = '${logdir}/../${tensors}'
    
     
     # Save some memories of this beautiful day
-    y, gx, gy, y_dot, y_dot_pred, y_dot_s, y_dot_pred_s, prod --> |sync| --> |memories logdir=$logdir|
+    raw_rgb, y, gx, gy, y_dot, y_dot_pred, y_dot_s, y_dot_pred_s, prod --> |sync| --> |memories logdir=$logdir|
     
     
 ---- model rawseeds_camera_bgds_predict_all
