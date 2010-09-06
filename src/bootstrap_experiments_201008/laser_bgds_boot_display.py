@@ -8,6 +8,7 @@ from reprep.out.html import node_to_html_document
 from numpy.lib.function_base import linspace
 import math
 from numpy.ma.core import cos, sin
+from procgraph.core.model_loadsave import make_sure_dir_exists
 
 def laser_bgds_boot_display():
     """
@@ -155,7 +156,8 @@ def laser_bgds_boot_display():
                  'Ga':G[:, 2] / gy_var,
                  'Bl':B[:, 0] / gy_var,
                  'Ba':B[:, 2] / gy_var }
-            filename = "%s:GB.pickle" % variant.replace('/', '_')
+            filename = "out/laser_bgds_boot/%s:GB.pickle" % variant.replace('/', '_')
+            make_sure_dir_exists(filename)
             pickle.dump(s, open(filename, 'wb'))
             print 'Written on %s' % filename
         

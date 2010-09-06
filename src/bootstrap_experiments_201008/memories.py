@@ -6,7 +6,9 @@ import pickle
 class Memories(Block):
     Block.alias('memories')
     
-    Block.config('logdir', 'Rawseeds log')
+    Block.config('other', 'additional hash to save')
+    Block.config('prefix', 'subdirectory')
+    Block.config('logdir', 'chooses which one')
     
     Block.input_is_variable()
     
@@ -47,14 +49,20 @@ class Memories(Block):
                 self.state.done.append(m)
              
     def make_snapshot(self, instant):
-        data = {'logdir':self.config.logdir, 'instant': instant,
-                'time':self.time, 'timestamp': self.get_input_timestamp(0) }
+        data = { 'instant': instant,
+                'time':self.time, 'timestamp': self.get_input_timestamp(0),
+                'prefix':self.config.prefix }
+        
+        data.update(**self.config.other)
+        
         for name in self.get_input_signals_names():
             data[name] = self.get_input(name)
-        filename = "out/memories/{log}/{time}.pickle".format(
-                    log=self.config.logdir, time=instant)
+        filename = "{prefix}/{time:.2f}.pickle".format(
+                    time=instant,
+                    prefix=self.config.prefix)
         make_sure_dir_exists(filename)
         pickle.dump(data, open(filename, 'w'))
+        self.info('Written on %s' % filename)
              
              
              
