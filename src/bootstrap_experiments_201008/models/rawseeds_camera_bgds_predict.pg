@@ -78,7 +78,7 @@ T = 5
    
     
     # Save some memories of this beautiful day
-    raw_rgb, y, gx, gy, y_dot, y_dot_pred, y_dot_s, y_dot_pred_s, prod --> |sync| --> |memories logdir=$logdir|
+    raw_rgb, y, gx, gy, y_dot, y_dot_pred, y_dot_s, y_dot_pred_s, prod --> |sync| --> |memories logdir=$logdir  other={logdir:$logdir} prefix=$outdir|
     
     
 ---- model rawseeds_camera_bgds_predict_all

@@ -1,21 +1,19 @@
-from procgraph import Block, block_alias, block_config, block_input, block_output 
-
 import cPickle as pickle
 from numpy import sign
 
-
+from procgraph import Block
 
 class BGDS1dPredictor(Block):
-    block_alias('bgds_1d_predictor')
+    Block.alias('bgds_1d_predictor')
     
-    block_config('BG', 'pickle file produced by ``laser_bgds_boot_disp``.')
+    Block.config('BG', 'pickle file produced by ``laser_bgds_boot_disp``.')
     
-    block_input('gy', 'Gradient of y.')
-    block_input('y_dot', 'Derivative of y.')
-    block_input('commands', 'Commands (``[vx,vy,omega]``).')
+    Block.input('gy', 'Gradient of y.')
+    Block.input('y_dot', 'Derivative of y.')
+    Block.input('commands', 'Commands (``[vx,vy,omega]``).')
     
-    block_output('y_dot_pred', 'Predicted y_dot')
-    block_output('error', 'Disagreement between actual and predicted y_dot.')
+    Block.output('y_dot_pred', 'Predicted y_dot')
+    Block.output('error', 'Disagreement between actual and predicted y_dot.')
     
     def init(self):
         # XXX not compatible with saving procedure
