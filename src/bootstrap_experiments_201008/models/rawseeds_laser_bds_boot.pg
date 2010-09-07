@@ -1,13 +1,14 @@
 --- model rawseeds_laser_bds_boot
 """ This is an attempt to do bootstrapping of range finder data.
-    Uses rawseeds_synchronized_laser as a source. """
+    
+    Uses :ref:`block:rawseeds_synchronized_laser` as a source. """
+    
 config logdir "Rawseeds log directory"
 
 outdir = "${logdir}/out/laser_bds_boot/"
 movie = "${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
-on finish: save T to "${outdir}/T.pickle"
 
 import procgraph_rawseeds
 import procgraph.components.pil
@@ -31,5 +32,10 @@ y_y_n, commands --> |sync| -> a,b --> |outer| --> Ti
 
 Ti --> |expectation| --> T 
 
-T --> |tensor_display_simple out=$movie|
+T --> |fps_data_limit fps=0.5| --> |tensor_display_simple| --> rgb
+
+rgb --> |watermark logdir=$logdir title='Learning of BDS tensor for range finders'| --> |mencoder file=$movie|
+  
+  
+T  --> |save w="${outdir}/T.pickle"|
   

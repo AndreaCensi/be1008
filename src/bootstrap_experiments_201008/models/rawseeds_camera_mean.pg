@@ -3,10 +3,12 @@
 config logdir "Rawseeds log directory"
 config prefix "Prefix for this operation (writes in $logdir/prefix)"
 config fps = 0.1 "frame rate for learning video"
-config before_op = identity "Operation to be applied to y"
-config after_op = scale "How to visualize the result"
-
+config before_op = identity "Operation to be applied to y."
+config after_op = scale "How to visualize the result."
+config title = 'Camera mean' "Title to use in watermark."
 import procgraph_rawseeds
+
+outdir="${logdir}/out/${prefix}/"
 
 |rawseeds_synchronized_camera logdir=$logdir| --> y
 
@@ -14,22 +16,25 @@ import procgraph_rawseeds
     
     # note that the mean is a float; we need to convert it back to uint8
     # (mencoder is picky by design)
-    y_mean -->  |fps_data_limit fps=$fps| --> |after:$after_op| -->|mencoder|
+    y_mean -->  |fps_data_limit fps=$fps| --> |after:$after_op| --> rgb 
     
-    mencoder.file = "${logdir}/out/${prefix}/mean.avi"
+    rgb --> |watermark title=$title logdir=$logdir| --> |mencoder file = "${outdir}/mean.avi"|
     
-on finish: save y_mean to "${logdir}/out/${prefix}/mean.pickle"
+y_mean -> |save w="${outdir}/mean.pickle"|
 
 --- model rawseeds_camera_mean_contrast
 config logdir "Rawseeds log directory"
 prefix = "camera_mean_contrast"
-|rawseeds_camera_mean_generalized logdir=$logdir prefix=$prefix|
+title= "Expectation of contrast"
+|rawseeds_camera_mean_generalized logdir=$logdir prefix=$prefix title=$title|
 rawseeds_camera_mean_generalized.before_op = contrast
 
 --- model rawseeds_camera_mean
 config logdir "Rawseeds log directory"
 prefix = "camera_mean"
-|rawseeds_camera_mean_generalized logdir=$logdir prefix=$prefix|
+title= "Expectation of raw camera input"
+
+|rawseeds_camera_mean_generalized logdir=$logdir prefix=$prefix title=$title after.dtype=uint8|
  rawseeds_camera_mean_generalized.after_op = astype
- rawseeds_camera_mean_generalized.after = {dtype: uint8}
+# rawseeds_camera_mean_generalized.after.dtype = uint8
 # rawseeds_camera_mean_generalized.after.dtype = uint8
