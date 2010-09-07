@@ -78,7 +78,7 @@ outdir = "${logdir}/out/${prefix}"
 
     y_sick     --> |laser_display title=''   max_readings=20 groups=$sick_groups_lines transparent=True|  --> y_sick_rgba
 #    error_sick --> |skim percent=2| --> |low_pass alpha=0.5| --> |normalize_Linf| --> |laser_dot_display  groups=$sick_groups title='' transparent=1| --> error_rgba
-    error_sick --> |arctan| -->  |normalize_Linf| --> |laser_dot_display R0=0.1 amp=1 groups=$sick_groups_lines title='' transparent=1| --> error_rgba
+    error_sick -->  |skim percent=2| -->  |normalize_Linf| --> |laser_dot_display R0=0.1 amp=1 groups=$sick_groups_lines title='' transparent=1| --> error_rgba
     
         y_text.texts = [{string: 'readings', position: [middle, 5], halign: center, size: 18, color: white, bg: black}]
         error_text.texts = [{string: 'detection', position: [middle, 5], halign: center, size: 18, color: white, bg: black}]
