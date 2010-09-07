@@ -42,6 +42,7 @@ def average_logs_results():
     variants = {}
     
     for dirpath, dirnames, files in os.walk(options.dir): #@UnusedVariable
+        print "Considering %s" % dirpath
         for f in files:
             complete = os.path.join(dirpath, f)
             relative = os.path.relpath(complete, options.dir)
@@ -58,6 +59,12 @@ def average_logs_results():
                     variants[variant][data] = []
                     
                 variants[variant][data].append(complete)
+
+        avoid = ['OMNI', 'FRONTAL', 'SVS_T', 'SVS_R', 'SVS_L']
+        for a in avoid:
+            if a in dirnames:
+                dirnames.remove(a)
+
 
     results = {}
     

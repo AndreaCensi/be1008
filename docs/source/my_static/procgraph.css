@@ -1,0 +1,4 @@
+.procgraph-block P, .procgraph-block LI { max-width: 40em;}
+.procgraph-block h2 { background-color: #ddd; padding: 5px;}
+.procgraph-parameters h3 { font-weight: bold; }
+.procgraph-source, .procgraph-source A { color: gray;}
