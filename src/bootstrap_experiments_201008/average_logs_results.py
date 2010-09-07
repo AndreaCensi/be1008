@@ -59,6 +59,12 @@ def average_logs_results():
                     
                 variants[variant][data].append(complete)
 
+        avoid = ['OMNI', 'FRONTAL', 'SVS_T', 'SVS_R', 'SVS_L']
+        for a in avoid:
+            if a in dirnames:
+                dirnames.remove(a)
+
+
     results = {}
     
     for variant, variant_data in variants.items():
