@@ -4,6 +4,8 @@ import procgraph_rawseeds # otherwise we cannot call rawseeds_synchor_test
 from compmake import comp, compmake_console
 from procgraph.scripts.pg import pg
 
+import procgraph_rawseeds #@UnusedImport
+
 scripts = """
 rawseeds_synchronized_camera_test
 rawseeds_synchronized_laser_test
@@ -11,7 +13,7 @@ rawseeds_camera_mean
 rawseeds_camera_mean_contrast
 rawseeds_big_movie
 rawseeds_laser_bgds_boot_all
-rawseeds_laser_bds_boot_all
+rawseeds_laser_bds_boot
 rawseeds_laser_covcorr
 rawseeds_camera_bgds_boot_all
 rawseeds_camera_bgds_stats_all

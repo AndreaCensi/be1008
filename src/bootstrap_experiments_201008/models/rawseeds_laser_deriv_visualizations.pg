@@ -5,23 +5,21 @@ config prefix  = laser_deriv_visualizations   "Subdirectory of 'out/' where to p
 
 outdir = "${logdir}/out/${prefix}"
 
-# Get the camera for visualization purposes. Also flip it.
 import procgraph_rawseeds
 
-|omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=$w| --> |flipud| --> omni
+"Data sources"
+    |rawseeds_synchronized_laser logdir=$logdir| --> y
+    "Get the camera for visualization purposes. Also flip it."
+    |omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=$w| --> |flipud| --> omni
 
 
-# Get the data
-|rawseeds_synchronized_laser logdir=$logdir| --> y
+""" Data processing """ 
+    y --> |derivative2| -->  y_dot
 
 
-# Process the data
-y --> |derivative2| -->  y_dot
-
-
-# Extract the sick part, we are not interested in the Hokuyo
-y          --> |sick_extract|--> y_sick
-y_dot      --> |sick_extract|--> y_dot_sick
+    """Extract the sick part, we are not interested in the Hokuyo"""
+        y          --> |sick_extract|--> y_sick
+        y_dot      --> |sick_extract|--> y_dot_sick
 
 
 # This variable describes the sensor configuration
@@ -48,7 +46,7 @@ y_dot_sick -->  |low_pass alpha=0.1| --> |sign| -->  |low_pass alpha=0.1| --> |n
 
 omni, y_sick_rgb, y_dot_1, y_dot_2, y_dot_3, y_dot_4, y_dot_5, y_dot_6, y_dot_7, y_dot_8, y_dot_9, y_dot_10, y_dot_11, y_dot_12, y_dot_13  --> |sync| --> |grid cols=5| --> rgb
 
-rgb --> |mencoder vbitrate=2000000 file='${outdir}/movie.avi'|
+rgb --> |watermark title='Experiments in visualizing derivative'| --> |mencoder vbitrate=2000000 file='${outdir}/movie.avi'|
 
 --- model y_dot_vis
 ''' Widget for displaying y_dot. '''
