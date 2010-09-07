@@ -52,6 +52,15 @@ dyg2, avel --> |sync| --> |outer| --> Gya_k --> |expectation| --> Gya
 # Gxa_k --> |posneg| --> |mencoder file="${outdir}/Gxa_k.avi"|
 # Gya_k --> |posneg| --> |mencoder file="${outdir}/Gya_k.avi"|
 
+Gxl   --> |posneg| --> Gxl_rgb
+Gyl   --> |posneg| --> Gyl_rgb
+Gxa   --> |posneg| --> Gxa_rgb 
+Gya   --> |posneg| --> Gya_rgb
+Gxl_k --> |posneg| --> Gxl_k_rgb
+Gyl_k --> |posneg| --> Gyl_k_rgb
+Gxa_k --> |posneg| --> Gxa_k_rgb
+Gya_k --> |posneg| --> Gya_k_rgb
+
 desc = "     (image_op:${image_op} grad_op:${grad_op} deriv_op:${deriv_op})"
 
 Gxl, Gyl, Gxa, Gya --> |sync| --> |fps_data_limit fps=$display_fps| --> |grid cols=2| --> |watermark logdir=$logdir title='Learned BGDS tensors ${desc}'| --> |mencoder file="${outdir}/tensors.avi"|
