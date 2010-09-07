@@ -1,5 +1,5 @@
 ---- model rawseeds_laser_bgds_predict
-''' Compares the BGDS prediction with reality.     
+''' Compares the laser BGDS prediction with reality.     
 
     Uses :ref:`block:rawseeds_synchronized_laser` as a source. 
     
@@ -15,40 +15,52 @@ import procgraph_rawseeds
 
 outdir = "${logdir}/out/${prefix}"
 
-# Get the data
-|rawseeds_synchronized_laser fps=$fps logdir=$logdir| --> y
-|odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
-odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
-# Get the camera for visualization purposes. Also flip it.
-|omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=320| --> |flipud| --> omni
+''' Data sources
+
+    Get the data from the the Rawseeds sources. 
+'''
+    |rawseeds_synchronized_laser fps=$fps logdir=$logdir| --> y
+    |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
+    odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+    
+    ''' Camera data (for visualization purposes only.) 
+    
+        We flip the data because of the mirror, so we can superimpose it to the 
+        range finder data.
+    '''
+    |omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=320| --> |flipud| --> omni
 
 
+''' Data pre-processing.
 
-# Process the data
-y --> |derivative2| --> |$deriv_op | --> y_dot
-y --> |gradient1d| --> |$grad_op| --> gy
+    We pre-process the data with given blocks ``deriv_op`` and ``grad_op``. 
 
-# Run the prediction
-gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_1d_predictor| --> y_dot_pred, error
-bgds_1d_predictor.BG = '${logdir}/../${tensors}'
+'''
+    y --> |derivative2| --> |deriv_op_block:$deriv_op | --> y_dot
+    y --> |gradient1d| --> |grad_op_block:$grad_op| --> gy
 
+''' Prediction. '''
+    gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_1d_predictor| --> y_dot_pred, error
+    bgds_1d_predictor.BG = '${logdir}/../${tensors}'
 
-y_dot, y_dot_pred --> |sync| --> |*|  --> |minimum threshold=0| --> |gain k=-1|  --> detect  
+    ''' Detection signal '''
+    y_dot, y_dot_pred --> |sync| --> |*|  --> |minimum threshold=0| --> |gain k=-1|  --> detect  
 
+''' Visualization '''
 
-# Extract the sick part, we are not interested in the Hokuyo
-y          --> |slice start=342 end=703|--> y_sick
-gy         --> |slice start=342 end=703|--> gy_sick
-y_dot      --> |slice start=342 end=703|--> y_dot_sick
-y_dot_pred --> |slice start=342 end=703|--> y_dot_pred_sick
-#error      --> |slice start=342 end=703|--> error_sick
-detect     -->  |slice start=342 end=703|--> error_sick
+    ''' Data extraction 
 
-# Visualization 
+        Extract the sick part, we are not interested in the Hokuyo.
+    '''
+        y          --> |slice start=342 end=703|--> y_sick
+        gy         --> |slice start=342 end=703|--> gy_sick
+        y_dot      --> |slice start=342 end=703|--> y_dot_sick
+        y_dot_pred --> |slice start=342 end=703|--> y_dot_pred_sick 
+        detect     --> |slice start=342 end=703|--> error_sick
 
-    # This variable describes the sensor configuration
-    sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,-0.2]}]
-    sick_groups_lines = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b', origin: [0,0,-0.2]}]
+    ''' These variable describes the Sick sensor configuration. '''
+        sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,-0.2]}]
+        sick_groups_lines = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b', origin: [0,0,-0.2]}]
 
     # Limit the readings to 20m
 #    y_sick     --> |laser_display     title='readings'   max_readings=20 groups=$sick_groups_lines| --> y_sick_rgb
@@ -65,13 +77,14 @@ detect     -->  |slice start=342 end=703|--> error_sick
  
 
     y_sick     --> |laser_display title=''   max_readings=20 groups=$sick_groups_lines transparent=True|  --> y_sick_rgba
-    error_sick --> |skim percent=2| --> |low_pass alpha=0.5| --> |normalize_Linf| --> |laser_dot_display  groups=$sick_groups title='' transparent=1| --> error_rgba
+#    error_sick --> |skim percent=2| --> |low_pass alpha=0.5| --> |normalize_Linf| --> |laser_dot_display  groups=$sick_groups title='' transparent=1| --> error_rgba
+    error_sick --> |arctan| -->  |normalize_Linf| --> |laser_dot_display R0=0.1 amp=1 groups=$sick_groups_lines title='' transparent=1| --> error_rgba
     
         y_text.texts = [{string: 'readings', position: [middle, 5], halign: center, size: 18, color: white, bg: black}]
         error_text.texts = [{string: 'detection', position: [middle, 5], halign: center, size: 18, color: white, bg: black}]
     
-    omni, y_sick_rgba --> |sync| --> |blend| -->  |y_text:text| ->omni_plus_y
-    omni, error_rgba --> |sync| --> |blend| -->  |error_text:text| ->omni_plus_error
+    omni, y_sick_rgba --> |sync| --> |blend| -->  |    y_text:text| --> omni_plus_y
+    omni, error_rgba  --> |sync| --> |blend| -->  |error_text:text| --> omni_plus_error
 
     omni_plus_y,  y_dot_rgb, y_dot_sick_rgb, gy_sick_rgb, omni_plus_error, y_dot_pred_rgb, error_rgb --> |sync| --> |grid cols=4| --> rgb
 
@@ -93,15 +106,19 @@ output y 'Smoothed, scaled version of x.'
 --- model rawseeds_laser_bgds_predict_all
 config logdir                              "Directory containing Rawseeds logs."
 
+#|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/manual2' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 grad_op_block.window_len=8|
+
+
 # OK, this is the first with reasonable results
 #|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/manuali' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6|
 
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps6_smooth3' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 smooth1d.window_len=3|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps6_smooth8' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 smooth1d.window_len=8|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps6_smooth11' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 smooth1d.window_len=11|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps12_smooth3' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=12 smooth1d.window_len=3|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps12_smooth8' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=12 smooth1d.window_len=8|
-|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps12_smooth11' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=12 smooth1d.window_len=11|
+#|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps6_smooth3' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 smooth1d.window_len=3|
+|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps6_smooth8' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 grad_op_block.window_len=8|
+#|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps6_smooth11' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=6 smooth1d.window_len=11|
+#|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps12_smooth3' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=12 grad_op_block.window_len=3|
+
+#|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps12_smooth8' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=12 smooth1d.window_len=8|
+#|rawseeds_laser_bgds_predict logdir=$logdir  prefix='laser_bgds_predict/II_fps12_smooth11' grad_op=smooth1d deriv_op=smooth1d tensors='out/laser_bgds_boot/GI_DI:GB.pickle' fps=12 smooth1d.window_len=11|
  
 
 
