@@ -13,7 +13,7 @@ odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 import procgraph_rawseeds
 import procgraph.components.pil
 
-|rawseeds_synchronized_laser logdir=$logdir| --> y
+|rawseeds_synchronized_laser logdir=$logdir| -->  |sick_extract| --> y
 
 |odometry:RawseedsOdo| --> |fps_data_limit fps=30| --> odometry --> |pose2commands| --> commands
 
@@ -32,10 +32,10 @@ y_y_n, commands --> |sync| -> a,b --> |outer| --> Ti
 
 Ti --> |expectation| --> T 
 
-T --> |fps_data_limit fps=0.5| --> |tensor_display_simple| --> rgb
+T --> |fps_data_limit fps=0.5| --> |tensor_display_simple_2dof| --> rgb
 
-rgb --> |watermark logdir=$logdir title='Learning of BDS tensor for range finders'| --> |mencoder file=$movie|
+rgb --> |watermark logdir=$logdir title='Learning of BDS tensor for Sick data'| --> |mencoder file=$movie|
   
   
-T  --> |save w="${outdir}/T.pickle"|
+T  --> |save w="${outdir}/T"|
   

@@ -5,7 +5,7 @@ config prefix   = camera_bgds_boot "Subdirectory inside logdir where to put file
 config image_op = rgb2gray                 "How to obtain a scalar from RGB"
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
-config display_fps = 0.2                   "Frames per second for movie"
+#config display_fps = 0.2                   "Frames per second for movie"
 
 import procgraph.components.cv
 import procgraph_rawseeds
@@ -38,38 +38,35 @@ dyg1, avel --> |sync| --> |outer| --> Gxa_k --> |expectation| --> Gxa
 dyg2, avel --> |sync| --> |outer| --> Gya_k --> |expectation| --> Gya
 
 """ Save results to file """
-    Gxl  --> |save w="${outdir}/Gxl.pickle"|
-    Gyl  --> |save w="${outdir}/Gyl.pickle" |
-    Gxa  --> |save w="${outdir}/Gxa.pickle" |
-    Gya  --> |save w="${outdir}/Gya.pickle" |
+    Gxl  --> |save w="${outdir}/Gxl"|
+    Gyl  --> |save w="${outdir}/Gyl" |
+    Gxa  --> |save w="${outdir}/Gxa" |
+    Gya  --> |save w="${outdir}/Gya" |
+ 
 
-# Gxl --> |posneg| --> |mencoder file="${outdir}/Gxl.avi"|
-# Gyl --> |posneg| --> |mencoder file="${outdir}/Gyl.avi"|
-# Gxa --> |posneg| --> |mencoder file="${outdir}/Gxa.avi"|
-# Gya --> |posneg| --> |mencoder file="${outdir}/Gya.avi"|
-# Gxl_k --> |posneg| --> |mencoder file="${outdir}/Gxl_k.avi"|
-# Gyl_k --> |posneg| --> |mencoder file="${outdir}/Gyl_k.avi"|
-# Gxa_k --> |posneg| --> |mencoder file="${outdir}/Gxa_k.avi"|
-# Gya_k --> |posneg| --> |mencoder file="${outdir}/Gya_k.avi"|
-
-Gxl   --> |posneg| --> Gxl_rgb
-Gyl   --> |posneg| --> Gyl_rgb
-Gxa   --> |posneg| --> Gxa_rgb 
-Gya   --> |posneg| --> Gya_rgb
-Gxl_k --> |posneg| --> Gxl_k_rgb
-Gyl_k --> |posneg| --> Gyl_k_rgb
-Gxa_k --> |posneg| --> Gxa_k_rgb
-Gya_k --> |posneg| --> Gya_k_rgb
+Gxl   --> |tplot title='x gradient and linear velocity' | --> Gxl_rgb
+Gyl   --> |tplot title='y gradient and linear velocity' | --> Gyl_rgb
+Gxa   --> |tplot title='x gradient and angular velocity'| --> Gxa_rgb 
+Gya   --> |tplot title='y gradient and angular velocity'| --> Gya_rgb
+Gxl_k --> |tplot fps=3 title='x gradient and linear velocity' | --> Gxl_k_rgb
+Gyl_k --> |tplot fps=3 title='y gradient and linear velocity' | --> Gyl_k_rgb
+Gxa_k --> |tplot fps=3 title='x gradient and angular velocity'| --> Gxa_k_rgb
+Gya_k --> |tplot fps=3 title='x gradient and angular velocity'| --> Gya_k_rgb
 
 desc = "     (image_op:${image_op} grad_op:${grad_op} deriv_op:${deriv_op})"
 
-Gxl_rgb, Gyl_rgb, Gxa_rgb, Gya_rgb --> |sync| --> |fps_data_limit fps=$display_fps| --> |grid cols=2| --> |watermark logdir=$logdir title='Learned BGDS tensors ${desc}'| --> |mencoder file="${outdir}/tensors.avi"|
+Gxl_rgb, Gyl_rgb, Gxa_rgb, Gya_rgb --> |sync|  --> |grid cols=2| --> |watermark logdir=$logdir title='Learned BGDS tensors ${desc}'| --> |mencoder file="${outdir}/tensors.avi"|
 
 
-Gxl_k_rgb, Gyl_k_rgb, Gxa_k_rgb, Gya_k_rgb --> |sync| --> |fps_data_limit fps=$display_fps| --> |grid cols=2| --> |watermark logdir=$logdir title='BGDS learning signal ${desc}'| --> |mencoder file="${outdir}/tensors.avi"|
+Gxl_k_rgb, Gyl_k_rgb, Gxa_k_rgb, Gya_k_rgb --> |sync| --> |grid cols=2| --> |watermark logdir=$logdir title='BGDS learning signal ${desc}'| --> |mencoder file="${outdir}/tensors_k.avi"|
 
+--- model tplot
+''' Used by :ref:`block:rawseeds_camera_bgds_boot`'''
+config title
+config fps = 0.2
 
-     
+|input name=t| --> |fps_data_limit fps=$fps| --> |posneg| --> |resize width=500| --> |image_label title=$title| --> |output name=y|
+    
 ------------ model rawseeds_camera_bgds_boot_combinations
 """ Tries all possible combinations of ops for BGDS bootstrapping.
 """

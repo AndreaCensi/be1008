@@ -52,11 +52,11 @@ outdir = "${logdir}/out/${prefix}"
 
         Extract the sick part, we are not interested in the Hokuyo.
     '''
-        y          --> |slice start=342 end=703|--> y_sick
-        gy         --> |slice start=342 end=703|--> gy_sick
-        y_dot      --> |slice start=342 end=703|--> y_dot_sick
-        y_dot_pred --> |slice start=342 end=703|--> y_dot_pred_sick 
-        detect     --> |slice start=342 end=703|--> error_sick
+        y          --> |sick_extract|--> y_sick
+        gy         --> |sick_extract|--> gy_sick
+        y_dot      --> |sick_extract|--> y_dot_sick
+        y_dot_pred --> |sick_extract|--> y_dot_pred_sick 
+        detect     --> |sick_extract|--> error_sick
 
     ''' These variable describes the Sick sensor configuration. '''
         sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b.', origin: [0,0,-0.2]}]

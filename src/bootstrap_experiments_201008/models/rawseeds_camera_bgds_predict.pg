@@ -36,12 +36,14 @@ gx[gx], gy[gy], y_dot[y_dot], commands[commands] --> |sync| --> |bgds_predictor|
 bgds_predictor.G = '${logdir}/../${tensors}'
 
 
-    y_dot      --> |posneg| --> y_dot_rgb
-    y_dot_pred --> |posneg| --> y_dot_pred_rgb
+    y_dot      --> |posneg| --> |resize width=580| --> |image_label title="Observed dy/dt"| --> y_dot_rgb
+    y_dot_pred --> |posneg| --> |resize width=580| --> |image_label title="Predicted dy/dt"| --> y_dot_pred_rgb
 
 
     error      --> |scale| --> error_rgb
     error --> |low_pass alpha=0.2| --> |scale| --> error_rgb2
+    
+
     
     y_dot_rgb, y_dot_pred_rgb --> |sync| --> |grid cols=2| --> |watermark logdir=$logdir title='Derivative vs BGDS  prediction'| --> |mencoder vbitrate=2000000 file='${outdir}/y_dot.avi'|
     
@@ -56,14 +58,15 @@ bgds_predictor.G = '${logdir}/../${tensors}'
     
     
 # Compute and display statistics
-w = 250 
-h = 150
-T = 5
-      prod --> |count_less_than_zero| --> success --> |historyt interval=$T| --> |plot title='percentage' width=$w height=$h y_min=0 y_max=1 | --> success_rgb
-      prod --> |max| -->  |historyt interval=$T| --> |plot title='Maximum' y_min=0 width=$w height=$h| -->  maximum_rgb
-      prod --> |sum| -->  |historyt interval=$T| --> |plot title='Sum' y_min=0 width=$w height=$h| --> sum_rgb
+w = 400
+h = 200
+T = 60
+      #prod --> |count_less_than_zero| --> success --> |historyt interval=$T| --> |plot title='percentage' width=$w height=$h y_min=0 y_max=1 | --> success_rgb
+      prod --> |max| --> |fps_data_limit fps=3|-->  |historyt interval=$T| --> |plot title='Maximum' y_min=0 width=$w height=$h| -->  maximum_rgb
+      prod --> |sum| -->  |fps_data_limit fps=3|--> |historyt interval=$T| --> |plot title='Sum' y_min=0 width=$w height=$h| --> sum_rgb
       
-      success_rgb, maximum_rgb, sum_rgb --> |sync| --> |grid cols=3| --> stats
+      #success_rgb, maximum_rgb, sum_rgb --> |sync| --> |grid cols=3| --> stats
+      maximum_rgb, sum_rgb --> |sync| --> |grid cols=3| --> stats
       
       prod_rgb, stats --> |sync| --> |grid cols=1| -->  |watermark logdir=$logdir title='Detected inconsistencies using BGDS model'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod_stats.avi'| 
 

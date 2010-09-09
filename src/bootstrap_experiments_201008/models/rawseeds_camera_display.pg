@@ -1,7 +1,40 @@
 --- model rawseeds_camera_display
 """ Display the raw video with a watermark """
 config logdir "Rawseeds log directory"
+import procgraph_rawseeds
 
-out = "${logdir}/out/camera_display/rgb.avi"
+outdir = "${logdir}/out/camera_display"
 
-|rawseeds_synchronized_camera logdir=$logdir| --> |watermark logdir=$logdir title='Raw camera input'| --> |mencoder file=$out|
+""" Data source """
+    |rawseeds_synchronized_camera logdir=$logdir| --> rgb
+
+""" Processing """
+    rgb --> |rgb2gray| --> gray --> |derivative2| --> y_dot
+
+""" Encoding """
+    rgb --> |watermark logdir=$logdir title='Raw camera input'| --> |mencoder file="${outdir}/rgb.avi"|
+
+    gray --> |watermark logdir=$logdir title='Grayscale signal'| --> |mencoder file="${outdir}/gray.avi"|
+
+    y_dot --> |posneg|--> |watermark logdir=$logdir title='Derivative of grayscale'| --> |mencoder file="${outdir}/gray_dot.avi" vbitrate=4000000|
+
+
+--- model rawseeds_camera_display_contrast
+""" Displays contrast and related signal """
+config logdir "Rawseeds log directory"
+import procgraph_rawseeds
+
+outdir = "${logdir}/out/camera_display_contrast"
+
+""" Data source """
+    |rawseeds_synchronized_camera logdir=$logdir| --> rgb
+
+""" Processing """
+    rgb --> |contrast|    --> y --> |derivative2| --> y_dot
+    # |smooth gaussian_std=0.5|
+
+""" Encoding """
+    y --> |skim percent=0.5| --> |scale| --> |watermark logdir=$logdir title='Grayscale signal'| --> |mencoder file="${outdir}/contrast.avi"|
+
+    y_dot --> |posneg|--> |watermark logdir=$logdir title='Derivative of contrast'| --> |mencoder file="${outdir}/contrast_dot.avi" vbitrate=4000000|
+

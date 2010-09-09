@@ -1,0 +1,48 @@
+--- model rawseeds_camera_var_generalized
+""" Computes and displays the variance of visual data."""
+config logdir "Rawseeds log directory"
+config prefix "Prefix for this operation (writes in $logdir/prefix)"
+config fps = 0.1 "frame rate for learning video"
+config before_op = identity "Operation to be applied to y."
+config after_op = scale "How to visualize the result."
+config title = 'Camera variance' "Title to use in watermark."
+import procgraph_rawseeds
+
+outdir="${logdir}/out/${prefix}/"
+
+|rawseeds_synchronized_camera logdir=$logdir| --> y
+
+    y --> |before:$before_op| --> |variance| --> y_var
+    
+    # note that the var is a float; we need to convert it back to uint8
+    # (mencoder is picky by design)
+    y_var -->  |fps_data_limit fps=$fps| --> |after:$after_op| --> rgb 
+    
+    rgb --> |watermark title=$title logdir=$logdir| --> |mencoder file = "${outdir}/var.avi"|
+    
+y_var -> |save w="${outdir}/var"|
+
+--- model rawseeds_camera_var_contrast
+config logdir "Rawseeds log directory"
+prefix = "camera_var_contrast"
+title= "Expectation of contrast"
+|rawseeds_camera_var_generalized logdir=$logdir prefix=$prefix title=$title|
+rawseeds_camera_var_generalized.before_op = contrast
+rawseeds_camera_var_generalized.after_op = rawseeds_camera_var_contrast_skim
+
+--- model rawseeds_camera_var_contrast_skim
+''' Used by :ref:`block:rawseeds_camera_var_contrast`. '''
+input y
+output rgb
+|input name=y|--> |skim percent=0.5| --> |scale| --> |output name=rgb|
+
+--- model rawseeds_camera_var
+config logdir "Rawseeds log directory"
+prefix = "camera_var"
+title= "Expectation of raw camera input"
+
+|rawseeds_camera_var_generalized logdir=$logdir prefix=$prefix title=$title after.dtype=uint8|
+rawseeds_camera_var_generalized.before_op = rgb2gray
+rawseeds_camera_var_generalized.after_op = astype
+# rawseeds_camera_var_generalized.after.dtype = uint8
+# rawseeds_camera_var_generalized.after.dtype = uint8
