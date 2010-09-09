@@ -14,7 +14,7 @@ outdir = "${logdir}/out/camera_display"
 """ Encoding """
     rgb --> |watermark logdir=$logdir title='Raw camera input'| --> |mencoder file="${outdir}/rgb.avi"|
 
-    gray --> |watermark logdir=$logdir title='Grayscale signal'| --> |mencoder file="${outdir}/gray.avi"|
+    gray --> |gray2rgb| --> |watermark logdir=$logdir title='Grayscale signal'| --> |mencoder file="${outdir}/gray.avi"|
 
     y_dot --> |posneg|--> |watermark logdir=$logdir title='Derivative of grayscale'| --> |mencoder file="${outdir}/gray_dot.avi" vbitrate=4000000|
 
