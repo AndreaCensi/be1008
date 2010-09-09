@@ -1,0 +1,46 @@
+--- model rawseeds_laser_display
+""" Display Sick and Hokuyo data superimposed with omnidirectional camera data. """
+config logdir "Rawseeds log directory"
+import procgraph_rawseeds
+
+outdir = "${logdir}/out/laser_display"
+
+""" Data source """
+    |rawseeds_synchronized_laser fps=15 logdir=$logdir| --> y
+    y --> |sick_extract| --> y_sick
+
+
+""" Plotting """
+y_sick --> |plot y_min=0 y_max=20 title='Readings' ylabel=m format='b.' width=400 height=400| -->  y_sick_plot
+    y_sick --> |sick_show logdir=$logdir  width=400| --> y_sick_polar
+    
+    y_sick_polar, y_sick_plot  --> |sync| --> |grid cols=2|-->rgb
+    rgb --> |watermark logdir=$logdir title='Sick data'| --> |mencoder file="${outdir}/sick.avi"|
+
+
+--- model sick_show
+""" Displays the sick data on top of omnidirectional camera  """
+config logdir "Rawseeds log dir"
+config width = 320 "Size of plotting"
+input  y_sick "Sick data"
+output blend
+
+sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r-', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b-', origin: [0,0,-0.2]}]
+
+|input name=y_sick| --> |laser_display width=$width height=$width title=''max_readings=20 groups=$sick_groups transparent=True|  --> y_sick_rgba
+
+y_sick_rgba --> |omni_superimpose logdir=$logdir width=$width| --> |output name=blend|
+
+--- model omni_superimpose
+""" Superimpose the input to an image from the omnidirectional camera. Useful to display the laser data."""
+config logdir "Rawseeds log dir."
+config width = 320 "Camera signal width in pixels."
+input  in
+output rgbp
+
+
+|omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=$width| --> |flipud| --> omni
+
+|input name=in| --> rgba
+
+omni, rgba --> |sync| --> |blend| --> |output name=rgbp|

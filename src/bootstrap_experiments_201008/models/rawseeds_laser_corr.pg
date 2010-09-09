@@ -1,15 +1,16 @@
---- model rawseeds_laser_covcorr
-"""Computes and compares the covariance of y, y_dot and sign(y_dot)"""
+--- model rawseeds_laser_corr
+"""Computes and compares the correlation of y, dy/dt and sign(dy/dt)"""
 config logdir "Rawseeds log directory"
 
-outdir = "${logdir}/out/laser_covcorr"
-mencoder.file = "${outdir}/covcorr.avi"
+outdir = "${logdir}/out/laser_corr"
+mencoder.file = "${outdir}/corr.avi"
+mencoder.vbitrate = 2000000
 
 import procgraph_rawseeds
 import procgraph.components.pil
 
 """ Data source """
-    |rawseeds_synchronized_laser logdir=$logdir| --> y
+    |rawseeds_synchronized_laser logdir=$logdir| --> |sick_extract| --> y
 
 """ Data processing"""
     y --> |derivative| --> y_dot --> |sign|  --> z 
@@ -18,15 +19,15 @@ import procgraph.components.pil
     z     --> |covariance| --> cov_z     
 
 """ Visualization """
-    cov_y      --> |covcorr_display| --> cov_y_rgb
-    cov_y_dot  --> |covcorr_display| --> cov_y_dot_rgb
-    cov_z      --> |covcorr_display| --> cov_z_rgb
+    cov_y      --> |corr_display title='Correlation of y'| --> cov_y_rgb
+    cov_y_dot  --> |corr_display title='Correlation of dy/dt'| --> cov_y_dot_rgb
+    cov_z      --> |corr_display title='Correlation of sign(dy/dt)'| --> cov_z_rgb
 
     """ Synchronize and arrange in a grid. """
     cov_y_rgb, cov_y_dot_rgb, cov_z_rgb --> |sync| --> |grid cols=3| --> rgb
 
     """ Add a watermark and output """
-    rgb --> |watermark logdir=$logdir title="Cov(y), Cov(y'), Cov(sign(y'))"| --> |mencoder|
+    rgb --> |watermark logdir=$logdir title="Correlation of y, dy/dt, sign(dy/dt) for Sick data"| --> |mencoder|
  
 
 """ Save the results """
@@ -35,23 +36,16 @@ import procgraph.components.pil
     cov_y_dot  --> |save w="${outdir}/cov_y_dot"|
 
 
---- model covcorr_display
-""" Displays the covariance/correlation as an image. It also limits the framerate.
+--- model corr_display
+""" Displays the correlation as an image. It also limits the framerate.
 
     Used by :ref:`block:rawseeds_laser_covcorr`.
 """
+config title
 config display_fps = 1 "Frame rate limit."
 
 " Limit the frame rate"
 |input name=x| --> |fps_data_limit fps=$display_fps| --> cov 
 
 " Display both covariance and correlation. "
-    cov  --> |posneg| --> cov_rgb
-    cov --> |cov2corr|  --> |posneg| --> corr_rgb
-
-" Stack in a grid. "
-cov_rgb, corr_rgb --> |sync| --> |grid cols=1| --> i
-
-" Resize to more human dimensions. "
-i --> |resize width=360 height=720| --> |output name=y|
-
+    cov --> |cov2corr|  --> |posneg| --> corr_rgb --> |image_label title=$title| --> |output name=rgb|

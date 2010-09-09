@@ -7,20 +7,24 @@ from procgraph.scripts.pg import pg
 import procgraph_rawseeds #@UnusedImport
 
 scripts = """
-rawseeds_synchronized_camera_test
-rawseeds_synchronized_laser_test
+rawseeds_camera_display
+rawseeds_camera_display_contrast
+rawseeds_laser_display
 rawseeds_camera_mean
 rawseeds_camera_mean_contrast
-rawseeds_big_movie
+rawseeds_camera_var
+rawseeds_camera_var_contrast
 rawseeds_laser_bgds_boot_all
 rawseeds_laser_bds_boot
-rawseeds_laser_covcorr
+rawseeds_laser_corr
 rawseeds_camera_bgds_boot_all
 rawseeds_camera_bgds_stats_all
 rawseeds_camera_bgds_predict_all
 rawseeds_laser_bgds_predict_all
-rawseeds_camera_display
 """.split()
+
+# removed: rawseeds_big_movie
+
 
 logs = """
 Bicocca_2009-02-25a

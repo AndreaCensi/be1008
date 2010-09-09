@@ -20,7 +20,7 @@ outdir="${logdir}/out/${prefix}/"
     
     rgb --> |watermark title=$title logdir=$logdir| --> |mencoder file = "${outdir}/mean.avi"|
     
-y_mean -> |save w="${outdir}/mean.pickle"|
+y_mean -> |save w="${outdir}/mean"|
 
 --- model rawseeds_camera_mean_contrast
 config logdir "Rawseeds log directory"
@@ -28,6 +28,13 @@ prefix = "camera_mean_contrast"
 title= "Expectation of contrast"
 |rawseeds_camera_mean_generalized logdir=$logdir prefix=$prefix title=$title|
 rawseeds_camera_mean_generalized.before_op = contrast
+rawseeds_camera_mean_generalized.after_op = rawseeds_camera_mean_contrast_skim
+
+--- model rawseeds_camera_mean_contrast_skim
+''' Used by :ref:`block:rawseeds_camera_mean_contrast`. '''
+input y
+output rgb
+|input name=y|--> |skim percent=0.5| --> |scale| --> |output name=rgb|
 
 --- model rawseeds_camera_mean
 config logdir "Rawseeds log directory"

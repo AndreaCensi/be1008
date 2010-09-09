@@ -1,30 +1,27 @@
-.. procgraph documentation master file, created by
-   sphinx-quickstart on Tue Jul 27 15:21:25 2010.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Notes 
+======
 
-Welcome to procgraph's documentation!
-=====================================
 
-.. container:: col1
+These are some personal notes how all of this works. 
 
-	**Getting started**
 
-	* :ref:`install`
-	* :ref:`why`
-	* :ref:`limitations`
-	
+1. Run ``be_all``. It expects to be run in the base directory of rawseeds ::
 
-	**Tutorial**
-	
-	* :ref:`tutorial0`
+	$ ls
+    Bicocca_2009-02-25a/ 
+	Bicocca_2009-02-26a/ 
+	...
+	$ be_all
 
-.. container:: col2
+The output goes into a subdirectory of the log directories. The convention is: ::
 
-	**Advanced usage**
 
-	* :ref:`creating_new_blocks` 
-	
+    Bicocca_2009-02-25a/out/<experiment>/<configuration>/file 
+
+
+
+2. Run 
+
 
 
 Indices and tables
