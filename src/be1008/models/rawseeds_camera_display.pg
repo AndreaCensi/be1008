@@ -34,7 +34,7 @@ outdir = "${logdir}/out/camera_display_contrast"
     # |smooth gaussian_std=0.5|
 
 """ Encoding """
-    y --> |skim percent=0.5| --> |scale| --> |watermark logdir=$logdir title='Grayscale signal'| --> |mencoder file="${outdir}/contrast.avi"|
+    y --> |skim percent=0.5| --> |scale| --> |watermark logdir=$logdir title='Contrast signal'| --> |mencoder file="${outdir}/contrast.avi"|
 
     y_dot --> |posneg|--> |watermark logdir=$logdir title='Derivative of contrast'| --> |mencoder file="${outdir}/contrast_dot.avi" vbitrate=4000000|
 

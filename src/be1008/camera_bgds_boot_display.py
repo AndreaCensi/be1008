@@ -1,22 +1,41 @@
 import cPickle as pickle
-from reprep.node import Node
-from reprep.out.html import node_to_html_document
 import numpy
 from numpy import nonzero
 import os
 
-def camera_bgds_boot_display():
+from reprep import Node
+from reprep.out.html import node_to_html_document
+
+
+def main():
     """
-    Prepare data with:
+    Prepare data with: ::
     
         average_logs_results --dir . --experiment camera_bgds_boot
         average_logs_results --dir . --experiment camera_bgds_stats
     
+    Reads: ::
+    
+        camera_bgds_boot.pickle
+        camera_bgds_stats.pickle
+        
+    Writes: ::
+    
+        out/camera_bgds_boot/report.html
+        out/camera_bgds_boot/report.pickle
+        out/camera_bgds_boot/<variant>:G.pickle 
+        
     """
-    print "Loading first..."
-    results = pickle.load(open('camera_bgds_boot.pickle', 'rb'))
-    print "Loading second..."
-    stats = pickle.load(open('camera_bgds_stats.pickle', 'rb'))
+    input1 = 'camera_bgds_boot.pickle'
+    input2 = 'camera_bgds_stats.pickle'
+    variant_pattern = "out/camera_bgds_boot/{variant}:G.pickle"
+    out_html = 'out/camera_bgds_boot/report.html'
+    out_pickle = 'out/camera_bgds_boot/report.pickle'
+    
+    print "Loading %s" % input1
+    results = pickle.load(open(input1, 'rb'))
+    print "Loading %s" % input2
+    stats = pickle.load(open(input2, 'rb'))
     print "Creating report..."
     
     
@@ -24,8 +43,11 @@ def camera_bgds_boot_display():
     
     k = 1
     variants = sorted(results.keys())
-    for variant in variants:
-        data = results[variant] 
+    for variant_id in variants:
+        data = results[variant_id] 
+        data2 = stats[variant_id]
+        print data2.keys()
+        variant = variant_id.replace('/', '_')
         print 'Considering %s' % variant
         
         n = report.node(variant)
@@ -37,18 +59,16 @@ def camera_bgds_boot_display():
             v = n.data(variable, value)
             v.data('sign', numpy.sign(value), desc='sign of %s' % variable)
             v.data('abs', numpy.abs(value), desc='abs of %s' % variable)
-            f1.sub(variable, display='posneg')
+            f1.sub(variable, display='posneg', skim=1)
             f2.sub('%s/sign' % variable, display='posneg')
             f3.sub('%s/abs' % variable, display='scale', min_value=0)
         
     
         f4 = n.figure('stats')
 
-        data2 = stats[variant]
         for variable, value in data2.items():
             v = n.data(variable, value)
-            
-            f4.sub(variable, display='scale')
+            f4.sub(variable, display='scale', skim=1)
 
         Gxl = data['Gxl']
         Gyl = data['Gyl']
@@ -86,26 +106,28 @@ def camera_bgds_boot_display():
         f5.sub('Gya_norm', **display)
         
         k += 1
-        if k > 2:
+        if k > 1:
             pass
-            # break
-            
-            
-        #if variant == 'gray/GS_DS':
+            break # tmp
+             
         if True:
             s = {'variant': variant,
                  'Gxl':Gxl_norm,
                  'Gyl':Gyl_norm,
                  'Gxa':Gxa_norm,
                  'Gya':Gya_norm }
-            filename = "out/camera_bgds_boot/%s:G.pickle" % variant.replace('/', '_')
+            filename = variant_pattern.format(variant=variant)
             dir = os.path.dirname(filename)
             if not os.path.exists(dir):
                 os.makedirs(dir)
             pickle.dump(s, open(filename, 'wb'))
             print 'Written on %s' % filename
+            
     
-    node_to_html_document(report, 'camera_bgds_boot.html')
-
+    print "Writing on %s" % out_html
+    node_to_html_document(report, out_html)
+    print "Writing on %s" % out_pickle
+    pickle.dump(report, open(out_pickle, 'w'))
+    
 if __name__ == '__main__':
     camera_bgds_boot_display()

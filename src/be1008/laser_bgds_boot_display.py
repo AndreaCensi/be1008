@@ -10,7 +10,7 @@ import math
 from numpy.ma.core import cos, sin
 from procgraph.core.model_loadsave import make_sure_dir_exists
 
-def laser_bgds_boot_display():
+def main():
     """
     Prepare data with:
     
@@ -162,7 +162,7 @@ def laser_bgds_boot_display():
             print 'Written on %s' % filename
         
 
-    node_to_html_document(report, 'laser_bgds_boot.html')
+    node_to_html_document(report, 'out/laser_bgds_boot.html')
 
 if __name__ == '__main__':
     laser_bgds_boot_display()
