@@ -1,8 +1,6 @@
 from optparse import OptionParser
-import os
-import re
-import cPickle as pickle
-import numpy
+import os, re, numpy
+
 from be1008.utils import my_pickle_dump, my_pickle_load
 
 def main():
@@ -20,6 +18,7 @@ def main():
     parser.add_option("--experiment", default="camera_bgds_boot",
                       help="Experiment to consider")
     parser.add_option("--output", default=None)
+    parser.add_option("-v", "--variant", action='append')
 
 #    parser.add_option("--pattern", default=" B*/**/*.pickle",
 #                      help="Pattern for the act where logs are stored.")
@@ -50,6 +49,13 @@ def main():
             m = re.match(pattern, relative)
             if m: 
                 variant = m.group('variant')
+                
+                if options.variant is not None:
+                    if not variant in options.variant:
+                        print 'Not considering %s because not in %s' % \
+                            (variant, options.variant)
+                        continue  
+                
                 data = m.group('data')
                 log = m.group('log')
                 

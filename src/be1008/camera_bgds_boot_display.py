@@ -13,9 +13,10 @@ def main():
     """
     Prepare data with: ::
     
-        be_average_logs_results --dir . --experiment camera_bgds_boot
-        be_average_logs_results --dir . --experiment camera_bgds_stats
-    
+        be_average_logs_results --dir . --experiment camera_bgds_boot -v gray/GI_DI -v contrast/GS_DS
+        be_average_logs_results --dir . --experiment camera_bgds_stats -v gray/GI_DI -v contrast/GS_DS
+        
+
     Reads: ::
     
         out/average_logs_results/camera_bgds_boot.pickle
@@ -59,8 +60,8 @@ def main():
         variant = variant_id.replace('/', '_')
         print 'Considering %s' % variant
         
-        if not variant in ['gray_GI_DI', 'contrast_GS_DS']:
-            continue
+        #if not variant in ['gray_GI_DI', 'contrast_GS_DS']:
+        #    continue
         
         n = report.node(variant)
         f1 = n.figure('value')
