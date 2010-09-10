@@ -1,9 +1,9 @@
 import numpy, os, fnmatch
-import cPickle as pickle
 from reprep import Node
 from reprep.out.html import node_to_html_document
 from reprep.out.platex import makecmd, Latex
 from be1008.camera_figure import makelabel, write_graphics
+from be1008.utils import my_pickle_load
 
 
 
@@ -16,14 +16,14 @@ def main():
                     yield os.path.join(root, f)
                
     dir = 'Bicocca_2009-02-25a/out/camera_bgds_predict/gray_GI_DI/' 
-    files = list(find_in_path(dir, '*.??.pickle'))
+    files = list(find_in_path(dir, '*.??.pickle*'))
     if not files:
         raise Exception('No files found.')
     
 
     for f in files:
         print 'Loading {0}'.format(f)
-        data = pickle.load(open(f))
+        data = my_pickle_load(f)
         basename, ext = os.path.splitext(f)
         out_html = basename + '/report.html'
         out_pickle = basename + '/report.pickle'
@@ -91,7 +91,7 @@ def main():
         node_to_html_document(report, out_html)
         
         print 'Writing on %s' % out_pickle
-        pickle.dump(report, open(out_pickle, 'w'))
+        my_pickle_dump(report, out_pickle)
     
 def create_latex_frag(outdir, report, id):
     if not os.path.exists(outdir):

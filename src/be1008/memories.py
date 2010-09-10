@@ -2,6 +2,7 @@
 from procgraph import Block
 from procgraph.core.model_loadsave import make_sure_dir_exists
 import pickle
+from be1008.utils import my_pickle_dump
 
 class Memories(Block):
     Block.alias('memories')
@@ -61,8 +62,8 @@ class Memories(Block):
                     time=instant,
                     prefix=self.config.prefix)
         make_sure_dir_exists(filename)
-        pickle.dump(data, open(filename, 'w'))
-        self.info('Written on %s' % filename)
+        my_pickle_dump(data, filename)
+
              
              
              

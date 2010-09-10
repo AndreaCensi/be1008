@@ -1,4 +1,3 @@
-import cPickle as pickle
 from reprep.out.platex import Latex, makecmd
 
 
@@ -14,28 +13,20 @@ def makelabel(name):
     name = name.replace('_', '')
     return name
 
-def main():
+def camera_figures(report):
     '''
-    
-    Reads:
-    
-     out/camera_bgds_boot/report.pickle
-    
-    Writes:
-    
-     out/camera_figures/<variant>.tex
-    
+        to be called by camera_bgds_boot    
     '''
 
     
-    input1 = 'out/camera_bgds_boot/report.pickle'
+    #input1 = 'out/camera_bgds_boot/report.pickle'
     output_pattern = 'out/camera_figures/{variant}.tex'
     graphics_path = 'out/camera_figures/images'
     
     
-    print "Loading %s" % input1
-    report = pickle.load(open(input1))
-    report.print_tree()
+    #print "Loading %s" % input1
+    #report = pickle.load(open(input1))
+    #report.print_tree()
     
     w1 = "4cm"
     
