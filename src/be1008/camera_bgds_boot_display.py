@@ -5,19 +5,21 @@ import os
 
 from reprep import Node
 from reprep.out.html import node_to_html_document
+from be1008.camera_figure import camera_figures
+from be1008.utils import my_pickle_load, my_pickle_dump
 
 
 def main():
     """
     Prepare data with: ::
     
-        average_logs_results --dir . --experiment camera_bgds_boot
-        average_logs_results --dir . --experiment camera_bgds_stats
+        be_average_logs_results --dir . --experiment camera_bgds_boot
+        be_average_logs_results --dir . --experiment camera_bgds_stats
     
     Reads: ::
     
-        camera_bgds_boot.pickle
-        camera_bgds_stats.pickle
+        out/average_logs_results/camera_bgds_boot.pickle
+        out/average_logs_results/camera_bgds_stats.pickle
         
     Writes: ::
     
@@ -25,17 +27,22 @@ def main():
         out/camera_bgds_boot/report.pickle
         out/camera_bgds_boot/<variant>:G.pickle 
         
+    moreover, it calls camera_figures() that creates
+    
+         output_pattern = 'out/camera_figures/{variant}.tex'
+     
+        
     """
-    input1 = 'camera_bgds_boot.pickle'
-    input2 = 'camera_bgds_stats.pickle'
+    input1 = 'out/average_logs_results/camera_bgds_boot.pickle'
+    input2 = 'out/average_logs_results/camera_bgds_stats.pickle'
     variant_pattern = "out/camera_bgds_boot/{variant}:G.pickle"
     out_html = 'out/camera_bgds_boot/report.html'
     out_pickle = 'out/camera_bgds_boot/report.pickle'
     
-    print "Loading %s" % input1
-    results = pickle.load(open(input1, 'rb'))
-    print "Loading %s" % input2
-    stats = pickle.load(open(input2, 'rb'))
+    results = my_pickle_load(input1)
+
+    stats = my_pickle_load(input2)
+    
     print "Creating report..."
     
     
@@ -44,11 +51,16 @@ def main():
     k = 1
     variants = sorted(results.keys())
     for variant_id in variants:
+        
+        
         data = results[variant_id] 
         data2 = stats[variant_id]
         print data2.keys()
         variant = variant_id.replace('/', '_')
         print 'Considering %s' % variant
+        
+        if not variant in ['gray_GI_DI', 'contrast_GS_DS']:
+            continue
         
         n = report.node(variant)
         f1 = n.figure('value')
@@ -57,11 +69,14 @@ def main():
         
         for variable, value in data.items():
             v = n.data(variable, value)
-            v.data('sign', numpy.sign(value), desc='sign of %s' % variable)
-            v.data('abs', numpy.abs(value), desc='abs of %s' % variable)
-            f1.sub(variable, display='posneg', skim=1)
-            f2.sub('%s/sign' % variable, display='posneg')
-            f3.sub('%s/abs' % variable, display='scale', min_value=0)
+            if len(value.shape) == 3:
+                f1.sub(variable, display='rgb')
+            else:
+                v.data('sign', numpy.sign(value), desc='sign of %s' % variable)
+                v.data('abs', numpy.abs(value), desc='abs of %s' % variable)
+                f1.sub(variable, display='posneg', skim=1)
+                f2.sub('%s/sign' % variable, display='posneg')
+                f3.sub('%s/abs' % variable, display='scale', min_value=0)
         
     
         f4 = n.figure('stats')
@@ -126,8 +141,9 @@ def main():
     
     print "Writing on %s" % out_html
     node_to_html_document(report, out_html)
-    print "Writing on %s" % out_pickle
-    pickle.dump(report, open(out_pickle, 'w'))
+    #print "Writing on %s" % out_pickle
+    my_pickle_dump(report, out_pickle)
+    camera_figures(report)
     
 if __name__ == '__main__':
-    camera_bgds_boot_display()
+    main()

@@ -1,8 +1,9 @@
 from optparse import OptionParser
 import os
 import re
-import pickle
+import cPickle as pickle
 import numpy
+from be1008.utils import my_pickle_dump, my_pickle_load
 
 def main():
     
@@ -72,15 +73,15 @@ def main():
         results[variant] = {}
         for variable, files in variant_data.items():
             print 'Reading %d files for %s / %s' % (len(files), variant, variable)
-            datas = map(lambda x: pickle.load(open(x, 'rb')), files)
+            datas = map(my_pickle_load, files)
             average = numpy.mean(datas, axis=0)
             results[variant][variable] = average
 
     output = options.output
     if output is None:
-        output = "%s.pickle" % options.experiment
-    print "Writing results to %s" % output
-    pickle.dump(results, open(output, 'wb'))
+        output = "out/average_logs_results/%s.pickle" % options.experiment
+    my_pickle_dump(results, output)
+
 
 if __name__ == '__main__':
-    average_logs_results()
+    main()

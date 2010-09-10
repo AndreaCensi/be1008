@@ -22,6 +22,20 @@ The output goes into a subdirectory of the log directories. The convention is: :
 Moreover, there are "memory" files created by :ref:`block:memories`.
 
 
+Camera
+------
+
+For the camera, the operations are similar:
+
+	$ be_average_logs_results --dir . --experiment camera_bgds_boot
+	$ be_average_logs_results --dir . --experiment camera_bgds_stats
+	$ be_camera_bgds_boot_display (calls camera_figures)
+	$ be_memories_display
+
+
+Laser
+-----
+
 2. Run the average operations that create the data:
 
 	# creates laser_bgds_boot.pickle
@@ -34,14 +48,10 @@ Moreover, there are "memory" files created by :ref:`block:memories`.
 
 Then run ``be_all`` again with the ``*predict`` jobs.
 
-For the camera, the operations are similar:
+Videos
+------
 
-	$ be_average_logs_results --dir . --experiment camera_bgds_boot
-	$ be_average_logs_results --dir . --experiment camera_bgds_stats
-	$ be_camera_bgds_boot_display
-	$ be_memories_display
-	
-	$ be_camera_figures
+``be_materials`` creates the webpage
 
 
 Indices and tables

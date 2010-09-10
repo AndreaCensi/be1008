@@ -26,7 +26,7 @@ gx --> |$grad_op| --> gx_op
 gy --> |$grad_op| --> gy_op
 
 
-rgb    -->  |expectation| -->  |save w='${outdir}/rgb_mean'|
+rgb    -->  |expectation| -->  |astype dtype='uint8'| --> |save w='${outdir}/rgb_mean'|
 y      -->  |expectation| -->  |save w='${outdir}/y_mean'|
 y      -->  |variance|    -->  |save w='${outdir}/y_var'|
 
