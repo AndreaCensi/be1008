@@ -2,35 +2,28 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='bootstrap_experiments_201008',
+    name='be1008',
     author="Andrea Censi",
     author_email="andrea@cds.caltech.edu",
-    version="0.1",
+    version="1.0",
     package_dir={'':'src'},
-    packages=['bootstrap_experiments_201008'],
+    packages=['be1008'],
     entry_points={
      'console_scripts': [
-       'average_logs_results = '
-        'bootstrap_experiments_201008.average_logs_results:average_logs_results',
-       'camera_bgds_boot_display = '
-        'bootstrap_experiments_201008.camera_bgds_boot_display:camera_bgds_boot_display',
-       'laser_bgds_boot_display = '
-        'bootstrap_experiments_201008.laser_bgds_boot_display:laser_bgds_boot_display',
-       'be_all = '
-        'bootstrap_experiments_201008.be_all:be_all',
-       'memories_display = '
-        'bootstrap_experiments_201008.memories_display:memories_display'
+       'be_average_logs_results     = be1008.average_logs_results:main',
+       'be_camera_bgds_boot_display = be1008.camera_bgds_boot_display:main',
+       'be_laser_bgds_boot_display  = be1008.laser_bgds_boot_display:main',
+       'be_all                      = be1008.be_all:main',
+       'be_memories_display         = be1008.memories_display:main',
+       'be_materials                = be1008.be_materials:main',
+       'be_camera_figures           = be1008.camera_figure:main',
        ]
        },
     install_requires=[],
-    extras_require={
-    #'multiprocessing':  ['redis']
-    # TODO: learn how to use this feature
-    # TODO: add gvgen
-    },
+    extras_require={},
     include_package_data=True,
     package_data={
-        'bootstrap_experiments_201008': ['models/*.pg', '*.pg']
+        'be1008': ['models/*.pg', '*.pg']
     }
 )
 

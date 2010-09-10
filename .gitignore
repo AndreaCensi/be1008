@@ -3,3 +3,4 @@
 *.pgc
 .compmake_history.txt
 *.pgc
+compmake_storage

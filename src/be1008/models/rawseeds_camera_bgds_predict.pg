@@ -68,7 +68,8 @@ T = 60
       #success_rgb, maximum_rgb, sum_rgb --> |sync| --> |grid cols=3| --> stats
       maximum_rgb, sum_rgb --> |sync| --> |grid cols=3| --> stats
       
-      prod_rgb, stats --> |sync| --> |grid cols=1| -->  |watermark logdir=$logdir title='Detected inconsistencies using BGDS model'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod_stats.avi'| 
+      # no sync here
+      prod_rgb, stats --> |grid cols=1| -->  |watermark logdir=$logdir title='Detected inconsistencies using BGDS model'| --> |mencoder  vbitrate=2000000 file='${outdir}/prod_stats.avi'| 
 
       
       

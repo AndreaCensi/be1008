@@ -4,7 +4,7 @@ import re
 import pickle
 import numpy
 
-def average_logs_results():
+def main():
     
     usage = "Example usage: %prog --dir .   --pattern  B*/*/*.pickle" \
             """ We assume that the path is like:

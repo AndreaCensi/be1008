@@ -40,7 +40,7 @@ Bovisa_2008-10-11a
 Bovisa_2008-10-11b
 """.split()
 
-def be_all():
+def main():
     for log in logs:
         for script in scripts:
             job_id = '%s-%s' % (script, log)
@@ -51,5 +51,5 @@ def be_all():
     compmake_console()
 
 if __name__ == '__main__':
-    be_all()
+    main()
     
