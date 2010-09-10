@@ -17,7 +17,7 @@ outdir = "${logdir}/out/${prefix}/"
 
 
 
-|rawseeds_synchronized_camera logdir=$logdir| --> |image_op:$image_op|--> y
+|rawseeds_synchronized_camera logdir=$logdir| --> rgb --> |image_op:$image_op|--> y
 
 y --> |derivative| --> |$deriv_op | --> y_dot_op
 y --> |gradient| --> gx, gy
@@ -25,6 +25,10 @@ y --> |gradient| --> gx, gy
 gx --> |$grad_op| --> gx_op
 gy --> |$grad_op| --> gy_op
 
+
+rgb    -->  |expectation| -->  |save w='${outdir}/rgb_mean'|
+y      -->  |expectation| -->  |save w='${outdir}/y_mean'|
+y      -->  |variance|    -->  |save w='${outdir}/y_var'|
 
 y_dot_op --> |abs|    --> |expectation| -> y_dot_abs  --> |save w='${outdir}/y_dot_abs'|
 y_dot_op --> |square| --> |expectation| -> y_dot_var  --> |save w='${outdir}/y_dot_var'|

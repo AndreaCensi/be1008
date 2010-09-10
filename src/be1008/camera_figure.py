@@ -1,5 +1,5 @@
 import cPickle as pickle
-from reprep.out.platex import Latex, latexify, makeupcmd
+from reprep.out.platex import Latex, makecmd
 
 
 def write_graphics(frag, node, width, border=True):
