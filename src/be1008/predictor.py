@@ -32,9 +32,7 @@ class BGDSPredictor(Block):
     def init(self):
         # XXX not compatible with saving procedure
         
-        filename = self.config.G
-        
-        self.G = pickle.load(open(filename, 'rb')) 
+        self.BG = my_pickle_load(self.config.G) 
         
         self.define_input_signals(['gx', 'gy', 'y_dot', 'commands'])
         self.define_output_signals(['y_dot_pred', 'error'])

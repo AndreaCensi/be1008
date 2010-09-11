@@ -59,6 +59,6 @@ groups  = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r.', origin: [0,0,0
 
 --- model sick_extract
 ''' Extracts the Sick data '''
-|input name=y| -> |slice start=342 end=703| --> |output name=y_sick|
+|input name=y| --> |slice start=342 end=703| --> |output name=y_sick|
 
 

@@ -2,6 +2,7 @@ import cPickle as pickle
 from numpy import sign
 
 from procgraph import Block
+from be1008.utils import my_pickle_load
 
 class BGDS1dPredictor(Block):
     Block.alias('bgds_1d_predictor')
@@ -17,10 +18,8 @@ class BGDS1dPredictor(Block):
     
     def init(self):
         # XXX not compatible with saving procedure
-        
-        filename = self.config.BG
-        
-        self.BG = pickle.load(open(filename, 'rb')) 
+    
+        self.BG = my_pickle_load(self.config.BG) 
         
         self.define_input_signals(['gy', 'y_dot', 'commands'])
         self.define_output_signals(['y_dot_pred', 'error'])
