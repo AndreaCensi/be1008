@@ -1,16 +1,19 @@
 from procgraph.core.model_loadsave import make_sure_dir_exists
 from collections import namedtuple
 import os
+import math
 
 
 PREFIX = ''
-url_prefix = 'http://www.cds.caltech.edu/~andrea/pub/research/2010-be/'
+# used to verify files exist
+local_url = '/Volumes/nessa/public_html/pub/research/2010-bevideos/'
 data_url_prefix = 'http://www.cds.caltech.edu/~andrea/pub/research/2010-bevideos/'
 desc_url_prefix = 'http://purl.org/censi/2010/be'
 outdir = 'out/be_materials'
 out_latex_commands = '%s/video_ref.tex' % outdir
 out_latex_commands_test = '%s/video_ref_test.tex' % outdir
 out_html = '%s/be_materials.html' % outdir
+
 
 
 logs = """
@@ -35,24 +38,31 @@ RGBMean                        camera_mean/mean.mp4                          raw
 Gray                           camera_display/gray.mp4                       rawseeds_camera_display
 GrayDeriv                     camera_display/gray_dot.mp4                   rawseeds_camera_display
 GrayVar                       camera_var/var.mp4                            rawseeds_camera_mean
-Contrast                       camera_display/contrast.mp4                   rawseeds_camera_display_contrast
-ContrastDeriv                 camera_display/contrast_dot.mp4               rawseeds_camera_display_contrast
+Contrast                       camera_display_contrast/contrast.mp4                   rawseeds_camera_display_contrast
+ContrastDeriv                 camera_display_contrast/contrast_dot.mp4               rawseeds_camera_display_contrast
 ContrastMean                  camera_mean_contrast/mean.mp4                 rawseeds_camera_mean_contrast
 ContrastVar                   camera_var_contrast/var.mp4                   rawseeds_camera_var_contrast
 GrayIdIdLearningSignal     camera_bgds_boot/gray/GI_DI/tensors_k.mp4     rawseeds_camera_bgds_boot_all
 GrayIdIdLearningResult    camera_bgds_boot/gray/GI_DI/tensors.mp4       rawseeds_camera_bgds_boot_all
-GrayIdIdPrediction        camera_bgds_predict/gray_GI_DI/y_dot.mp4      rawseeds_camera_bgds_predict_all
+GrayIdIdPrediction            camera_bgds_predict/gray_GI_DI/y_dot.mp4      rawseeds_camera_bgds_predict_all
 GrayIdIdError             camera_bgds_predict/gray_GI_DI/prod.mp4       rawseeds_camera_bgds_predict_all
 GrayIdIdErrorStats       camera_bgds_predict/gray_GI_DI/prod_stats.mp4 rawseeds_camera_bgds_predict_all
-GraySSLearningSignal   camera_bgds_boot/gray/GS_DS/tensors_k.mp4     rawseeds_camera_bgds_boot_all
-GraySSLearningResult   camera_bgds_boot/gray/GS_DS/tensors.mp4       rawseeds_camera_bgds_boot_all
-GraySSPrediction        camera_bgds_predict/gray_GS_DS/y_dot.mp4      rawseeds_camera_bgds_predict_all
-GraySSError             camera_bgds_predict/gray_GS_DS/prod.mp4       rawseeds_camera_bgds_predict_all
-GraySSErrorStats       camera_bgds_predict/gray_GS_DS/prod_stats.mp4 rawseeds_camera_bgds_predict_all
+ContrastSSLearningSignal   camera_bgds_boot/contrast/GS_DS/tensors_k.mp4     rawseeds_camera_bgds_boot_all
+ContrastSSLearningResult   camera_bgds_boot/contrast/GS_DS/tensors.mp4       rawseeds_camera_bgds_boot_all
+ContrastSSPrediction        camera_bgds_predict/contrast_GS_DS/y_dot.mp4      rawseeds_camera_bgds_predict_all
+ContrastSSError             camera_bgds_predict/contrast_GS_DS/prod.mp4       rawseeds_camera_bgds_predict_all
+ContrastSSErrorStats       camera_bgds_predict/contrast_GS_DS/prod_stats.mp4 rawseeds_camera_bgds_predict_all
 LaserDisplay                  laser_display/sick.mp4                        rawseeds_laser_display
+LaserSSLearningResult      out/laser_bgds_boot/GS_DS/movie.mp4 rawseeds_laser_bgds_boot
+LaserIdIdLearningResult    out/laser_bgds_boot/GI_DI/movie.mp4 rawseeds_laser_bgds_boot
 LaserPrediction        laser_bgds_predict/II_fps6_smooth8/movie.mp4            rawseeds_laser_bgds_predict
 LaserCorr                     laser_corr/corr.mp4                           rawseeds_laser_corr
 """
+#GraySSLearningSignal   camera_bgds_boot/gray/GS_DS/tensors_k.mp4     rawseeds_camera_bgds_boot_all
+#GraySSLearningResult   camera_bgds_boot/gray/GS_DS/tensors.mp4       rawseeds_camera_bgds_boot_all
+#GraySSPrediction        camera_bgds_predict/gray_GS_DS/y_dot.mp4      rawseeds_camera_bgds_predict_all
+#GraySSError             camera_bgds_predict/gray_GS_DS/prod.mp4       rawseeds_camera_bgds_predict_all
+#GraySSErrorStats       camera_bgds_predict/gray_GS_DS/prod_stats.mp4 rawseeds_camera_bgds_predict_all
 
 Video = namedtuple('Video', 'id title desc_url url script partial_url') 
 
@@ -79,8 +89,8 @@ def main():
         #title = video.title
         title = url[0:]
         cmd_body = """%%
-        \\footnote{ \\href{%s}{%s} } %% 
-        """ % (url, title)
+        \\href{%s}{\\texttt{\\footnotesize video:%s}}\\footnote{ \\href{%s}{%s} } %% 
+        """ % (url, video.id, url, title)
         f.write('\\newcommand{\\%s}{%%\n%s%%\n}\n' % (cmd_name, cmd_body))
 
     print "Writing on %s" % out_latex_commands_test
@@ -170,9 +180,20 @@ def main():
             <div class='others'>
             
         ''')
+        found = False
         for log in logs:
             url = data_url_prefix + '/' + log + '/out/' + video.partial_url
-            f.write(' <a href="%s"> %s (.mp4) </a> <br/>' % (url, log))
+            
+            local_file = local_url + '/' + log + '/out/' + video.partial_url
+            #print local_file
+            if os.path.exists(local_file):
+                size = math.ceil(os.path.getsize(local_file) / (10.0 ** 6))
+                f.write(' <a href="%s"> %s (%dMB mp4) </a> <br/>' % (url, log, size))
+                found = True
+            else:
+                f.write(' %s  <br/>' % (log))
+        if not found:
+            print 'Warning, no files for ', video.partial_url
         
         f.write('''
             </div>

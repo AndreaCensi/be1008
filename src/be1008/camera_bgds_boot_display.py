@@ -1,11 +1,9 @@
-import cPickle as pickle
 import numpy
 from numpy import nonzero
 import os
 
 from reprep import Node
-from reprep.out.html import node_to_html_document
-from be1008.camera_figure import camera_figures
+from reprep.out.html import node_to_html_document 
 from be1008.utils import my_pickle_load, my_pickle_dump
 
 
@@ -41,8 +39,11 @@ def main():
     out_pickle = 'out/camera_bgds_boot/report.pickle'
     
     results = my_pickle_load(input1)
-
+    print 'Found variants: %s' % results.keys()
+    
     stats = my_pickle_load(input2)
+    
+    print 'Found variants: %s' % stats.keys()
     
     print "Creating report..."
     
@@ -52,13 +53,11 @@ def main():
     k = 1
     variants = sorted(results.keys())
     for variant_id in variants:
-        
-        
+        variant = variant_id.replace('/', '_')
+        print 'Considering %s' % variant
         data = results[variant_id] 
         data2 = stats[variant_id]
         print data2.keys()
-        variant = variant_id.replace('/', '_')
-        print 'Considering %s' % variant
         
         #if not variant in ['gray_GI_DI', 'contrast_GS_DS']:
         #    continue
@@ -83,8 +82,13 @@ def main():
         f4 = n.figure('stats')
 
         for variable, value in data2.items():
-            v = n.data(variable, value)
-            f4.sub(variable, display='scale', skim=1)
+            if len(value.shape) == 3:
+                v = n.data(variable, value.astype('uint8'))
+                f1.sub(variable, display='rgb')
+            else:
+                v = n.data(variable, value)
+                #f4.sub(variable, display='scale', skim=1)
+                f4.sub(variable, display='scale', skim=1, min_value=0)
 
         Gxl = data['Gxl']
         Gyl = data['Gyl']
@@ -136,15 +140,14 @@ def main():
             dir = os.path.dirname(filename)
             if not os.path.exists(dir):
                 os.makedirs(dir)
-            pickle.dump(s, open(filename, 'wb'))
+            my_pickle_dump(s, filename)
             print 'Written on %s' % filename
             
     
     print "Writing on %s" % out_html
     node_to_html_document(report, out_html)
     #print "Writing on %s" % out_pickle
-    my_pickle_dump(report, out_pickle)
-    camera_figures(report)
+    my_pickle_dump(report, out_pickle) 
     
 if __name__ == '__main__':
     main()

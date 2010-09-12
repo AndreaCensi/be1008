@@ -88,8 +88,11 @@ T = 60
 ---- model rawseeds_camera_bgds_predict_all
 config logdir "Rawseeds log directory"
 
-|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/gray_GS_DS" tensors="out/camera_bgds_boot/gray_GS_DS:G.pickle"| 
-|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/gray_GI_DI" tensors="out/camera_bgds_boot/gray_GI_DI:G.pickle"| 
+# GOOD ONES -- just disabled temporarely
+#|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/gray_GS_DS" tensors="out/camera_bgds_boot/gray_GS_DS:G.pickle"| 
+#|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/gray_GI_DI" tensors="out/camera_bgds_boot/gray_GI_DI:G.pickle"| 
+
+|rawseeds_camera_bgds_predict logdir=$logdir prefix="camera_bgds_predict/contrast_GS_DS" tensors="out/camera_bgds_boot/contrast_GS_DS:G.pickle"| 
     
     
     
