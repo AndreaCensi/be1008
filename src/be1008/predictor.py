@@ -3,6 +3,7 @@ from procgraph import Block
 from numpy import sign
 from procgraph.components.basic import  register_simple_block
 import numpy
+from be1008.utils import my_pickle_load
 
 register_simple_block(lambda x: 1.0 / x, 'one_over')
 
