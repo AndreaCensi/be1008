@@ -7,7 +7,7 @@ config deriv_op = identity                 "Scalar operation after derivative."
 config display_fps = 0.1                   "Frames per second for movie."
 config rangefinder_fps = 2.5                     "Cap on laser frame rate."
 
-mencoder.file = "${logdir}/out/${outdir}/movie.avi"
+mencoder.file = "${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 import procgraph_rawseeds

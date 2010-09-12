@@ -34,14 +34,15 @@ def my_figures(results):
     def adjust_axes(pylab):
         # left, bottom, right, top
         #borders = [0.15, 0.15, 0.03, 0.05]
-        borders = [0.2, 0.15, 0.03, 0.05]
+        borders = [0.2, 0.17, 0.05, 0.05]
         w = 1 - borders[0] - borders[2]
         h = 1 - borders[1] - borders[3]
         pylab.axes([borders[0], borders[1], w, h])
         
     def set0axis(pylab):
         a = pylab.axis()
-        pylab.axis([a[0], a[1], 0, a[3]])
+        pylab.axis([-91, +271, 0, a[3]])
+        pylab.xticks([-90, 0, 90, 180, 270])
         
     with r.data_pylab('report_y_mean', **figparams) as pylab:
         adjust_axes(pylab)
@@ -66,7 +67,7 @@ def my_figures(results):
             x = results[variant]['gy_var'][sick_indices]
             x /= numpy.max(abs(x))
             pylab.plot(theta_deg, numpy.sqrt(x) , label=variant)
-        #pylab.legend(loc='lower right')
+        pylab.legend(loc='lower right')
         pylab.xlabel(xlabel)
         pylab.ylabel('norm. std-dev (unitless)')
         set0axis(pylab)
@@ -86,7 +87,8 @@ def my_figures(results):
     
     def set_x_axis(pylab):
         a = pylab.axis()
-        pylab.axis([-91, +271, a[2], a[3]])    
+        pylab.axis([-91, +271, a[2], a[3]])
+        pylab.xticks([-90, 0, 90, 180, 270])    
  
     with r.data_pylab('report_Gv', **figparams) as pylab:
         adjust_axes(pylab)

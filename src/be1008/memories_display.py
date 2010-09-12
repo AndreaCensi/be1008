@@ -3,7 +3,7 @@ from reprep import Node
 from reprep.out.html import node_to_html_document
 from reprep.out.platex import makecmd, Latex
 from be1008.camera_figure import makelabel, write_graphics
-from be1008.utils import my_pickle_load
+from be1008.utils import my_pickle_load, my_pickle_dump
 
 
 
@@ -85,43 +85,52 @@ def main():
             outdir = basename + '/' + name 
             id = "%s:%.2f:%s" % (logdir, time, name)
             print id
-            create_latex_frag(outdir, zr, id)
+        
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
+
+            create_latex_frag(os.path.join(outdir, 'conf.tex'), outdir, zr, id, True)
+            create_latex_frag(os.path.join(outdir, 'report.tex'), outdir, zr, id, False)
         
         print 'Writing on %s' % out_html
         node_to_html_document(report, out_html)
         
-        print 'Writing on %s' % out_pickle
-        my_pickle_dump(report, out_pickle)
+        #print 'Writing on %s' % out_pickle
+        #my_pickle_dump(report, out_pickle)
     
-def create_latex_frag(outdir, report, id):
-    if not os.path.exists(outdir):
-        os.makedirs(outdir)
-     
-    frag_file = os.path.join(outdir, 'index.tex')
-    graphics_path = outdir
-    
-    w1 = "2cm"
+def create_latex_frag(frag_file, graphics_path, report, id, conference):
+    if conference: 
+        w1 = "2cm"
+    else:
+        w1 = "5cm"
+        
     with Latex.fragment(frag_file, graphics_path=graphics_path) as frag:
         
         with frag.figure(caption=makecmd(frag, id + 'demo'),
                          label=makelabel(id + ':demo')) as fig:
             fig.hfill()
-            with fig.subfigure(caption=makecmd(frag, 'graysignal')) as sub:
+            with fig.subfigure(caption=makecmd(frag, 'mem_signal')) as sub:
                 data = report.resolve_url('y/rgb')
                 write_graphics(sub, data, w1)
             fig.hfill()
-            with fig.subfigure(caption=makecmd(frag, 'graysignal_dot')) as sub:
+            with fig.subfigure(caption=makecmd(frag, 'mem_signal_dot')) as sub:
                 data = report.resolve_url('y_dot/posneg')
                 write_graphics(sub, data, w1)
+                
             fig.hfill()
-            with fig.subfigure(caption=makecmd(frag, 'graysignal_dot_pred')) as sub:
+            if not conference:
+                fig.parbreak()
+                fig.hfill()
+    
+            with fig.subfigure(caption=makecmd(frag, 'mem_signal_dot_pred')) as sub:
                 data = report.resolve_url('y_dot_pred/posneg')
                 write_graphics(sub, data, w1)
             fig.hfill()
-            with fig.subfigure(caption=makecmd(frag, 'graysignal_detect')) as sub:
+            with fig.subfigure(caption=makecmd(frag, 'mem_signal_detect')) as sub:
                 data = report.resolve_url('prod/scale')
                 write_graphics(sub, data, w1)
             
+            fig.hfill()
         
     
     

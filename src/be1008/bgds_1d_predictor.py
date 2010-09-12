@@ -1,4 +1,3 @@
-import cPickle as pickle
 from numpy import sign
 
 from procgraph import Block

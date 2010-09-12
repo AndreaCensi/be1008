@@ -1,4 +1,3 @@
-import cPickle as pickle
 import numpy
 from numpy import nonzero
 import os
@@ -141,7 +140,7 @@ def main():
             dir = os.path.dirname(filename)
             if not os.path.exists(dir):
                 os.makedirs(dir)
-            pickle.dump(s, open(filename, 'wb'))
+            my_pickle_dump(s, filename)
             print 'Written on %s' % filename
             
     

@@ -29,7 +29,7 @@ def camera_figures(report):
     
     output_pattern_conf = 'out/camera_figures/conf_{variant}.tex'
     output_pattern_rep = 'out/camera_figures/report_{variant}.tex'
-    graphics_path = 'out/camera_figures/images'
+    graphics_path = 'out/camera_figures/'
     
     
     
@@ -47,10 +47,8 @@ def camera_figures(report):
 
 
     for variant_report in report.children:
-        variant = variant_report.id
-        #variant = variant.replace('_', '')
+        variant = variant_report.id 
         
-            
         frag_file = output_pattern_conf.format(variant=variant)
         write_variant(frag_file, variant_report, variant, graphics_path, conference=True)
 

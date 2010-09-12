@@ -1,6 +1,5 @@
 from procgraph import Block 
 
-import cPickle as pickle
 from numpy import sign
 from procgraph.components.basic import  register_simple_block
 import numpy
