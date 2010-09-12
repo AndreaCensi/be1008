@@ -32,7 +32,7 @@ class BGDSPredictor(Block):
     def init(self):
         # XXX not compatible with saving procedure
         
-        self.BG = my_pickle_load(self.config.G) 
+        self.G = my_pickle_load(self.config.G) 
         
         self.define_input_signals(['gx', 'gy', 'y_dot', 'commands'])
         self.define_output_signals(['y_dot_pred', 'error'])
