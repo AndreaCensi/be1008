@@ -3,10 +3,40 @@ from collections import namedtuple
 import os
 import math
 
+from httplib import HTTP 
+from urlparse import urlparse 
+import sys
+
+def URL_exists(url):
+    verbose = True
+    
+    ''' Checks that a URL exists (answer != 404) and returns the size.
+    
+    Returns None if does not exists, the size in bytes otherwise.
+     ''' 
+    if verbose:
+        sys.stderr.write('Checking %s ' % url)
+     
+    p = urlparse(url) 
+    h = HTTP(p[1]) 
+    h.putrequest('HEAD', p[2]) 
+    h.endheaders() 
+    
+    code, status, message = h.getreply() #@UnusedVariable
+
+    if verbose:
+        sys.stderr.write('\t%d\n' % code)
+    
+    
+    if code == 404: 
+        return None
+    else: 
+        return int(message['content-length'])
+
 
 PREFIX = ''
 # used to verify files exist
-local_url = '/Volumes/nessa/public_html/pub/research/2010-bevideos/'
+#local_url = '/Volumes/nessa 1/public_html/pub/research/2010-bevideos/'
 data_url_prefix = 'http://www.cds.caltech.edu/~andrea/pub/research/2010-bevideos/'
 desc_url_prefix = 'http://purl.org/censi/2010/be'
 outdir = 'out/be_materials'
@@ -33,30 +63,31 @@ Bovisa_2008-10-11b
 # http://juliensimon.blogspot.com/2009/01/howto-ffmpeg-x264-presets.html
 
 data = """
+LaserDisplay                   laser_display/sick.mp4                        rawseeds_laser_display
+LaserCorr                      laser_corr/corr.mp4                           rawseeds_laser_corr
+LaserBDSLearning               laser_bds_boot/movie.mp4                           rawseeds_laser_corr
 RGB                            camera_display/rgb.mp4                        rawseeds_camera_display
 RGBMean                        camera_mean/mean.mp4                          rawseeds_camera_mean
 Gray                           camera_display/gray.mp4                       rawseeds_camera_display
-GrayDeriv                     camera_display/gray_dot.mp4                   rawseeds_camera_display
-GrayVar                       camera_var/var.mp4                            rawseeds_camera_mean
+GrayDeriv                      camera_display/gray_dot.mp4                   rawseeds_camera_display
+GrayVar                        camera_var/var.mp4                            rawseeds_camera_mean
 Contrast                       camera_display_contrast/contrast.mp4                   rawseeds_camera_display_contrast
-ContrastDeriv                 camera_display_contrast/contrast_dot.mp4               rawseeds_camera_display_contrast
-ContrastMean                  camera_mean_contrast/mean.mp4                 rawseeds_camera_mean_contrast
-ContrastVar                   camera_var_contrast/var.mp4                   rawseeds_camera_var_contrast
-GrayIdIdLearningSignal     camera_bgds_boot/gray/GI_DI/tensors_k.mp4     rawseeds_camera_bgds_boot_all
-GrayIdIdLearningResult    camera_bgds_boot/gray/GI_DI/tensors.mp4       rawseeds_camera_bgds_boot_all
-GrayIdIdPrediction            camera_bgds_predict/gray_GI_DI/y_dot.mp4      rawseeds_camera_bgds_predict_all
-GrayIdIdError             camera_bgds_predict/gray_GI_DI/prod.mp4       rawseeds_camera_bgds_predict_all
-GrayIdIdErrorStats       camera_bgds_predict/gray_GI_DI/prod_stats.mp4 rawseeds_camera_bgds_predict_all
-ContrastSSLearningSignal   camera_bgds_boot/contrast/GS_DS/tensors_k.mp4     rawseeds_camera_bgds_boot_all
-ContrastSSLearningResult   camera_bgds_boot/contrast/GS_DS/tensors.mp4       rawseeds_camera_bgds_boot_all
-ContrastSSPrediction        camera_bgds_predict/contrast_GS_DS/y_dot.mp4      rawseeds_camera_bgds_predict_all
-ContrastSSError             camera_bgds_predict/contrast_GS_DS/prod.mp4       rawseeds_camera_bgds_predict_all
-ContrastSSErrorStats       camera_bgds_predict/contrast_GS_DS/prod_stats.mp4 rawseeds_camera_bgds_predict_all
-LaserDisplay                  laser_display/sick.mp4                        rawseeds_laser_display
-LaserSSLearningResult      out/laser_bgds_boot/GS_DS/movie.mp4 rawseeds_laser_bgds_boot
-LaserIdIdLearningResult    out/laser_bgds_boot/GI_DI/movie.mp4 rawseeds_laser_bgds_boot
-LaserPrediction        laser_bgds_predict/II_fps6_smooth8/movie.mp4            rawseeds_laser_bgds_predict
-LaserCorr                     laser_corr/corr.mp4                           rawseeds_laser_corr
+ContrastDeriv                  camera_display_contrast/contrast_dot.mp4               rawseeds_camera_display_contrast
+ContrastMean                   camera_mean_contrast/mean.mp4                 rawseeds_camera_mean_contrast
+ContrastVar                    camera_var_contrast/var.mp4                   rawseeds_camera_var_contrast
+GrayIdIdLearningSignal         camera_bgds_boot/gray/GI_DI/tensors_k.mp4     rawseeds_camera_bgds_boot_all
+GrayIdIdLearningResult         camera_bgds_boot/gray/GI_DI/tensors.mp4       rawseeds_camera_bgds_boot_all
+GrayIdIdPrediction             camera_bgds_predict/gray_GI_DI/y_dot.mp4      rawseeds_camera_bgds_predict_all
+GrayIdIdError                  camera_bgds_predict/gray_GI_DI/prod.mp4       rawseeds_camera_bgds_predict_all
+GrayIdIdErrorStats             camera_bgds_predict/gray_GI_DI/prod_stats.mp4 rawseeds_camera_bgds_predict_all
+ContrastSSLearningSignal       camera_bgds_boot/contrast/GS_DS/tensors_k.mp4     rawseeds_camera_bgds_boot_all
+ContrastSSLearningResult       camera_bgds_boot/contrast/GS_DS/tensors.mp4       rawseeds_camera_bgds_boot_all
+ContrastSSPrediction           camera_bgds_predict/contrast_GS_DS/y_dot.mp4      rawseeds_camera_bgds_predict_all
+ContrastSSError                camera_bgds_predict/contrast_GS_DS/prod.mp4       rawseeds_camera_bgds_predict_all
+ContrastSSErrorStats           camera_bgds_predict/contrast_GS_DS/prod_stats.mp4 rawseeds_camera_bgds_predict_all
+LaserSSLearningResult          laser_bgds_boot/GS_DS/movie.mp4 rawseeds_laser_bgds_boot
+LaserIdIdLearningResult        laser_bgds_boot/GI_DI/movie.mp4 rawseeds_laser_bgds_boot
+LaserPrediction                laser_bgds_predict/II_fps6_smooth8/movie.mp4            rawseeds_laser_bgds_predict
 """
 #GraySSLearningSignal   camera_bgds_boot/gray/GS_DS/tensors_k.mp4     rawseeds_camera_bgds_boot_all
 #GraySSLearningResult   camera_bgds_boot/gray/GS_DS/tensors.mp4       rawseeds_camera_bgds_boot_all
@@ -135,11 +166,35 @@ def main():
         .video .others {
         margin-left: 1em;
         }
+        
+        .video .widget {
+            float:left; display:block; width:520px; height:330px;
+            background-color: gray;
+            margin: 1em;
+        }
+        
+        .video A.play {
+            font-weight: bold;
+            color: red;
+            margin-right: 2em;
+            margin-left: 2em;
+            text-decoration: none !important;
+        }
+        
         </style>
         </head>
         <body>
-        <h1> Supplemental videos </h1>
+        <h1> Supplemental videos  </h1>
 
+        <p> This page describes the supplemental videos for a couple 
+            of recent papers on bootstrapping, as well as more recent
+            work and experiments. </p>
+        
+        <p> See <a href="http://purl.org/censi/2010/boot">http://purl.org/censi/2010/boot</a>
+            for more information and pointers to the source code. </p>
+        
+        <h3> Videos format </h3>
+        
         <p> The videos are in .mp4 format with x264 encoding. They should 
             play on any recent player, so let us know if it doesn't work for you. 
         </p>
@@ -161,19 +216,10 @@ def main():
         f.write('''
         <div class="video">
         <h2 id="{id}">{id}</h2>
-        <a  
-             href = "{video_url}"  
-             style = "float:left; display:block;width:520px;height:330px"  
-             id = "Anchor{id}" > 
-        </a> 
-    
-        <script> 
-            flowplayer("Anchor{id}", "flowplayer-3.2.4.swf",{{
-    clip: {{
-        autoPlay: false        // aplies to all Clips in the playlist
-        }} }}
-    );
-        </script> 
+        
+        
+        <a  class="widget"  id = "Anchor{id}" > </a> 
+
         '''.format(**locals()))
         
         f.write('''
@@ -184,14 +230,32 @@ def main():
         for log in logs:
             url = data_url_prefix + '/' + log + '/out/' + video.partial_url
             
-            local_file = local_url + '/' + log + '/out/' + video.partial_url
+            
+            play_string = '''javascript:flowplayer("Anchor{id}", "flowplayer-3.2.4.swf",{{'''\
+                '''clip: {{ url:"{url}"}} }});''' .format(**locals())
+                      
+            f.write('%s ' % log)
+            
+            #local_file = local_url + '/' + log + '/out/' + video.partial_url
             #print local_file
-            if os.path.exists(local_file):
-                size = math.ceil(os.path.getsize(local_file) / (10.0 ** 6))
-                f.write(' <a href="%s"> %s (%dMB mp4) </a> <br/>' % (url, log, size))
+            size_bytes = URL_exists(url) 
+            if size_bytes is not None:
+                size = math.ceil(size_bytes / (10.0 ** 6))
+                
+                target = '#%s' % id
+                f.write("<a class='play' href='%s' OnClick='%s'> play </a> " % 
+                        (target, play_string))
+           
+                f.write(' <a class="download" href="%s"> download (%dMB mp4) </a> ' % 
+                        (url, size))
+                
                 found = True
             else:
-                f.write(' %s  <br/>' % (log))
+                f.write('<span class="missing"> not generated </span>')
+                
+            
+            f.write('<br/>\n')
+            
         if not found:
             print 'Warning, no files for ', video.partial_url
         
@@ -200,6 +264,9 @@ def main():
         ''')
     
         f.write('''
+            <p class='instructions'>  Click "play" on the right to play the video with a flash widget,
+            or right-click "download" for the direct link to the .mp4 file. </p>
+        
             </div>
         ''')
 
