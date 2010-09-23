@@ -1,0 +1,1022 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Summary &mdash; procgraph v0.1 documentation</title>
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>procgraph v0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Summary</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="summary">
+<span id="pgdoc-be1008"></span><h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#module-be1008"><em>Module be1008</em></a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-contrast"><em>contrast</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-corr-display"><em>corr_display</em></a></td>
+<td>Displays the correlation as an image. It also limits the framerate.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-cov-display"><em>cov_display</em></a></td>
+<td>Displays the covariance as an image.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-covcorr-display"><em>covcorr_display</em></a></td>
+<td>Displays the covariance/correlation as an image. It also limits the framerate.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-deriv-filter"><em>deriv_filter</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-image-label"><em>image_label</em></a></td>
+<td>Puts a border and a label around an image</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-my-filter"><em>my_filter</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-omni-superimpose"><em>omni_superimpose</em></a></td>
+<td>Superimpose the input to an image from the omnidirectional camera. Useful to display the laser data.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-boot"><em>rawseeds_camera_bgds_boot</em></a></td>
+<td>Uses <em class="xref std std-ref">block:rawseeds_synchronized_camera</em> as a source.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-boot-all"><em>rawseeds_camera_bgds_boot_all</em></a></td>
+<td>Tries all possible combinations of ops for BGDS bootstrapping.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-boot-combinations"><em>rawseeds_camera_bgds_boot_combinations</em></a></td>
+<td>Tries all possible combinations of ops for BGDS bootstrapping.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-predict"><em>rawseeds_camera_bgds_predict</em></a></td>
+<td>Compares the BGDS prediction with reality.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-predict-all"><em>rawseeds_camera_bgds_predict_all</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-stats"><em>rawseeds_camera_bgds_stats</em></a></td>
+<td>Computes several statistics for the camera stream.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-stats-all"><em>rawseeds_camera_bgds_stats_all</em></a></td>
+<td>Tries all possible combinations of ops for BGDS bootstrapping.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-bgds-stats-combinations"><em>rawseeds_camera_bgds_stats_combinations</em></a></td>
+<td>Tries all possible combinations of ops for BGDS bootstrapping.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-display"><em>rawseeds_camera_display</em></a></td>
+<td>Display the raw video with a watermark</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-display-contrast"><em>rawseeds_camera_display_contrast</em></a></td>
+<td>Displays contrast and related signal</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-mean"><em>rawseeds_camera_mean</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-mean-contrast"><em>rawseeds_camera_mean_contrast</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-mean-contrast-skim"><em>rawseeds_camera_mean_contrast_skim</em></a></td>
+<td>Used by <a class="reference internal" href="#block-rawseeds-camera-mean-contrast"><em>rawseeds_camera_mean_contrast</em></a>.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-mean-generalized"><em>rawseeds_camera_mean_generalized</em></a></td>
+<td>Computes and displays the mean of an arbitrary block.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-var"><em>rawseeds_camera_var</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-var-contrast"><em>rawseeds_camera_var_contrast</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-var-contrast-skim"><em>rawseeds_camera_var_contrast_skim</em></a></td>
+<td>Used by <a class="reference internal" href="#block-rawseeds-camera-var-contrast"><em>rawseeds_camera_var_contrast</em></a>.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-camera-var-generalized"><em>rawseeds_camera_var_generalized</em></a></td>
+<td>Computes and displays the variance of visual data.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-bds-boot"><em>rawseeds_laser_bds_boot</em></a></td>
+<td>This is an attempt to do bootstrapping of range finder data.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-bgds-boot"><em>rawseeds_laser_bgds_boot</em></a></td>
+<td>Uses rawseeds_synchronized_laser as a source.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-bgds-boot-all"><em>rawseeds_laser_bgds_boot_all</em></a></td>
+<td>Tries all possible combinations of ops for BGDS bootstrapping.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-bgds-boot-save"><em>rawseeds_laser_bgds_boot_save</em></a></td>
+<td>Saves the input to the given pickle file at a certain interval.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-bgds-predict"><em>rawseeds_laser_bgds_predict</em></a></td>
+<td>Compares the laser BGDS prediction with reality.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-bgds-predict-all"><em>rawseeds_laser_bgds_predict_all</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-corr"><em>rawseeds_laser_corr</em></a></td>
+<td>Computes and compares the correlation of y, dy/dt and sign(dy/dt)</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-covariance"><em>rawseeds_laser_covariance</em></a></td>
+<td>Computes and compares the covariance of y, y_dot and sign(y_dot)</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-covcorr"><em>rawseeds_laser_covcorr</em></a></td>
+<td>Computes and compares the covariance of y, y_dot and sign(y_dot)</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-deriv-visualizations"><em>rawseeds_laser_deriv_visualizations</em></a></td>
+<td>Displays the effect of several kind of filtering for visualization the derivative.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rawseeds-laser-display"><em>rawseeds_laser_display</em></a></td>
+<td>Display Sick and Hokuyo data superimposed with omnidirectional camera data.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-save"><em>save</em></a></td>
+<td>Saves the input to the given pickle file at a certain interval.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-sick-extract"><em>sick_extract</em></a></td>
+<td>Extracts the Sick data</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-sick-show"><em>sick_show</em></a></td>
+<td>Displays the sick data on top of omnidirectional camera</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-smooth-and-scale"><em>smooth_and_scale</em></a></td>
+<td>A primitive way of having better display.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-tensor-display-simple"><em>tensor_display_simple</em></a></td>
+<td>Creates a display for a 3 x N x N tensor T.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-tensor-display-simple-2dof"><em>tensor_display_simple_2dof</em></a></td>
+<td>Creates a display for a 3 x N x N tensor T, but only for the first and last plane.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-tplot"><em>tplot</em></a></td>
+<td>Used by <a class="reference internal" href="#block-rawseeds-camera-bgds-boot"><em>rawseeds_camera_bgds_boot</em></a></td>
+</tr>
+<tr><td><a class="reference internal" href="#block-watermark"><em>watermark</em></a></td>
+<td>Adds some tracking information to the video.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-y-dot-vis"><em>y_dot_vis</em></a></td>
+<td>Widget for displaying y_dot.</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-be1008-bgds-1d-predictor"><em>Module be1008.bgds_1d_predictor</em></a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-bgds-1d-predictor"><em>bgds_1d_predictor</em></a></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-be1008-memories"><em>Module be1008.memories</em></a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-memories"><em>memories</em></a></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-be1008-predictor"><em>Module be1008.predictor</em></a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-bgds-predictor"><em>bgds_predictor</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-count-less-than-zero"><em>count_less_than_zero</em></a></td>
+<td>Returns the fraction of zero elements in the array.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-one-over"><em>one_over</em></a></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="procgraph-module section" id="module-be1008">
+<span id="id1"></span><h1>Module <tt class="docutils literal"><span class="pre">be1008</span></tt><a class="headerlink" href="#module-be1008" title="Permalink to this headline">¶</a></h1>
+<div class="procgraph-block section" id="contrast">
+<span id="block-contrast"></span><h2><tt class="docutils literal"><span class="pre">contrast</span></tt><a class="headerlink" href="#contrast" title="Permalink to this headline">¶</a></h2>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/contrast.pg">/src/be1008/models/contrast.pg</a>.</p>
+</div>
+<div class="procgraph-block section" id="corr-display">
+<span id="block-corr-display"></span><h2><tt class="docutils literal"><span class="pre">corr_display</span></tt><a class="headerlink" href="#corr-display" title="Permalink to this headline">¶</a></h2>
+<p>Displays the correlation as an image. It also limits the framerate.</p>
+<p>Used by <a class="reference internal" href="#block-rawseeds-laser-covcorr"><em>rawseeds_laser_covcorr</em></a>.</p>
+<div class="procgraph-config section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">title</span></tt>: None</li>
+<li><tt class="docutils literal"><span class="pre">display_fps</span></tt> (default: 1): Frame rate limit.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_corr.pg">/src/be1008/models/rawseeds_laser_corr.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="cov-display">
+<span id="block-cov-display"></span><h2><tt class="docutils literal"><span class="pre">cov_display</span></tt><a class="headerlink" href="#cov-display" title="Permalink to this headline">¶</a></h2>
+<p>Displays the covariance as an image.</p>
+<div class="procgraph-config section" id="id2">
+<h3>Configuration<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">display_fps</span></tt> (default: 1): Display frequency</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_covariance.pg">/src/be1008/models/rawseeds_laser_covariance.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="covcorr-display">
+<span id="block-covcorr-display"></span><h2><tt class="docutils literal"><span class="pre">covcorr_display</span></tt><a class="headerlink" href="#covcorr-display" title="Permalink to this headline">¶</a></h2>
+<p>Displays the covariance/correlation as an image. It also limits the framerate.</p>
+<p>Used by <a class="reference internal" href="#block-rawseeds-laser-covcorr"><em>rawseeds_laser_covcorr</em></a>.</p>
+<div class="procgraph-config section" id="id3">
+<h3>Configuration<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">display_fps</span></tt> (default: 1): Frame rate limit.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_covcorr.pg">/src/be1008/models/rawseeds_laser_covcorr.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="deriv-filter">
+<span id="block-deriv-filter"></span><h2><tt class="docutils literal"><span class="pre">deriv_filter</span></tt><a class="headerlink" href="#deriv-filter" title="Permalink to this headline">¶</a></h2>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_predict.pg">/src/be1008/models/rawseeds_laser_bgds_predict.pg</a>.</p>
+</div>
+<div class="procgraph-block section" id="image-label">
+<span id="block-image-label"></span><h2><tt class="docutils literal"><span class="pre">image_label</span></tt><a class="headerlink" href="#image-label" title="Permalink to this headline">¶</a></h2>
+<p>Puts a border and a label around an image</p>
+<div class="procgraph-config section" id="id4">
+<h3>Configuration<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">title</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="input">
+<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">out</span></tt>: Image with border and label</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/image_label.pg">/src/be1008/models/image_label.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="my-filter">
+<span id="block-my-filter"></span><h2><tt class="docutils literal"><span class="pre">my_filter</span></tt><a class="headerlink" href="#my-filter" title="Permalink to this headline">¶</a></h2>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_predict.pg">/src/be1008/models/rawseeds_laser_bgds_predict.pg</a>.</p>
+</div>
+<div class="procgraph-block section" id="omni-superimpose">
+<span id="block-omni-superimpose"></span><h2><tt class="docutils literal"><span class="pre">omni_superimpose</span></tt><a class="headerlink" href="#omni-superimpose" title="Permalink to this headline">¶</a></h2>
+<p>Superimpose the input to an image from the omnidirectional camera. Useful to display the laser data.</p>
+<div class="procgraph-config section" id="id6">
+<h3>Configuration<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log dir.</li>
+<li><tt class="docutils literal"><span class="pre">width</span></tt> (default: 320): Camera signal width in pixels.</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id7">
+<h3>Input<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">in</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id8">
+<h3>Output<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgbp</span></tt>: None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_display.pg">/src/be1008/models/rawseeds_laser_display.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-boot">
+<span id="block-rawseeds-camera-bgds-boot"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_boot</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-boot" title="Permalink to this headline">¶</a></h2>
+<p>Uses <em class="xref std std-ref">block:rawseeds_synchronized_camera</em> as a source.</p>
+<div class="procgraph-config section" id="id9">
+<h3>Configuration<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt> (default: camera_bgds_boot): Subdirectory inside logdir where to put files.</li>
+<li><tt class="docutils literal"><span class="pre">image_op</span></tt> (default: rgb2gray): How to obtain a scalar from RGB</li>
+<li><tt class="docutils literal"><span class="pre">grad_op</span></tt> (default: identity): Scalar operation after gradient.</li>
+<li><tt class="docutils literal"><span class="pre">deriv_op</span></tt> (default: identity): Scalar operation after derivative.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_boot.pg">/src/be1008/models/rawseeds_camera_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-boot-all">
+<span id="block-rawseeds-camera-bgds-boot-all"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_boot_all</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-boot-all" title="Permalink to this headline">¶</a></h2>
+<p>Tries all possible combinations of ops for BGDS bootstrapping.</p>
+<div class="procgraph-config section" id="id10">
+<h3>Configuration<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_boot.pg">/src/be1008/models/rawseeds_camera_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-boot-combinations">
+<span id="block-rawseeds-camera-bgds-boot-combinations"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_boot_combinations</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-boot-combinations" title="Permalink to this headline">¶</a></h2>
+<p>Tries all possible combinations of ops for BGDS bootstrapping.</p>
+<div class="procgraph-config section" id="id12">
+<h3>Configuration<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">image_op</span></tt>: Operation to get a scalar from RGB.</li>
+<li><tt class="docutils literal"><span class="pre">base</span></tt>: Base output directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_boot.pg">/src/be1008/models/rawseeds_camera_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-predict">
+<span id="block-rawseeds-camera-bgds-predict"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_predict</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-predict" title="Permalink to this headline">¶</a></h2>
+<p>Compares the BGDS prediction with reality.</p>
+<p>Uses rawseeds_synchronized_camera as a source.</p>
+<div class="procgraph-config section" id="id14">
+<h3>Configuration<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt> (default: camera_bgds_predict): Subdirectory inside logdir where to put files.</li>
+<li><tt class="docutils literal"><span class="pre">image_op</span></tt> (default: rgb2gray): How to obtain a scalar from RGB</li>
+<li><tt class="docutils literal"><span class="pre">grad_op</span></tt> (default: identity): Scalar operation after gradient.</li>
+<li><tt class="docutils literal"><span class="pre">deriv_op</span></tt> (default: identity): Scalar operation after derivative.</li>
+<li><tt class="docutils literal"><span class="pre">tensors</span></tt> (default: out/camera_bgds_boot/gray_GI_DI:G.pickle): Tensor to use. path relative to <tt class="docutils literal"><span class="pre">logdir/..</span></tt>.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_predict.pg">/src/be1008/models/rawseeds_camera_bgds_predict.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-predict-all">
+<span id="block-rawseeds-camera-bgds-predict-all"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_predict_all</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-predict-all" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id15">
+<h3>Configuration<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_predict.pg">/src/be1008/models/rawseeds_camera_bgds_predict.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-stats">
+<span id="block-rawseeds-camera-bgds-stats"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_stats</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-stats" title="Permalink to this headline">¶</a></h2>
+<p>Computes several statistics for the camera stream.</p>
+<p>Uses rawseeds_synchronized_camera as a source.</p>
+<div class="procgraph-config section" id="id17">
+<h3>Configuration<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt> (default: rawseeds_camera_stats): Subdirectory inside logdir where to put files.</li>
+<li><tt class="docutils literal"><span class="pre">image_op</span></tt> (default: rgb2gray): How to obtain a scalar from RGB</li>
+<li><tt class="docutils literal"><span class="pre">grad_op</span></tt> (default: identity): Scalar operation after gradient.</li>
+<li><tt class="docutils literal"><span class="pre">deriv_op</span></tt> (default: identity): Scalar operation after derivative.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_stats.pg">/src/be1008/models/rawseeds_camera_bgds_stats.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-stats-all">
+<span id="block-rawseeds-camera-bgds-stats-all"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_stats_all</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-stats-all" title="Permalink to this headline">¶</a></h2>
+<p>Tries all possible combinations of ops for BGDS bootstrapping.</p>
+<div class="procgraph-config section" id="id18">
+<h3>Configuration<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_stats.pg">/src/be1008/models/rawseeds_camera_bgds_stats.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-bgds-stats-combinations">
+<span id="block-rawseeds-camera-bgds-stats-combinations"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_bgds_stats_combinations</span></tt><a class="headerlink" href="#rawseeds-camera-bgds-stats-combinations" title="Permalink to this headline">¶</a></h2>
+<p>Tries all possible combinations of ops for BGDS bootstrapping.</p>
+<div class="procgraph-config section" id="id20">
+<h3>Configuration<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">image_op</span></tt>: Operation to get a scalar from RGB.</li>
+<li><tt class="docutils literal"><span class="pre">base</span></tt>: Base output directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_stats.pg">/src/be1008/models/rawseeds_camera_bgds_stats.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-display">
+<span id="block-rawseeds-camera-display"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_display</span></tt><a class="headerlink" href="#rawseeds-camera-display" title="Permalink to this headline">¶</a></h2>
+<p>Display the raw video with a watermark</p>
+<div class="procgraph-config section" id="id22">
+<h3>Configuration<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_display.pg">/src/be1008/models/rawseeds_camera_display.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-display-contrast">
+<span id="block-rawseeds-camera-display-contrast"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_display_contrast</span></tt><a class="headerlink" href="#rawseeds-camera-display-contrast" title="Permalink to this headline">¶</a></h2>
+<p>Displays contrast and related signal</p>
+<div class="procgraph-config section" id="id23">
+<h3>Configuration<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_display.pg">/src/be1008/models/rawseeds_camera_display.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-mean">
+<span id="block-rawseeds-camera-mean"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_mean</span></tt><a class="headerlink" href="#rawseeds-camera-mean" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id25">
+<h3>Configuration<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_mean.pg">/src/be1008/models/rawseeds_camera_mean.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-mean-contrast">
+<span id="block-rawseeds-camera-mean-contrast"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_mean_contrast</span></tt><a class="headerlink" href="#rawseeds-camera-mean-contrast" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id26">
+<h3>Configuration<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_mean.pg">/src/be1008/models/rawseeds_camera_mean.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-mean-contrast-skim">
+<span id="block-rawseeds-camera-mean-contrast-skim"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_mean_contrast_skim</span></tt><a class="headerlink" href="#rawseeds-camera-mean-contrast-skim" title="Permalink to this headline">¶</a></h2>
+<p>Used by <a class="reference internal" href="#block-rawseeds-camera-mean-contrast"><em>rawseeds_camera_mean_contrast</em></a>.</p>
+<div class="procgraph-input section" id="id28">
+<h3>Input<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id29">
+<h3>Output<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_mean.pg">/src/be1008/models/rawseeds_camera_mean.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-mean-generalized">
+<span id="block-rawseeds-camera-mean-generalized"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_mean_generalized</span></tt><a class="headerlink" href="#rawseeds-camera-mean-generalized" title="Permalink to this headline">¶</a></h2>
+<p>Computes and displays the mean of an arbitrary block.</p>
+<div class="procgraph-config section" id="id31">
+<h3>Configuration<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt>: Prefix for this operation (writes in $logdir/prefix)</li>
+<li><tt class="docutils literal"><span class="pre">fps</span></tt> (default: 0.1): frame rate for learning video</li>
+<li><tt class="docutils literal"><span class="pre">before_op</span></tt> (default: identity): Operation to be applied to y.</li>
+<li><tt class="docutils literal"><span class="pre">after_op</span></tt> (default: scale): How to visualize the result.</li>
+<li><tt class="docutils literal"><span class="pre">title</span></tt> (default: Camera mean): Title to use in watermark.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_mean.pg">/src/be1008/models/rawseeds_camera_mean.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-var">
+<span id="block-rawseeds-camera-var"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_var</span></tt><a class="headerlink" href="#rawseeds-camera-var" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id33">
+<h3>Configuration<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_var.pg">/src/be1008/models/rawseeds_camera_var.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-var-contrast">
+<span id="block-rawseeds-camera-var-contrast"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_var_contrast</span></tt><a class="headerlink" href="#rawseeds-camera-var-contrast" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id34">
+<h3>Configuration<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_var.pg">/src/be1008/models/rawseeds_camera_var.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-var-contrast-skim">
+<span id="block-rawseeds-camera-var-contrast-skim"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_var_contrast_skim</span></tt><a class="headerlink" href="#rawseeds-camera-var-contrast-skim" title="Permalink to this headline">¶</a></h2>
+<p>Used by <a class="reference internal" href="#block-rawseeds-camera-var-contrast"><em>rawseeds_camera_var_contrast</em></a>.</p>
+<div class="procgraph-input section" id="id36">
+<h3>Input<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id37">
+<h3>Output<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_var.pg">/src/be1008/models/rawseeds_camera_var.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-camera-var-generalized">
+<span id="block-rawseeds-camera-var-generalized"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_camera_var_generalized</span></tt><a class="headerlink" href="#rawseeds-camera-var-generalized" title="Permalink to this headline">¶</a></h2>
+<p>Computes and displays the variance of visual data.</p>
+<div class="procgraph-config section" id="id39">
+<h3>Configuration<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt>: Prefix for this operation (writes in $logdir/prefix)</li>
+<li><tt class="docutils literal"><span class="pre">fps</span></tt> (default: 0.1): frame rate for learning video</li>
+<li><tt class="docutils literal"><span class="pre">before_op</span></tt> (default: identity): Operation to be applied to y.</li>
+<li><tt class="docutils literal"><span class="pre">after_op</span></tt> (default: scale): How to visualize the result.</li>
+<li><tt class="docutils literal"><span class="pre">title</span></tt> (default: Camera variance): Title to use in watermark.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_var.pg">/src/be1008/models/rawseeds_camera_var.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-bds-boot">
+<span id="block-rawseeds-laser-bds-boot"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_bds_boot</span></tt><a class="headerlink" href="#rawseeds-laser-bds-boot" title="Permalink to this headline">¶</a></h2>
+<p>This is an attempt to do bootstrapping of range finder data.</p>
+<p>Uses <em class="xref std std-ref">block:rawseeds_synchronized_laser</em> as a source.</p>
+<div class="procgraph-config section" id="id41">
+<h3>Configuration<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bds_boot.pg">/src/be1008/models/rawseeds_laser_bds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-bgds-boot">
+<span id="block-rawseeds-laser-bgds-boot"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_bgds_boot</span></tt><a class="headerlink" href="#rawseeds-laser-bgds-boot" title="Permalink to this headline">¶</a></h2>
+<p>Uses rawseeds_synchronized_laser as a source.</p>
+<div class="procgraph-config section" id="id42">
+<h3>Configuration<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">outdir</span></tt> (default: laser_bgds_boot): Subdirectory inside logdir where to put files.</li>
+<li><tt class="docutils literal"><span class="pre">grad_op</span></tt> (default: identity): Scalar operation after gradient.</li>
+<li><tt class="docutils literal"><span class="pre">deriv_op</span></tt> (default: identity): Scalar operation after derivative.</li>
+<li><tt class="docutils literal"><span class="pre">display_fps</span></tt> (default: 0.1): Frames per second for movie.</li>
+<li><tt class="docutils literal"><span class="pre">rangefinder_fps</span></tt> (default: 2.5): Cap on laser frame rate.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_boot.pg">/src/be1008/models/rawseeds_laser_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-bgds-boot-all">
+<span id="block-rawseeds-laser-bgds-boot-all"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_bgds_boot_all</span></tt><a class="headerlink" href="#rawseeds-laser-bgds-boot-all" title="Permalink to this headline">¶</a></h2>
+<p>Tries all possible combinations of ops for BGDS bootstrapping.</p>
+<div class="procgraph-config section" id="id43">
+<h3>Configuration<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_boot.pg">/src/be1008/models/rawseeds_laser_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-bgds-boot-save">
+<span id="block-rawseeds-laser-bgds-boot-save"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_bgds_boot_save</span></tt><a class="headerlink" href="#rawseeds-laser-bgds-boot-save" title="Permalink to this headline">¶</a></h2>
+<p>Saves the input to the given pickle file at a certain interval.</p>
+<div class="procgraph-config section" id="id45">
+<h3>Configuration<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">w</span></tt>: The file name, without the &#8216;.pickle&#8217; extension which is added automatically.</li>
+<li><tt class="docutils literal"><span class="pre">fps</span></tt> (default: 0.2): None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_boot.pg">/src/be1008/models/rawseeds_laser_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-bgds-predict">
+<span id="block-rawseeds-laser-bgds-predict"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_bgds_predict</span></tt><a class="headerlink" href="#rawseeds-laser-bgds-predict" title="Permalink to this headline">¶</a></h2>
+<p>Compares the laser BGDS prediction with reality.</p>
+<p>Uses <em class="xref std std-ref">block:rawseeds_synchronized_laser</em> as a source.</p>
+<div class="procgraph-config section" id="id47">
+<h3>Configuration<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt> (default: laser_bgds_predict): Subdirectory inside logdir where to put files.</li>
+<li><tt class="docutils literal"><span class="pre">grad_op</span></tt> (default: identity): Scalar operation after gradient.</li>
+<li><tt class="docutils literal"><span class="pre">deriv_op</span></tt> (default: identity): Scalar operation after derivative.</li>
+<li><tt class="docutils literal"><span class="pre">tensors</span></tt> (default: out/laser_bgds_boot/GS_DS:GB.pickle): Tensors configuration to use.</li>
+<li><tt class="docutils literal"><span class="pre">fps</span></tt> (default: 12): Frames per second</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_predict.pg">/src/be1008/models/rawseeds_laser_bgds_predict.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-bgds-predict-all">
+<span id="block-rawseeds-laser-bgds-predict-all"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_bgds_predict_all</span></tt><a class="headerlink" href="#rawseeds-laser-bgds-predict-all" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id49">
+<h3>Configuration<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_predict.pg">/src/be1008/models/rawseeds_laser_bgds_predict.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-corr">
+<span id="block-rawseeds-laser-corr"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_corr</span></tt><a class="headerlink" href="#rawseeds-laser-corr" title="Permalink to this headline">¶</a></h2>
+<p>Computes and compares the correlation of y, dy/dt and sign(dy/dt)</p>
+<div class="procgraph-config section" id="id51">
+<h3>Configuration<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_corr.pg">/src/be1008/models/rawseeds_laser_corr.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-covariance">
+<span id="block-rawseeds-laser-covariance"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_covariance</span></tt><a class="headerlink" href="#rawseeds-laser-covariance" title="Permalink to this headline">¶</a></h2>
+<p>Computes and compares the covariance of y, y_dot and sign(y_dot)</p>
+<div class="procgraph-config section" id="id53">
+<h3>Configuration<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log dir</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_covariance.pg">/src/be1008/models/rawseeds_laser_covariance.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-covcorr">
+<span id="block-rawseeds-laser-covcorr"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_covcorr</span></tt><a class="headerlink" href="#rawseeds-laser-covcorr" title="Permalink to this headline">¶</a></h2>
+<p>Computes and compares the covariance of y, y_dot and sign(y_dot)</p>
+<div class="procgraph-config section" id="id55">
+<h3>Configuration<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_covcorr.pg">/src/be1008/models/rawseeds_laser_covcorr.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-deriv-visualizations">
+<span id="block-rawseeds-laser-deriv-visualizations"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_deriv_visualizations</span></tt><a class="headerlink" href="#rawseeds-laser-deriv-visualizations" title="Permalink to this headline">¶</a></h2>
+<p>Displays the effect of several kind of filtering for visualization the derivative.</p>
+<div class="procgraph-config section" id="id57">
+<h3>Configuration<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Directory containing Rawseeds logs.</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt> (default: laser_deriv_visualizations): Subdirectory of &#8216;out/&#8217; where to put results.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_deriv_visualizations.pg">/src/be1008/models/rawseeds_laser_deriv_visualizations.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="rawseeds-laser-display">
+<span id="block-rawseeds-laser-display"></span><h2><tt class="docutils literal"><span class="pre">rawseeds_laser_display</span></tt><a class="headerlink" href="#rawseeds-laser-display" title="Permalink to this headline">¶</a></h2>
+<p>Display Sick and Hokuyo data superimposed with omnidirectional camera data.</p>
+<div class="procgraph-config section" id="id58">
+<h3>Configuration<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log directory</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_display.pg">/src/be1008/models/rawseeds_laser_display.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="save">
+<span id="block-save"></span><h2><tt class="docutils literal"><span class="pre">save</span></tt><a class="headerlink" href="#save" title="Permalink to this headline">¶</a></h2>
+<p>Saves the input to the given pickle file at a certain interval.</p>
+<div class="procgraph-config section" id="id60">
+<h3>Configuration<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">w</span></tt>: The file name, without the &#8216;.pickle&#8217; extension which is added automatically.</li>
+<li><tt class="docutils literal"><span class="pre">fps</span></tt> (default: 0.2): None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_stats.pg">/src/be1008/models/rawseeds_camera_bgds_stats.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="sick-extract">
+<span id="block-sick-extract"></span><h2><tt class="docutils literal"><span class="pre">sick_extract</span></tt><a class="headerlink" href="#sick-extract" title="Permalink to this headline">¶</a></h2>
+<p>Extracts the Sick data</p>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_deriv_visualizations.pg">/src/be1008/models/rawseeds_laser_deriv_visualizations.pg</a>.</p>
+</div>
+<div class="procgraph-block section" id="sick-show">
+<span id="block-sick-show"></span><h2><tt class="docutils literal"><span class="pre">sick_show</span></tt><a class="headerlink" href="#sick-show" title="Permalink to this headline">¶</a></h2>
+<p>Displays the sick data on top of omnidirectional camera</p>
+<div class="procgraph-config section" id="id63">
+<h3>Configuration<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds log dir</li>
+<li><tt class="docutils literal"><span class="pre">width</span></tt> (default: 320): Size of plotting</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id64">
+<h3>Input<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y_sick</span></tt>: Sick data</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id65">
+<h3>Output<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">blend</span></tt>: None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_display.pg">/src/be1008/models/rawseeds_laser_display.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="smooth-and-scale">
+<span id="block-smooth-and-scale"></span><h2><tt class="docutils literal"><span class="pre">smooth_and_scale</span></tt><a class="headerlink" href="#smooth-and-scale" title="Permalink to this headline">¶</a></h2>
+<p>A primitive way of having better display.</p>
+<div class="procgraph-input section" id="id67">
+<h3>Input<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">x</span></tt>: Some sequence of values</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id68">
+<h3>Output<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y</span></tt>: Smoothed, scaled version of x.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_bgds_predict.pg">/src/be1008/models/rawseeds_laser_bgds_predict.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="tensor-display-simple">
+<span id="block-tensor-display-simple"></span><h2><tt class="docutils literal"><span class="pre">tensor_display_simple</span></tt><a class="headerlink" href="#tensor-display-simple" title="Permalink to this headline">¶</a></h2>
+<p>Creates a display for a 3 x N x N tensor T.</p>
+<div class="procgraph-input section" id="id70">
+<h3>Input<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">T</span></tt>: Tensor matrix with dimensions 3 x N x N</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id71">
+<h3>Output<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: Image representation</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/tensor_display_simple.pg">/src/be1008/models/tensor_display_simple.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="tensor-display-simple-2dof">
+<span id="block-tensor-display-simple-2dof"></span><h2><tt class="docutils literal"><span class="pre">tensor_display_simple_2dof</span></tt><a class="headerlink" href="#tensor-display-simple-2dof" title="Permalink to this headline">¶</a></h2>
+<p>Creates a display for a 3 x N x N tensor T, but only for the first and last plane.</p>
+<p>Otherwise equivalent to <a class="reference internal" href="#block-tensor-display-simple-2dof"><em>tensor_display_simple_2dof</em></a>.</p>
+<div class="procgraph-input section" id="id72">
+<h3>Input<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">T</span></tt>: Tensor matrix with dimensions 3 x N x N</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id73">
+<h3>Output<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: Image representation</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/tensor_display_simple_2dof.pg">/src/be1008/models/tensor_display_simple_2dof.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="tplot">
+<span id="block-tplot"></span><h2><tt class="docutils literal"><span class="pre">tplot</span></tt><a class="headerlink" href="#tplot" title="Permalink to this headline">¶</a></h2>
+<p>Used by <a class="reference internal" href="#block-rawseeds-camera-bgds-boot"><em>rawseeds_camera_bgds_boot</em></a></p>
+<div class="procgraph-config section" id="id74">
+<h3>Configuration<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">title</span></tt>: None</li>
+<li><tt class="docutils literal"><span class="pre">fps</span></tt> (default: 0.2): None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_camera_bgds_boot.pg">/src/be1008/models/rawseeds_camera_bgds_boot.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="watermark">
+<span id="block-watermark"></span><h2><tt class="docutils literal"><span class="pre">watermark</span></tt><a class="headerlink" href="#watermark" title="Permalink to this headline">¶</a></h2>
+<p>Adds some tracking information to the video.</p>
+<div class="procgraph-config section" id="id76">
+<h3>Configuration<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: Rawseeds logdir</li>
+<li><tt class="docutils literal"><span class="pre">title</span></tt>: Title description</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id77">
+<h3>Input<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: image</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id78">
+<h3>Output<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">rgb</span></tt>: image with overlaid information</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/watermark.pg">/src/be1008/models/watermark.pg</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="y-dot-vis">
+<span id="block-y-dot-vis"></span><h2><tt class="docutils literal"><span class="pre">y_dot_vis</span></tt><a class="headerlink" href="#y-dot-vis" title="Permalink to this headline">¶</a></h2>
+<p>Widget for displaying y_dot.</p>
+<div class="procgraph-config section" id="id79">
+<h3>Configuration<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">title</span></tt>: Title for the plot</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id80">
+<h3>Input<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y_dot</span></tt>: Normalized in [-1,1].</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_deriv_visualizations.pg">/src/be1008/models/rawseeds_laser_deriv_visualizations.pg</a>.</p>
+</div>
+</div>
+</div>
+<div class="procgraph-module section" id="module-be1008-bgds-1d-predictor">
+<span id="id82"></span><h1>Module <tt class="docutils literal"><span class="pre">be1008.bgds_1d_predictor</span></tt><a class="headerlink" href="#module-be1008-bgds-1d-predictor" title="Permalink to this headline">¶</a></h1>
+<div class="procgraph-block section" id="bgds-1d-predictor">
+<span id="block-bgds-1d-predictor"></span><h2><tt class="docutils literal"><span class="pre">bgds_1d_predictor</span></tt><a class="headerlink" href="#bgds-1d-predictor" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id83">
+<h3>Configuration<a class="headerlink" href="#id83" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">BG</span></tt>: pickle file produced by <tt class="docutils literal"><span class="pre">laser_bgds_boot_disp</span></tt>.</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id84">
+<h3>Input<a class="headerlink" href="#id84" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">gy</span></tt>: Gradient of y.</li>
+<li><tt class="docutils literal"><span class="pre">y_dot</span></tt>: Derivative of y.</li>
+<li><tt class="docutils literal"><span class="pre">commands</span></tt>: Commands (<tt class="docutils literal"><span class="pre">[vx,vy,omega]</span></tt>).</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id85">
+<h3>Output<a class="headerlink" href="#id85" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y_dot_pred</span></tt>: Predicted y_dot</li>
+<li><tt class="docutils literal"><span class="pre">error</span></tt>: Disagreement between actual and predicted y_dot.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/bgds_1d_predictor.py">/src/be1008/bgds_1d_predictor.py</a>.</p>
+</div>
+</div>
+</div>
+<div class="procgraph-module section" id="module-be1008-memories">
+<span id="id86"></span><h1>Module <tt class="docutils literal"><span class="pre">be1008.memories</span></tt><a class="headerlink" href="#module-be1008-memories" title="Permalink to this headline">¶</a></h1>
+<div class="procgraph-block section" id="memories">
+<span id="block-memories"></span><h2><tt class="docutils literal"><span class="pre">memories</span></tt><a class="headerlink" href="#memories" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id87">
+<h3>Configuration<a class="headerlink" href="#id87" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">other</span></tt>: additional hash to save</li>
+<li><tt class="docutils literal"><span class="pre">prefix</span></tt>: subdirectory</li>
+<li><tt class="docutils literal"><span class="pre">logdir</span></tt>: chooses which one</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id88">
+<h3>Input<a class="headerlink" href="#id88" title="Permalink to this headline">¶</a></h3>
+<p>None (variable: None &lt;= n &lt;= None)</p>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/memories.py">/src/be1008/memories.py</a>.</p>
+</div>
+</div>
+</div>
+<div class="procgraph-module section" id="module-be1008-predictor">
+<span id="id89"></span><h1>Module <tt class="docutils literal"><span class="pre">be1008.predictor</span></tt><a class="headerlink" href="#module-be1008-predictor" title="Permalink to this headline">¶</a></h1>
+<div class="procgraph-block section" id="bgds-predictor">
+<span id="block-bgds-predictor"></span><h2><tt class="docutils literal"><span class="pre">bgds_predictor</span></tt><a class="headerlink" href="#bgds-predictor" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-config section" id="id90">
+<h3>Configuration<a class="headerlink" href="#id90" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">G</span></tt>: Data produced by camera_bgds_boot_display</li>
+</ul>
+</div>
+<div class="procgraph-input section" id="id91">
+<h3>Input<a class="headerlink" href="#id91" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">gx</span></tt>: Gradient of image along direction x.</li>
+<li><tt class="docutils literal"><span class="pre">gy</span></tt>: Gradient of image along direction y.</li>
+<li><tt class="docutils literal"><span class="pre">y_dot</span></tt>: Derivative of y.</li>
+<li><tt class="docutils literal"><span class="pre">commands</span></tt>: Commands (<tt class="docutils literal"><span class="pre">[vx,vy,omega]</span></tt>).</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id92">
+<h3>Output<a class="headerlink" href="#id92" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">y_dot_pred</span></tt>: Predicted y_dot</li>
+<li><tt class="docutils literal"><span class="pre">error</span></tt>: Disagreement between actual and predicted y_dot.</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py">/src/be1008/predictor.py</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="count-less-than-zero">
+<span id="block-count-less-than-zero"></span><h2><tt class="docutils literal"><span class="pre">count_less_than_zero</span></tt><a class="headerlink" href="#count-less-than-zero" title="Permalink to this headline">¶</a></h2>
+<p>Returns the fraction of zero elements in the array.</p>
+<div class="procgraph-input section" id="id93">
+<h3>Input<a class="headerlink" href="#id93" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">0</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id94">
+<h3>Output<a class="headerlink" href="#id94" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">0</span></tt>: None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py">/src/be1008/predictor.py</a>.</p>
+</div>
+</div>
+<div class="procgraph-block section" id="one-over">
+<span id="block-one-over"></span><h2><tt class="docutils literal"><span class="pre">one_over</span></tt><a class="headerlink" href="#one-over" title="Permalink to this headline">¶</a></h2>
+<div class="procgraph-input section" id="id96">
+<h3>Input<a class="headerlink" href="#id96" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">0</span></tt>: None</li>
+</ul>
+</div>
+<div class="procgraph-output section" id="id97">
+<h3>Output<a class="headerlink" href="#id97" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">0</span></tt>: None</li>
+</ul>
+<p class="procgraph-source">Implemented in <a class="reference external" href="https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py">/src/be1008/predictor.py</a>.</p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

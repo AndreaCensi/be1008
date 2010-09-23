@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Notes &mdash; procgraph v0.1 documentation</title>
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>procgraph v0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Notes</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="notes">
+<h1>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h1>
+<p>These are some personal notes how all of this works.</p>
+<ol class="arabic">
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">be_all</span></tt>. It expects to be run in the base directory of rawseeds</p>
+<div class="highlight-python"><pre>    $ ls
+Bicocca_2009-02-25a/
+    Bicocca_2009-02-26a/
+    ...
+    $ be_all</pre>
+</div>
+</li>
+</ol>
+<p>You cannot run the <a href="#id1"><span class="problematic" id="id2">*</span></a>predict jobs as they need the tensor fields as described below.</p>
+<p>The output goes into a subdirectory of the log directories. The convention is:</p>
+<div class="highlight-python"><pre>Bicocca_2009-02-25a/out/&lt;experiment&gt;/&lt;configuration&gt;/file</pre>
+</div>
+<p>Moreover, there are &#8220;memory&#8221; files created by <a class="reference internal" href="pgdoc.html#block-memories"><em>memories</em></a>.</p>
+<div class="section" id="camera">
+<h2>Camera<a class="headerlink" href="#camera" title="Permalink to this headline">¶</a></h2>
+<p>For the camera, the operations are similar:</p>
+<blockquote>
+$ be_average_logs_results &#8211;dir . &#8211;experiment camera_bgds_boot
+$ be_average_logs_results &#8211;dir . &#8211;experiment camera_bgds_stats
+$ be_camera_bgds_boot_display (calls camera_figures)
+$ be_memories_display</blockquote>
+</div>
+<div class="section" id="laser">
+<h2>Laser<a class="headerlink" href="#laser" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic" start="2">
+<li><p class="first">Run the average operations that create the data:</p>
+<blockquote>
+<blockquote>
+<p># creates laser_bgds_boot.pickle
+$ be_average_logs_results &#8211;dir . &#8211;experiment laser_bgds_boot</p>
+<p># reads laser_bgds_boot.pickle, creates
+#     out/laser_bgds_boot.html (reprep report)
+#     out/laser_bgds_boot/&lt;variant&gt;:GB.pickle    &lt;&#8211; contains the tensors to use</p>
+</blockquote>
+<p>$ be_laser_bgds_boot_display</p>
+</blockquote>
+</li>
+</ol>
+<p>Then run <tt class="docutils literal"><span class="pre">be_all</span></tt> again with the <tt class="docutils literal"><span class="pre">*predict</span></tt> jobs.</p>
+</div>
+<div class="section" id="videos">
+<h2>Videos<a class="headerlink" href="#videos" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">be_materials</span></tt> creates the webpage</p>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>
