@@ -1,0 +1,262 @@
+header: |
+    <h1> Supplemental videos  </h1>
+
+     <p> This page describes the supplemental videos for a couple 
+         of recent papers on bootstrapping, as well as more recent
+         work and experiments. </p>
+     
+     <p> See <a href="http://purl.org/censi/2010/boot">http://purl.org/censi/2010/boot</a>
+         for more information and pointers to the source code. </p>
+     
+     <p> The original data comes from the <a href='http://www.rawseeds.org/'>Rawseeds
+         project</a>.
+     </p>
+    
+     <p>
+          <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /> You are welcome to use these videos under the terms of the
+     <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+          </p>
+     
+     <h3> Videos format </h3>
+     
+     <p> The videos are in .mp4 format with x264 encoding. 
+            They were encoded as .avi/mpeg using mencoder, then converted
+            to .mp4/x264 with ffmpeg.
+        They should 
+         play on any recent player, so let us know if it doesn't work for you. 
+         Players that are known to work include: MPlayer, VLC, Quicktime. 
+        </p>
+     
+     <p>
+         Note that most of these videos are very large (hundreds of MBs).
+         Click <span style='color:red'>play</span>
+         to play the video in the browser using a Flash widget.
+         Or right-click "download" for the direct link to the .mp4 file.
+     </p>
+     
+     
+#data_url_prefix: 'http://www.cds.caltech.edu/~andrea/pub/research/2010-bevideos/'
+data_url_prefix: 'http://www.cds.caltech.edu/~andrea/rawseeds/'
+desc_url_prefix: 'http://purl.org/censi/2010/be'
+out_latex_commands: out/be_materials2/video_ref2.tex
+out_latex_commands_test:  out/be_materials2/video_ref2_test.tex
+out_html: out/be_materials2/be_materials.html
+logs:
+    - Bicocca_2009-02-25a
+    - Bicocca_2009-02-25b
+    - Bicocca_2009-02-26a
+    - Bicocca_2009-02-26b
+    - Bicocca_2009-02-27a
+    - Bovisa_2008-09-01
+    - Bovisa_2008-10-04
+    - Bovisa_2008-10-06
+    - Bovisa_2008-10-07
+    - Bovisa_2008-10-11a
+    - Bovisa_2008-10-11b
+
+videos:
+- id: LaserDisplay
+  short: Visualization of laser data.
+  long: |
+    This video displays the laser data obtained by the two Sick range finders mounted at
+    approximately 0deg and 180deg with respect to the robot front.
+    
+    On the right, the raw readings are displayed by a simple plot. The first 181
+    readings are from the front laser, and the rest from the back laser.
+    
+    On the left, the laser readings are plotted in polar form superimposed to the
+    data from the omnidirectional camera. (Note that the alignment is only approximative).
+    
+    In both cases the maximum distance is capped at 20m (for visualization purposes)
+  path: laser_display/sick.mp4 
+  model: rawseeds_laser_display
+
+- id: LaserCorr
+  short: Second-order statistics of laser data.
+  long: |
+     This video displays some second-order statistics of the laser data, namely
+     the sample covariance of the readings (left), of the readings derivative (center),
+     and of the sign of the readings derivative (right). 
+     
+     Eventually, when averaged
+     over long trajectories in various environments, all of the three statistics are
+     a function of the distance between the sensels. However, their convergence
+     properties varies.
+     Case in point, the covariance of the readings is slow to converge because
+     the robot is driven along stereotypical trajectories (e.g., straight in the middle
+     of a corridor).
+     Instead, the derivative of the readings converges faster (informally,
+     deriving something tends to get rid of the slow phenomena).
+     
+     We also show the statistics of the sign of the derivative (cov(sign(dy/dt))) 
+     to make the point that simple nonlinearities can alter dramatically the
+     convergence speed. In this case, taking the sign mitigates the effects of
+     the abrupt changes in the readings signal.
+     
+  path: laser_corr/corr.mp4
+  model: rawseeds_laser_corr
+
+- id: LaserBDSLearning
+  short: BDS tensors learning for laser data.
+  long: |
+     This video shows the realtime learning of the BDS tensors (in the paper, indicated by the symbol T).  We consider two commands: linear and angular velocity. Therefore, T is a N x N x 2 
+     tensor, with N the number of readings. The two N x N slices are shown here side by side.
+     
+     Note how the angular velocity slice converges faster than the other. This is due
+     to the trajectories in which the robot is driven. Seen as a linear operator,
+     this part of the tensor is equivalent to a gradient operator followed by smoothing.
+     (the amount of smoothing depends on the environment covariance).
+     
+     In the end, the linear velocity slice converges as well and appears very similar to
+     the results we obtain in simulation. Seen as a linear operator, it can be 
+     considered a gradient operator + smoothing, multiplied by a cosine. 
+     
+  path:  laser_bds_boot/movie.mp4 
+  model: rawseeds_laser_bds_boot
+
+- id: RGB
+  short: Raw RGB signal.
+  long: |
+        one two three
+  path:   camera_display/rgb.mp4
+  model: rawseeds_camera_display
+  
+- id: RGBMean
+  short: Expectation of RGB signal.
+  long: |
+    one two three
+  path:   camera_mean/mean.mp4
+  model: rawseeds_camera_mean
+
+- id: Gray
+  short: Grayscale signal.
+  long: |
+    one two three
+  path:  camera_display/gray.mp4
+  model: rawseeds_camera_display
+
+- id: GrayDeriv
+  short: Derivative of grayscale signal.
+  long: |
+    one two three
+  path:    camera_display/gray_dot.mp4
+  model: rawseeds_camera_display
+    
+- id: Contrast
+  short: Contrast signal.
+  long: |
+    one two three
+  path:   camera_display_contrast/contrast.mp4  
+  model: rawseeds_camera_display_contrast
+
+- id: ContrastDeriv
+  short: Contrast signal.
+  long: |
+    one two three
+  path:  camera_display_contrast/contrast_dot.mp4
+  model: rawseeds_camera_display_contrast
+
+- id: ContrastMean
+  short: Expectation of contrast signal.
+  long: |
+   one two three
+  path:  camera_mean_contrast/mean.mp4
+  model: rawseeds_camera_mean_contrast
+
+- id: ContrastVar
+  short: Variance of contrast signal.
+  long: |
+   one two three
+  path:  camera_var_contrast/var.mp4
+  model: rawseeds_camera_var_contrast
+
+- id: GrayIdIdLearningSignal
+  short: BGDS learning signal (grayscale/Id/Id).
+  long: |
+    one two three
+  path:  camera_bgds_boot/gray/GI_DI/tensors_k.mp4
+  model: rawseeds_camera_bgds_boot_all
+
+- id: GrayIdIdLearningResult
+  short: Learned BGDS tensor (grayscale/Id/Id).
+  long: |
+   one two three
+  path:    camera_bgds_boot/gray/GI_DI/tensors.mp4
+  model: rawseeds_camera_bgds_boot_all 
+  
+- id: GrayIdIdPrediction
+  short: Observed and predicted derivative (grayscale/Id/Id).
+  long: |
+   one two three
+  path:     camera_bgds_predict/gray_GI_DI/y_dot.mp4
+  model: rawseeds_camera_bgds_predict_all
+
+- id: GrayIdIdError
+  short: Disagreement between prediction and observations (grayscale/Id/Id).
+  long: |
+   one two three
+  path:     camera_bgds_predict/gray_GI_DI/prod.mp4  
+  model: rawseeds_camera_bgds_predict_all
+
+- id: GrayIdIdErrorStats
+  short: Disagreement between prediction and observations  (grayscale/Id/Id).
+  long: |
+   one two three
+  path:    camera_bgds_predict/gray_GI_DI/prod_stats.mp4
+  model: rawseeds_camera_bgds_predict_all
+
+- id: ContrastSSLearningSignal
+  short: BGDS learning signal (contrast/Sgn/Sgn).
+  long: |
+   one two three
+  path:  camera_bgds_boot/contrast/GS_DS/tensors_k.mp4
+  model: rawseeds_camera_bgds_boot_all
+
+- id: ContrastSSLearningResult
+  short: Learned BGDS tensor (contrast/Sgn/Sgn).
+  long: |
+   one two three
+  path:    camera_bgds_boot/contrast/GS_DS/tensors.mp4
+  model: rawseeds_camera_bgds_boot_all
+
+- id: ContrastSSPrediction
+  short: Observed and predicted derivative  (contrast/Sgn/Sgn).
+  long: |
+    one two three
+  path:     camera_bgds_predict/contrast_GS_DS/y_dot.mp4 
+  model: rawseeds_camera_bgds_predict_all
+
+- id: ContrastSSError
+  short: Disagreement between prediction and observations (contrast/Sgn/Sgn).
+  long: |
+   one two three
+  path:    camera_bgds_predict/contrast_GS_DS/prod.mp4
+  model: rawseeds_camera_bgds_predict_all
+
+- id: ContrastSSErrorStats
+  short: Disagreement between prediction and observations (contrast/Sgn/Sgn).
+  long: |
+   one two three
+  path:    camera_bgds_predict/contrast_GS_DS/prod_stats.mp4
+  model: rawseeds_camera_bgds_predict_all 
+
+- id: LaserSSLearningResult
+  short: BGDS tensors for laser (Sgn/Sgn).
+  long: |
+     one two three
+  path:    laser_bgds_boot/GS_DS/movie.mp4
+  model: rawseeds_laser_bgds_boot 
+  
+- id: LaserIdIdLearningResult
+  short: BGDS tensors for laser (Id/Id).
+  long: |
+   one two three
+  path:    laser_bgds_boot/GI_DI/movie.mp4
+  model: rawseeds_laser_bgds_boot 
+  
+- id: LaserPrediction
+  short: BGDS prediction and disagreement.
+  long: |
+   one two three
+  path:     laser_bgds_predict/II_fps6_smooth8/movie.mp4
+  model: rawseeds_laser_bgds_predict 
