@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Notes &mdash; bootstrapping experiments v0.1 documentation</title>
+    <title>Notes on running the scripts &mdash; bootstrapping experiments v0.1 documentation</title>
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
@@ -61,20 +61,20 @@
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
           <span>bootstrapping experiments v0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>Notes</span></h2>
+        <h2 class="heading"><span>Notes on running the scripts</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="#">Contents</a>
+        <a class="uplink" href="index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="notes">
-<h1>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="notes-on-running-the-scripts">
+<span id="notes"></span><h1>Notes on running the scripts<a class="headerlink" href="#notes-on-running-the-scripts" title="Permalink to this headline">¶</a></h1>
 <p>These are some personal notes how all of this works.</p>
 <ol class="arabic">
 <li><p class="first">Run <tt class="docutils literal"><span class="pre">be_all</span></tt>. It expects to be run in the base directory of rawseeds</p>
@@ -104,16 +104,14 @@ $ be_memories_display</blockquote>
 <h2>Laser<a class="headerlink" href="#laser" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic" start="2">
 <li><p class="first">Run the average operations that create the data:</p>
-<blockquote>
-<blockquote>
-<p># creates laser_bgds_boot.pickle
-$ be_average_logs_results &#8211;dir . &#8211;experiment laser_bgds_boot</p>
-<p># reads laser_bgds_boot.pickle, creates
-#     out/laser_bgds_boot.html (reprep report)
-#     out/laser_bgds_boot/&lt;variant&gt;:GB.pickle    &lt;&#8211; contains the tensors to use</p>
-</blockquote>
-<p>$ be_laser_bgds_boot_display</p>
-</blockquote>
+<div class="highlight-python"><pre>    # creates laser_bgds_boot.pickle
+    $ be_average_logs_results --dir . --experiment laser_bgds_boot
+
+    # reads laser_bgds_boot.pickle, creates
+    #     out/laser_bgds_boot.html (reprep report)
+    #     out/laser_bgds_boot/&lt;variant&gt;:GB.pickle    &lt;-- contains the tensors to use
+$ be_laser_bgds_boot_display</pre>
+</div>
 </li>
 </ol>
 <p>Then run <tt class="docutils literal"><span class="pre">be_all</span></tt> again with the <tt class="docutils literal"><span class="pre">*predict</span></tt> jobs.</p>
@@ -123,25 +121,13 @@ $ be_average_logs_results &#8211;dir . &#8211;experiment laser_bgds_boot</p>
 <p><tt class="docutils literal"><span class="pre">be_materials</span></tt> creates the webpage</p>
 </div>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul class="simple">
-</ul>
-</div>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
-</div>
 
 
       </div>
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="#">Contents</a>
+        <a class="uplink" href="index.html">Contents</a>
         </p>
 
       </div>

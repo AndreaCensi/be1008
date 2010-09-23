@@ -1,5 +1,9 @@
-Notes 
-======
+
+
+.. _`notes`:
+
+Notes on running the scripts 
+============================
 
 
 These are some personal notes how all of this works. 
@@ -36,7 +40,7 @@ For the camera, the operations are similar:
 Laser
 -----
 
-2. Run the average operations that create the data:
+2. Run the average operations that create the data: ::
 
 	# creates laser_bgds_boot.pickle
 	$ be_average_logs_results --dir . --experiment laser_bgds_boot
@@ -52,15 +56,3 @@ Videos
 ------
 
 ``be_materials`` creates the webpage
-
-
-Indices and tables
-==================
-
-.. toctree::
-   :maxdepth: 2
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

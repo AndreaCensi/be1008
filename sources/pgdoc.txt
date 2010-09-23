@@ -8,15 +8,22 @@ Summary
 
 :ref:`module:be1008`
 
+Bootstrapping experiments
+
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`bgds_1d_predictor <block:bgds_1d_predictor>`                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`bgds_predictor <block:bgds_predictor>`                                                                                                                                                             None                                                                                                                                                                                                    
 :ref:`contrast <block:contrast>`                                                                                                                                                                         None                                                                                                                                                                                                    
 :ref:`corr_display <block:corr_display>`                                                                                                                                                                 Displays the correlation as an image. It also limits the framerate.                                                                                                                                     
+:ref:`count_less_than_zero <block:count_less_than_zero>`                                                                                                                                                 Returns the fraction of zero elements in the array.                                                                                                                                                     
 :ref:`cov_display <block:cov_display>`                                                                                                                                                                   Displays the covariance as an image.                                                                                                                                                                    
 :ref:`covcorr_display <block:covcorr_display>`                                                                                                                                                           Displays the covariance/correlation as an image. It also limits the framerate.                                                                                                                          
 :ref:`deriv_filter <block:deriv_filter>`                                                                                                                                                                 None                                                                                                                                                                                                    
 :ref:`image_label <block:image_label>`                                                                                                                                                                   Puts a border and a label around an image                                                                                                                                                               
+:ref:`memories <block:memories>`                                                                                                                                                                         None                                                                                                                                                                                                    
 :ref:`my_filter <block:my_filter>`                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`omni_superimpose <block:omni_superimpose>`                                                                                                                                                         Superimpose the input to an image from the omnidirectional camera. Useful to display the laser data.                                                                                                    
+:ref:`one_over <block:one_over>`                                                                                                                                                                         None                                                                                                                                                                                                    
 :ref:`rawseeds_camera_bgds_boot <block:rawseeds_camera_bgds_boot>`                                                                                                                                       Uses :ref:`block:rawseeds_synchronized_camera` as a source.                                                                                                                                             
 :ref:`rawseeds_camera_bgds_boot_all <block:rawseeds_camera_bgds_boot_all>`                                                                                                                               Tries all possible combinations of ops for BGDS bootstrapping.                                                                                                                                          
 :ref:`rawseeds_camera_bgds_boot_combinations <block:rawseeds_camera_bgds_boot_combinations>`                                                                                                             Tries all possible combinations of ops for BGDS bootstrapping.                                                                                                                                          
@@ -58,29 +65,6 @@ Summary
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
-:ref:`module:be1008.bgds_1d_predictor`
-
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`bgds_1d_predictor <block:bgds_1d_predictor>`                                                                                                                                                       None                                                                                                                                                                                                    
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-
-
-:ref:`module:be1008.memories`
-
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`memories <block:memories>`                                                                                                                                                                         None                                                                                                                                                                                                    
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-
-
-:ref:`module:be1008.predictor`
-
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`bgds_predictor <block:bgds_predictor>`                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`count_less_than_zero <block:count_less_than_zero>`                                                                                                                                                 Returns the fraction of zero elements in the array.                                                                                                                                                     
-:ref:`one_over <block:one_over>`                                                                                                                                                                         None                                                                                                                                                                                                    
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-
-
 .. _`module:be1008`:
 
 
@@ -88,6 +72,99 @@ Summary
 
 Module ``be1008``
 ============================================================
+
+
+
+.. rst-class:: procgraph:desc
+
+Bootstrapping experiments
+
+.. _`block:bgds_1d_predictor`:
+
+
+.. rst-class:: procgraph:block
+
+``bgds_1d_predictor``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``BG``: pickle file produced by ``laser_bgds_boot_disp``.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``gy``: Gradient of y.
+
+- ``y_dot``: Derivative of y.
+
+- ``commands``: Commands (``[vx,vy,omega]``).
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``y_dot_pred``: Predicted y_dot
+
+- ``error``: Disagreement between actual and predicted y_dot.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/be1008/bgds_1d_predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/bgds_1d_predictor.py>`_. 
+
+
+.. _`block:bgds_predictor`:
+
+
+.. rst-class:: procgraph:block
+
+``bgds_predictor``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``G``: Data produced by camera_bgds_boot_display
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``gx``: Gradient of image along direction x.
+
+- ``gy``: Gradient of image along direction y.
+
+- ``y_dot``: Derivative of y.
+
+- ``commands``: Commands (``[vx,vy,omega]``).
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``y_dot_pred``: Predicted y_dot
+
+- ``error``: Disagreement between actual and predicted y_dot.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/be1008/predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py>`_. 
 
 
 .. _`block:contrast`:
@@ -128,6 +205,37 @@ Configuration
 .. rst-class:: procgraph:source
 
 Implemented in `/src/be1008/models/rawseeds_laser_corr.pg <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_corr.pg>`_. 
+
+
+.. _`block:count_less_than_zero`:
+
+
+.. rst-class:: procgraph:block
+
+``count_less_than_zero``
+------------------------------------------------------------
+Returns the fraction of zero elements in the array.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/be1008/predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py>`_. 
 
 
 .. _`block:cov_display`:
@@ -230,6 +338,39 @@ Output
 Implemented in `/src/be1008/models/image_label.pg <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/image_label.pg>`_. 
 
 
+.. _`block:memories`:
+
+
+.. rst-class:: procgraph:block
+
+``memories``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``other``: additional hash to save
+
+- ``prefix``: subdirectory
+
+- ``logdir``: chooses which one
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+None (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/be1008/memories.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/memories.py>`_. 
+
+
 .. _`block:my_filter`:
 
 
@@ -282,6 +423,35 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/be1008/models/rawseeds_laser_display.pg <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_display.pg>`_. 
+
+
+.. _`block:one_over`:
+
+
+.. rst-class:: procgraph:block
+
+``one_over``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/be1008/predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py>`_. 
 
 
 .. _`block:rawseeds_camera_bgds_boot`:
@@ -1312,213 +1482,5 @@ Input
 .. rst-class:: procgraph:source
 
 Implemented in `/src/be1008/models/rawseeds_laser_deriv_visualizations.pg <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/models/rawseeds_laser_deriv_visualizations.pg>`_. 
-
-
-.. _`module:be1008.bgds_1d_predictor`:
-
-
-.. rst-class:: procgraph:module
-
-Module ``be1008.bgds_1d_predictor``
-============================================================
-
-
-.. _`block:bgds_1d_predictor`:
-
-
-.. rst-class:: procgraph:block
-
-``bgds_1d_predictor``
-------------------------------------------------------------
-
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``BG``: pickle file produced by ``laser_bgds_boot_disp``.
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``gy``: Gradient of y.
-
-- ``y_dot``: Derivative of y.
-
-- ``commands``: Commands (``[vx,vy,omega]``).
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``y_dot_pred``: Predicted y_dot
-
-- ``error``: Disagreement between actual and predicted y_dot.
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/be1008/bgds_1d_predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/bgds_1d_predictor.py>`_. 
-
-
-.. _`module:be1008.memories`:
-
-
-.. rst-class:: procgraph:module
-
-Module ``be1008.memories``
-============================================================
-
-
-.. _`block:memories`:
-
-
-.. rst-class:: procgraph:block
-
-``memories``
-------------------------------------------------------------
-
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``other``: additional hash to save
-
-- ``prefix``: subdirectory
-
-- ``logdir``: chooses which one
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-None (variable: None <= n <= None)
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/be1008/memories.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/memories.py>`_. 
-
-
-.. _`module:be1008.predictor`:
-
-
-.. rst-class:: procgraph:module
-
-Module ``be1008.predictor``
-============================================================
-
-
-.. _`block:bgds_predictor`:
-
-
-.. rst-class:: procgraph:block
-
-``bgds_predictor``
-------------------------------------------------------------
-
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``G``: Data produced by camera_bgds_boot_display
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``gx``: Gradient of image along direction x.
-
-- ``gy``: Gradient of image along direction y.
-
-- ``y_dot``: Derivative of y.
-
-- ``commands``: Commands (``[vx,vy,omega]``).
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``y_dot_pred``: Predicted y_dot
-
-- ``error``: Disagreement between actual and predicted y_dot.
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/be1008/predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py>`_. 
-
-
-.. _`block:count_less_than_zero`:
-
-
-.. rst-class:: procgraph:block
-
-``count_less_than_zero``
-------------------------------------------------------------
-Returns the fraction of zero elements in the array.
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: None
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: None
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/be1008/predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py>`_. 
-
-
-.. _`block:one_over`:
-
-
-.. rst-class:: procgraph:block
-
-``one_over``
-------------------------------------------------------------
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: None
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: None
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/be1008/predictor.py <https://github.com/AndreaCensi/be1008/blob/master//src/be1008/predictor.py>`_. 
 
 
