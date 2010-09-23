@@ -1,1 +1,1 @@
-pgdoc --translate `pwd`/..=https://github.com/AndreaCensi/201008-bootstrap/blob/master --label 'pgdoc:bootstrap_experiments_201008' --output source/pgdoc.rst bootstrap_experiments_201008
+pgdoc --translate `pwd`/..=https://github.com/AndreaCensi/be1008/blob/master --label 'pgdoc:be1008' --output source/pgdoc.rst be1008

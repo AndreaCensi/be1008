@@ -19,13 +19,16 @@ header: |
      
      <h3> Videos format </h3>
      
-     <p> The videos are in .mp4 format with x264 encoding. 
-            They were encoded as .avi/mpeg using mencoder, then converted
-            to .mp4/x264 with ffmpeg.
-        They should 
-         play on any recent player, so let us know if it doesn't work for you. 
-         Players that are known to work include: MPlayer, VLC, Quicktime. 
-        </p>
+        <p> The videos are in .mp4 format with x264 encoding. 
+                 They were encoded as .avi/mpeg using mencoder, then converted
+                 to .mp4/x264 with ffmpeg.
+             They should 
+              play on any recent player, so let us know if it doesn't work for you. 
+              Players that are known to work include: 
+                  <a href='http://www.mplayerhq.hu/'>MPlayer</a>, 
+                 <a href='http://www.videolan.org/vlc/'>VLC</a>, Quicktime. 
+             </p>
+     
      
      <p>
          Note that most of these videos are very large (hundreds of MBs).

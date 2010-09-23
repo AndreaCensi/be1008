@@ -34,7 +34,8 @@ extensions = ['sphinx.ext.autodoc',
 intersphinx_mapping = {'http://docs.python.org/': None,
     'http://matplotlib.sourceforge.net/': None,
     'http://docs.scipy.org/doc/numpy/': None,
-    'http://andreacensi.github.com/procgraph/': None}
+    'http://andreacensi.github.com/procgraph/': None,
+    'http://andreacensi.github.com/procgraph_rawseeds/': None}
     
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['my_templates']
@@ -46,10 +47,10 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'main'
+master_doc = 'index'
 
 # General information about the project.
-project = u'procgraph'
+project = u'bootstrapping experiments'
 copyright = u'2010, Andrea Censi'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -173,7 +174,7 @@ html_static_path = ['my_static']
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'procgraphdoc'
+htmlhelp_basename = 'be1008doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -187,7 +188,7 @@ htmlhelp_basename = 'procgraphdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'procgraph.tex', u'procgraph Documentation',
+  ('index', 'be1008.tex', u'',
    u'Andrea Censi', 'manual'),
 ]
 
@@ -207,13 +208,4 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_domain_indices = True
-
-
-# -- Options for manual page output --------------------------------------------
-
-# One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
-man_pages = [
-    ('index', 'procgraph', u'procgraph Documentation',
-     [u'Andrea Censi'], 1)
-]
+ 
