@@ -22,9 +22,7 @@ z     --> |covariance| --> cov_z      --> |cov_display| --> cov_z_rgb
 cov_y_rgb, cov_y_dot_rgb, cov_z_rgb --> |sync| --> |grid cols=3| --> rgb
 
 rgb --> |mencoder file=$out|
-
-# |resize width=1280 height=640|
-
+ 
 --- model cov_display
 """ Displays the covariance as an image. """
 config display_fps = 1 "Display frequency"

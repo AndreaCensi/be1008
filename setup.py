@@ -16,6 +16,7 @@ setup(
        'be_all                      = be1008.be_all:main',
        'be_memories_display         = be1008.memories_display:main',
        'be_materials                = be1008.be_materials:main',
+       'be_materials2               = be1008.be_materials2:main',
        'be_camera_figures           = be1008.camera_figure:main',
        ]
        },
