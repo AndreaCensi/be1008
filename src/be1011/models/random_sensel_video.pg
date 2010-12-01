@@ -1,0 +1,32 @@
+--- model random_sensel_video
+''' Shows a selection of sensels from the streams. '''
+import be1008
+import be1011
+
+config bpi "HDF file containing standard problem instance."
+config n = 25 "number of pixels to extract"
+config sensel_cols = 5 "Width of pixel display"
+config width = 320 "Width of produced image"
+config out "video filename"
+
+|log:hdfread file=$bpi|
+
+
+log.y, log.y_dot --> |random_extract n=$n| --> y, y_dot
+
+
+y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width| --> y_
+y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| --> y_dot_
+
+log.u -> |reshape_smart width=1| --> |posneg| --> |resize height=$width| -> u_
+
+y_ --> |image_label title='Observations y'| --> y_rgb
+y_dot_ --> |image_label title='Derivative dy/dt'| --> y_dot_rgb
+u_ --> |image_label title='Commands u'| --> u_rgb
+
+
+y_rgb, y_dot_rgb, u_rgb --> |sync| --> |grid cols=3| --> rgb
+
+rgb --> |mencoder file=$out|
+
+ 
