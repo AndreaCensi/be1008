@@ -1,4 +1,4 @@
---- model rawseeds_camera_bgds_boot
+----- model rawseeds_camera_bgds_boot
 """ Uses :ref:`block:rawseeds_synchronized_camera` as a source. """
 config logdir                              "Directory containing Rawseeds logs."
 config prefix   = camera_bgds_boot "Subdirectory inside logdir where to put files."
@@ -7,7 +7,7 @@ config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
 #config display_fps = 0.2                   "Frames per second for movie"
 
-import procgraph.components.cv
+import procgraph_cv
 import procgraph_rawseeds
 
 outdir = "${logdir}/out/${prefix}/"
@@ -60,7 +60,7 @@ Gxl_rgb, Gyl_rgb, Gxa_rgb, Gya_rgb --> |sync|  --> |grid cols=2| --> |watermark 
 
 Gxl_k_rgb, Gyl_k_rgb, Gxa_k_rgb, Gya_k_rgb --> |sync| --> |grid cols=2| --> |watermark logdir=$logdir title='BGDS learning signal ${desc}'| --> |mencoder file="${outdir}/tensors_k.avi"|
 
---- model tplot
+-------- model tplot
 ''' Used by :ref:`block:rawseeds_camera_bgds_boot`'''
 config title
 config fps = 0.2
