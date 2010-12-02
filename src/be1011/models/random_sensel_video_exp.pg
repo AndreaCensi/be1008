@@ -1,4 +1,4 @@
---- model random_sensel_video
+--- model random_sensel_video_exp
 ''' Shows a selection of sensels from the streams. '''
 import be1008
 import be1011
@@ -16,7 +16,7 @@ log.y, log.y_dot --> |random_extract n=$n| --> y, y_dot
 
 
 y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width| --> y_
-y_dot -->  |low_pass alpha=0.2| --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| --> y_dot_
+y_dot --> |low_pass alpha=0.2| --> |sign| --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| --> y_dot_
 
 log.u -> |reshape_smart width=1| --> |posneg| --> |resize height=$width| -> u_
 
