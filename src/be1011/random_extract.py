@@ -1,6 +1,5 @@
-from procgraph import Block
-import numpy
-from procgraph.core.exceptions import BadInput
+import numpy, numpy.random
+from procgraph import Block, BadInput
 
 class RandomExtract(Block):
     ''' This block extracts randomly some of the sensels from the stream.
