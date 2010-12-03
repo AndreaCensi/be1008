@@ -1,14 +1,12 @@
 from procgraph.core.model_loadsave import make_sure_dir_exists
 from collections import namedtuple
-import os
-import math
-import sys
-import yaml #@UnresolvedImport
+import os, math, sys, yaml
+
 from docutils.core import publish_string #@UnresolvedImport
 
 from httplib import HTTP 
 from urlparse import urlparse 
-from be1008.procgraph_intersphinx import get_known_blocks
+from .procgraph_intersphinx import get_known_blocks
 
 def rst2htmlfragment(text):
     html = publish_string(

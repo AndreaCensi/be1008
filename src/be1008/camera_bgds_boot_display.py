@@ -3,8 +3,9 @@ from numpy import nonzero
 import os
 
 from reprep import Node
-from reprep.out.html import node_to_html_document 
-from be1008.utils import my_pickle_load, my_pickle_dump
+from reprep.out.html import node_to_html_document  # XXX: new interface 
+
+from .utils import my_pickle_load, my_pickle_dump
 
 
 def main():

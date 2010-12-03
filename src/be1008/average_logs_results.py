@@ -1,7 +1,7 @@
-from optparse import OptionParser
 import os, re, numpy
+from optparse import OptionParser
 
-from be1008.utils import my_pickle_dump, my_pickle_load
+from .utils import my_pickle_dump, my_pickle_load
 
 def main():
     

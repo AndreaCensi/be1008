@@ -1,4 +1,4 @@
-import numpy, numpy.random
+import numpy, numpy.random # pydev gets this wrong  @UnusedImport
 from procgraph import Block, BadInput
 
 class RandomExtract(Block):

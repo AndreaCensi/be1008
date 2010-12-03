@@ -1,9 +1,10 @@
 import numpy
 
+from procgraph import COMPULSORY, register_simple_block
 
 def reshape_smart(x, width):
     n = len(x.flat)
-    height = numpy.ceil(n * 1.0/ width)
+    height = numpy.ceil(n * 1.0 / width)
     
     #print("sha: %s  n: %d  with: %d  height: %d" % (x.shape,n,width,height))
     
@@ -13,5 +14,5 @@ def reshape_smart(x, width):
     return y 
     
     
-from procgraph.components.basic import COMPULSORY, register_simple_block
+
 register_simple_block(reshape_smart, params={'width': COMPULSORY})

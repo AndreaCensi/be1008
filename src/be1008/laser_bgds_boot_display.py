@@ -1,18 +1,16 @@
+import numpy, math, os
+from numpy import  abs, cos, sin, linspace
+
 from matplotlib import rc
 rc('font', **{'family':'serif'})
 
-import numpy
-from numpy import  abs, cos, sin, linspace, mean
-import math
-
-
 from procgraph.core.model_loadsave import make_sure_dir_exists
 from reprep import Node
-from reprep.out.html import node_to_html_document
-from be1008.utils import my_pickle_load, my_pickle_dump
+from reprep.out.html import node_to_html_document # XXX:
 from reprep.out.platex import Latex, makecmd
-from be1008.camera_figure import makelabel, write_graphics
-import os
+
+from .camera_figure import makelabel, write_graphics
+from .utils import my_pickle_load, my_pickle_dump
 
 
 def my_figures(results):

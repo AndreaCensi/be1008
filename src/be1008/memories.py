@@ -1,8 +1,8 @@
 
 from procgraph import Block
 from procgraph.core.model_loadsave import make_sure_dir_exists
-import pickle
-from be1008.utils import my_pickle_dump
+
+from .utils import my_pickle_dump
 
 class Memories(Block):
     Block.alias('memories')

@@ -1,7 +1,7 @@
 from numpy import sign
 
 from procgraph import Block
-from be1008.utils import my_pickle_load
+from .utils import my_pickle_load
 
 class BGDS1dPredictor(Block):
     Block.alias('bgds_1d_predictor')

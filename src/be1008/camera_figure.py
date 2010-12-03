@@ -1,5 +1,6 @@
 from reprep.out.platex import Latex, makecmd
-from be1008.utils import my_pickle_load
+
+from .utils import my_pickle_load
 
 
 def write_graphics(frag, node, width, border=True):

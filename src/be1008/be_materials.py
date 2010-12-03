@@ -1,11 +1,11 @@
-from procgraph.core.model_loadsave import make_sure_dir_exists
+import os, math, sys
 from collections import namedtuple
-import os
-import math
 
 from httplib import HTTP 
 from urlparse import urlparse 
-import sys
+
+
+from procgraph.core.model_loadsave import make_sure_dir_exists
 
 def URL_exists(url):
     verbose = True

@@ -1,9 +1,11 @@
 import numpy, os, fnmatch
+
 from reprep import Node
-from reprep.out.html import node_to_html_document
+from reprep.out.html import node_to_html_document # XXX:
 from reprep.out.platex import makecmd, Latex
-from be1008.camera_figure import makelabel, write_graphics
-from be1008.utils import my_pickle_load, my_pickle_dump
+
+from .camera_figure import makelabel, write_graphics
+from .utils import my_pickle_load
 
 
 
@@ -24,9 +26,9 @@ def main():
     for f in files:
         print 'Loading {0}'.format(f)
         data = my_pickle_load(f)
-        basename, ext = os.path.splitext(f)
+        basename = os.path.splitext(f)[0]
         out_html = basename + '/report.html'
-        out_pickle = basename + '/report.pickle'
+        #out_pickle = basename + '/report.pickle'
 
         if not os.path.exists(basename):
             os.makedirs(basename)

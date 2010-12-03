@@ -1,13 +1,12 @@
 --- model random_sensel_video
 ''' Shows a selection of sensels from the streams. '''
 import be1008
-import be1011
 
-config bpi "HDF file containing standard problem instance."
-config n = 25 "number of pixels to extract"
-config sensel_cols = 5 "Width of pixel display"
-config width = 320 "Width of produced image"
-config out "video filename"
+config bpi              "HDF file containing standard problem instance."
+config n = 25           "number of pixels to extract"
+config sensel_cols = 5  "Width of pixel display"
+config width = 320      "Width of produced image"
+config out              "video filename"
 
 |log:hdfread file=$bpi|
 
