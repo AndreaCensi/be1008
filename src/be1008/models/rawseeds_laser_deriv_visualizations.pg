@@ -7,9 +7,9 @@ outdir = "${logdir}/out/${prefix}"
 
 import procgraph_rawseeds
 
-"Data sources"
+"""Data sources"""
     |rawseeds_synchronized_laser logdir=$logdir| --> y
-    "Get the camera for visualization purposes. Also flip it."
+    """Get the camera for visualization purposes. Also flip it."""
     |omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=$w| --> |flipud| --> omni
 
 

@@ -44,8 +44,8 @@ import procgraph.components.pil
 config title
 config display_fps = 1 "Frame rate limit."
 
-" Limit the frame rate"
+""" Limit the frame rate"""
 |input name=x| --> |fps_data_limit fps=$display_fps| --> cov 
 
-" Display both covariance and correlation. "
+""" Display both covariance and correlation. """
     cov --> |cov2corr|  --> |posneg| --> corr_rgb --> |image_label title=$title| --> |output name=rgb|
