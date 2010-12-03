@@ -1,0 +1,34 @@
+--- model calibrator_test
+
+config bpi       "HDF file containing standard problem instance."
+config file      
+config sensel_cols = 100
+config num_ref = 100
+config width=320
+import be1008
+
+ |log:hdfread file=$bpi| 
+ 
+    log.y_dot --> |low_pass alpha=0.1| --> |sign| --> y_dot
+    log.y --> |identity| --> y
+ 
+    log.y, y_dot --> |sync| --> |cal:calibrator|
+
+    cal.num_ref = $num_ref
+    cal.eigenvalues --> |slice start=0 end=5| --> |plot0:plot| --> rgb0
+    
+    plot0.y_min = 0
+    plot0.format = 'x-'
+    plot0.xlabel = '#eigenvalue'
+    
+    
+    cal.x_y --> |plot1:plot format="."| --> rgb1
+    
+    
+    y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width| --> y_
+    y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| --> y_dot_
+    
+    
+    y_, y_dot_, rgb0, rgb1 --> |sync| --> |grid cols=2| --> |mencoder file=$file|
+    
+    
