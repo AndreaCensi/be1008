@@ -3,7 +3,7 @@
 config bpi       "HDF file containing standard problem instance."
 config file      
 config sensel_cols = 100
-config num_ref = 100
+config num_ref = 50
 config width=320
 import be1008
 
@@ -15,20 +15,21 @@ import be1008
     log.y, y_dot --> |sync| --> |cal:calibrator|
 
     cal.num_ref = $num_ref
-    cal.eigenvalues --> |slice start=0 end=5| --> |plot0:plot| --> rgb0
+    cal.eigenvalues --> |slice start=0 end=5| --> |plot0:plot| --> |image_label title='singular values'| --> rgb0
     
+    plot0.title = ""
     plot0.y_min = 0
     plot0.format = 'x-'
     plot0.xlabel = '#eigenvalue'
     
     
-    cal.x_y --> |plot1:plot format="."| --> rgb1
-    
+    cal.x_y --> |plot1:plot format="."|  --> |image_label title='projection to R2'| --> rgb1
+    cal.corr --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width| --> rgb3
     
     y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width| --> y_
     y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| --> y_dot_
     
     
-    y_, y_dot_, rgb0, rgb1 --> |sync| --> |grid cols=2| --> |mencoder file=$file|
+    y_, y_dot_, rgb3, rgb0, rgb1  --> |sync| --> |grid cols=3| --> |mencoder quiet=1 file=$file|
     
     
