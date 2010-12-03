@@ -26,6 +26,8 @@ class Calibrator(Block):
     Block.output('eigenvalues')
     Block.output('corr')
     Block.output('x_y', 'tuple (x,y) of guessed coordinates')
+    Block.output('x', 'Coordinates')
+    Block.output('y', 'Coordinates')
     
     def init(self):
         self.M = None
@@ -58,7 +60,21 @@ class Calibrator(Block):
             self.M[i, :] = update
             
         if n % self.config.interval == 0:
-            U, S, V = numpy.linalg.svd(self.M, full_matrices=0)
+            # normalize correlation
+            correlation = self.M.copy()
+            for i in range(k):
+                var_i = self.M[i, self.refs[i]]
+                if var_i > 0:
+                    correlation[i, :] = correlation[i, :] / var_i
+                
+            assert (correlation <= +1).all()
+            assert (correlation >= -1).all()
+            
+            # create distances from correlation
+            # correlation = 1 -> distance of 0
+            D = numpy.arccos(correlation)
+            
+            U, S, V = numpy.linalg.svd(D, full_matrices=0)
             assert S.size == k
             self.output.eigenvalues = S / S[0]
             
@@ -69,7 +85,8 @@ class Calibrator(Block):
             self.y /= numpy.abs(self.y).max()
             
             self.output.x_y = (self.x, self.y)
-            
+            self.output.x = self.x
+            self.output.y = self.y
             
             i = 0
             d = self.M[i, :].copy()
