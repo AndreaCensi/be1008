@@ -1,0 +1,20 @@
+--- model bpi_sample_random
+''' Samples a random set of sensels from the given BPI. '''
+
+config bpi              "HDF file containing standard problem instance."
+config file = "${bpi}.sample_random"  "HDF output file containing sampled data."
+
+config n = 25           "number of sensels to extract"
+
+import be1008
+
+''' Data source (input) '''
+
+    |log:hdfread file=$bpi|
+
+        log.y, log.y_dot --> |random_extract n=$n| --> y, y_dot
+ 
+''' Output '''
+
+    y, y_dot, log.u --> |hdfwrite file=$file|
+ 
