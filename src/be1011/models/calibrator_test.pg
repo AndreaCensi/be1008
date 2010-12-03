@@ -9,6 +9,7 @@ import be1008
 
  |log:hdfread file=$bpi| 
  
+    #log.y_dot --> |low_pass alpha=0.1| --> |sign| --> y_dot
     log.y_dot --> |low_pass alpha=0.1| --> |sign| --> y_dot
     log.y --> |identity| --> y
  
@@ -24,10 +25,10 @@ import be1008
     
     
     cal.x_y --> |plot1:plot format="."|  --> |image_label title='projection to R2'| --> rgb1
-    cal.corr --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width| --> rgb3
+    cal.corr --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='correlation of one sensel'| --> rgb3
     
-    y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width| --> y_
-    y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| --> y_dot_
+    y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width|--> |image_label title='Observations y(s,t)'|  --> y_
+    y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| -->|image_label title='Derivative dy/dt'|--> y_dot_
     
     
     y_, y_dot_, rgb3, rgb0, rgb1  --> |sync| --> |grid cols=3| --> |mencoder quiet=1 file=$file|

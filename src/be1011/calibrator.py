@@ -71,7 +71,10 @@ class Calibrator(Block):
             self.output.x_y = (self.x, self.y)
             
             
-            self.output.corr = self.M[0, :]
+            i = 0
+            d = self.M[i, :].copy()
+            d[ self.refs[i] ] = numpy.nan 
+            self.output.corr = d
          
         self.num_samples += 1
         
