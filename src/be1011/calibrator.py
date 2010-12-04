@@ -25,9 +25,14 @@ class Calibrator(Block):
     
     Block.output('eigenvalues')
     Block.output('corr')
+    Block.output('M', 'Computed covariance')
+    
     Block.output('x_y', 'tuple (x,y) of guessed coordinates')
     Block.output('x', 'Coordinates')
     Block.output('y', 'Coordinates')
+    Block.output('z', 'Coordinates')
+    Block.output('variance')
+    Block.output('correlation')
     
     def init(self):
         self.M = None
@@ -47,51 +52,88 @@ class Calibrator(Block):
         assert y.ndim == y_dot.ndim == 1
         
         n = self.num_samples
+        
         k = int(self.config.num_ref)
         
         if self.M is None:
             self.M = numpy.zeros(shape=(k, y.size), dtype='float32')
-            self.output.eigenvalues = numpy.zeros(k)
+            self.variance = numpy.zeros(shape=(y.size,), dtype='float32')
+            #self.output.eigenvalues = numpy.zeros(k)
             self.refs = RandomExtract.choose_selection(k, y.size)
             
         for i in range(k):
             d = y_dot[ self.refs[i] ] * y_dot
-            update = (n * self.M[i, :] + d) / float(n + 1)
-            self.M[i, :] = update
+            self.M[i, :] = (n * self.M[i, :] + d) / float(n + 1)
             
+        variance_up = y_dot * y_dot
+        self.variance[:] = (n * self.variance + variance_up) / float(n + 1)
+        
         if n % self.config.interval == 0:
-            # normalize correlation
-            correlation = self.M.copy()
-            for i in range(k):
-                var_i = self.M[i, self.refs[i]]
-                if var_i > 0:
-                    correlation[i, :] = correlation[i, :] / var_i
-                
-            assert (correlation <= +1).all()
-            assert (correlation >= -1).all()
+            try:
+                self.write_output()
+            except numpy.linalg.linalg.LinAlgError as e:
+                self.error(e)
             
-            # create distances from correlation
-            # correlation = 1 -> distance of 0
-            D = numpy.arccos(correlation)
-            
-            U, S, V = numpy.linalg.svd(D, full_matrices=0) #@UnusedVariable
-            assert S.size == k
-            self.output.eigenvalues = S / S[0]
-            
-            self.x = V[0, :] * numpy.sqrt(S[0])
-            self.y = V[1, :] * numpy.sqrt(S[1])
-            
-            self.x /= numpy.abs(self.x).max()
-            self.y /= numpy.abs(self.y).max()
-            
-            self.output.x_y = (self.x, self.y)
-            self.output.x = self.x
-            self.output.y = self.y
-            
-            i = 0
-            d = self.M[i, :].copy()
-            d[ self.refs[i] ] = numpy.nan 
-            self.output.corr = d
-         
         self.num_samples += 1
+    
+    def write_output(self):
+        k = int(self.config.num_ref)
+        
+        #print '%f %f' % (self.M.max(), self.M.min())
+        
+        # normalize correlation
+        correlation = self.M.copy()
+        variance_safe = self.variance.copy()
+        problematic = variance_safe == 0
+        #print "num problematic: %d " % (len(numpy.nonzero(problematic)[0]))
+        variance_safe[problematic] = 1
+        one_over_std = 1 / numpy.sqrt(variance_safe)
+        for i in range(k):
+            one_over_std_i = one_over_std[self.refs[i]]
+            correlation[i, :] = (correlation[i, :] * one_over_std_i) * one_over_std
+            #print '%d %f %f' % (i, correlation[i, :].max(), correlation[i, :].min())
+            
+        #print '%f %f' % (correlation.max(), correlation.min())
+        
+        assert numpy.isfinite(correlation).all()
+        assert (correlation <= +1.0001).all()
+        assert (correlation >= -1.0001).all()
+        # fix numerical errors
+        correlation = numpy.minimum(correlation, +1.0)
+        correlation = numpy.maximum(correlation, -1.0)
+        
+        # create distances from correlation
+        # correlation = 1 -> distance of 0
+        # correlation /= numpy.abs(correlation).max()
+        #D = numpy.arccos(correlation)
+        D = correlation
+        assert numpy.isfinite(D).all()
+        assert numpy.isreal(D).all()
+        
+        U, S, V = numpy.linalg.svd(D, full_matrices=0) #@UnusedVariable
+        assert S.size == k
+        self.output.eigenvalues = S[0:] / S[0]
+        
+        self.x = V[0, :] * numpy.sqrt(S[0])
+        self.y = V[1, :] * numpy.sqrt(S[1])
+        self.z = V[2, :] * numpy.sqrt(S[2])
+        
+        self.x /= numpy.abs(self.x).max()
+        self.y /= numpy.abs(self.y).max()
+        self.z /= numpy.abs(self.z).max()
+        
+        
+        self.output.x_y = (self.y, self.z)
+        self.output.x = self.x
+        self.output.y = self.y
+        self.output.z = self.z
+        
+        i = 0
+        d = self.M[i, :].copy()
+        d[ self.refs[i] ] = numpy.nan 
+        self.output.corr = d
+        
+        self.output.M = self.M.copy()
+        self.output.variance = self.variance
+        self.output.correlation = correlation
         

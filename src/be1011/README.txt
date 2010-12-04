@@ -23,8 +23,17 @@ How to get the reduced problem: ::
 Calibrator simple tests
 ------------------------
     
-    pg -m be1011 calibrator_test num_ref=100 bpi=${bpi}  file=cal_100.avi
+    pg -m be1011 calibrator_test demo.num_ref=100 bpi=${bpi}  outdir=results/
     
-    
+ How to repack a bpi without compression for random access: 
+ 
+ ptrepack --shuffle=0 --complevel=0 --fletcher32=0 ${bpi} ordered.bpi
+ 
+ How to preprocess y_dot
+ 
+ 
+pg -m be1011 preprocess_ydot bpi=${bpi}  file=y_dot_smooth.bpi
+
+        
     
      

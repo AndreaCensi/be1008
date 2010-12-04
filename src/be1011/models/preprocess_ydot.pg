@@ -1,0 +1,12 @@
+--- model preprocess_ydot
+''' Filters a BPI to another BPI taking the lowpass of y_dot. '''
+config bpi
+config file
+
+import procgraph_hdf
+
+|log:hdfread file=$bpi signals="y,y_dot,u"|
+
+log.y_dot -->  |low_pass alpha=0.1| -> y_dot
+
+log.y[y], y_dot[y_dot], log.u[u] --> |hdfwrite file=$file compress=0|

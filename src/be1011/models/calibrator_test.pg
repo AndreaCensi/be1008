@@ -1,39 +1,86 @@
 --- model calibrator_test
-
 config bpi       "HDF file containing standard problem instance."
-config file      
+config outdir 
+
+import be1011
+
+ |log:hdfread_random signals="y,y_dot"| --> |demo:calibrator_demo| 
+ 
+ log.file = $bpi
+ demo.outdir = $outdir
+ 
+ 
+--- model calibrator_demo
+input y
+input y_dot
+
+config outdir        
 config sensel_cols = 100
 config num_ref = 50
 config width=320
+
 import be1008
 
- |log:hdfread file=$bpi| 
- 
-    #log.y_dot --> |low_pass alpha=0.1| --> |sign| --> y_dot
-    log.y_dot --> |low_pass alpha=0.1| --> |sign| --> y_dot
-    log.y --> |identity| --> y
- 
-    log.y, y_dot --> |sync| --> |cal:calibrator|
+    |input name=y|  --> |identity| --> y
+    #|input name=y_dot| --> |low_pass alpha=0.1|  --> y_dot
+    #|input name=y_dot| --> |low_pass alpha=0.1| --> |sign| --> y_dot
+    |input name=y_dot| --> |sign| --> y_dot
+    #|input name=y_dot|  --> y_dot
+     
+    y, y_dot --> |sync| --> |cal:calibrator|
+
+    cal.interval = 30
+    
+    cal.M, cal.variance, cal.correlation --> |pickle_group file="${outdir}/variables.pickle"|
 
     cal.num_ref = $num_ref
-    cal.eigenvalues --> |slice start=0 end=5| --> |plot0:plot| --> |image_label title='singular values'| --> svd_rgb
+    cal.eigenvalues --> |slice start=0 end=5| \
+                    --> |plot0:plot| \
+                    --> |image_label title='singular values'| --> svd_rgb
     
-    plot0.title = ""
-    plot0.y_min = 0
-    plot0.format = 'x-'
-    plot0.xlabel = '#eigenvalue'
+        plot0.title = ""
+        plot0.y_min = 0
+        plot0.format = 'x-'
+        plot0.xlabel = '#eigenvalue'
+        
+
+    cal.x_y  --> |plot1:plot format="."| \
+             --> |image_label title='projection to R2'| --> rgb1
+             
+    cal.corr --> |reshape_smart width=$sensel_cols| \
+             --> |posneg| --> |resize width=$width| \
+             --> |image_label title='correlation of one sensel'| --> rgb3
+    
+    cal.x    --> |reshape_smart width=$sensel_cols| \
+             --> |posneg| --> |resize width=$width| \
+             --> |image_label title='sensel coord 1'| --> rgb_x
+    
+    cal.y    --> |reshape_smart width=$sensel_cols| \
+             --> |posneg| --> |resize width=$width| \
+             --> |image_label title='sensel coord 2'| --> rgb_y
+    
+    cal.z    --> |reshape_smart width=$sensel_cols| \
+             --> |posneg| --> |resize width=$width| \
+             --> |image_label title='sensel coord 3'| --> rgb_z
+   
+    cal.variance    --> |reshape_smart width=$sensel_cols| \
+             --> |scale| --> |resize width=$width| \
+             --> |image_label title='variance'| --> variance
+   
+    
+    y     --> |reshape_smart width=$sensel_cols| \
+          --> |scale| -->  |resize width=$width| \
+          --> |image_label title='Observations y(s,t)'|  --> y_
+    
+    y_dot --> |reshape_smart width=$sensel_cols| \
+          --> |posneg| -->  |resize width=$width| \
+          -->|image_label title='Derivative dy/dt'|--> y_dot_
     
     
-    cal.x_y --> |plot1:plot format="."|  --> |image_label title='projection to R2'| --> rgb1
-    cal.corr --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='correlation of one sensel'| --> rgb3
-    cal.x    --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='sensel coord 1'| --> rgb_x
-    cal.y    --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='sensel coord 2'| --> rgb_y
-    
-    y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width|--> |image_label title='Observations y(s,t)'|  --> y_
-    y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| -->|image_label title='Derivative dy/dt'|--> y_dot_
-    
-    
-    #y_, y_dot_, rgb3, rgb0, rgb1  --> |sync| --> |grid cols=3| --> |mencoder quiet=1 file=$file|
-    y_, y_dot_, svd_rgb, rgb3, rgb_x, rgb_y  --> |sync| --> |grid cols=3| --> |mencoder quiet=1 file=$file|
+    #y_, y_dot_, rgb3, rgb0, rgb1  --> |sync| --> |grid cols=3| \
+#                                   --> |mencoder quiet=1 file=$file|
+                                   
+    y_, y_dot_, variance, svd_rgb, rgb3, rgb_x, rgb_y, rgb_z  --> |sync| --> \
+        |grid cols=4| --> |mencoder quiet=1 file="${outdir}/all.avi"|
     
     
