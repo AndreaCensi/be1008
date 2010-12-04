@@ -26,8 +26,8 @@ import be1008
     
     cal.x_y --> |plot1:plot format="."|  --> |image_label title='projection to R2'| --> rgb1
     cal.corr --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='correlation of one sensel'| --> rgb3
-    cal.x --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='sensel coord 1'| --> rgb_x
-    cal.y --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='sensel coord 2'| --> rgb_y
+    cal.x    --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='sensel coord 1'| --> rgb_x
+    cal.y    --> |reshape_smart width=$sensel_cols| --> |posneg| --> |resize width=$width|  --> |image_label title='sensel coord 2'| --> rgb_y
     
     y --> |reshape_smart width=$sensel_cols| --> |scale| -->  |resize width=$width|--> |image_label title='Observations y(s,t)'|  --> y_
     y_dot --> |reshape_smart width=$sensel_cols| --> |posneg| -->  |resize width=$width| -->|image_label title='Derivative dy/dt'|--> y_dot_

@@ -4,7 +4,8 @@ from numpy import  abs, cos, sin, linspace
 from matplotlib import rc
 rc('font', **{'family':'serif'})
 
-from procgraph.core.model_loadsave import make_sure_dir_exists
+from procgraph.block_utils import make_sure_dir_exists
+
 from reprep import Node
 from reprep.out.html import node_to_html_document # XXX:
 from reprep.out.platex import Latex, makecmd
@@ -173,15 +174,16 @@ def main():
     
     k = 1
     variants = sorted(results.keys())
-    variants = []
+    # FIXME: this was uncommented (Was I in a hurry?)
+    # variants = []
     for variant in variants:
         data = results[variant] 
         G = data['G']
         B = data['B']
         
-        gy_mean = data['gy_mean']
-        y_mean = data['y_mean']
-        one_over_y_mean = data['one_over_y_mean']
+#        gy_mean = data['gy_mean']
+#        y_mean = data['y_mean']
+#        one_over_y_mean = data['one_over_y_mean']
         y_dot_var = data['y_dot_var']
         y_dot_svar = data['y_dot_svar']
         gy_var = data['gy_var']

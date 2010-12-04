@@ -1,6 +1,6 @@
 import numpy
 
-from procgraph import Block, BadInput
+from procgraph import Block
 from be1011.random_extract import RandomExtract
 
 #   1) choose random pixels as reference points
@@ -74,7 +74,7 @@ class Calibrator(Block):
             # correlation = 1 -> distance of 0
             D = numpy.arccos(correlation)
             
-            U, S, V = numpy.linalg.svd(D, full_matrices=0)
+            U, S, V = numpy.linalg.svd(D, full_matrices=0) #@UnusedVariable
             assert S.size == k
             self.output.eigenvalues = S / S[0]
             

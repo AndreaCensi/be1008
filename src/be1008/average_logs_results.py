@@ -57,7 +57,7 @@ def main():
                         continue  
                 
                 data = m.group('data')
-                log = m.group('log')
+#                log = m.group('log')
                 
                 if not variant in variants:
                     variants[variant] = {}

@@ -1,6 +1,6 @@
 
 from procgraph import Block
-from procgraph.core.model_loadsave import make_sure_dir_exists
+from procgraph.block_utils import make_sure_dir_exists
 
 from .utils import my_pickle_dump
 
