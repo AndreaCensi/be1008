@@ -1,4 +1,4 @@
-from procgraph  import Block, Generator
+from procgraph  import Block
 from procgraph_hdf.hdfread import HDFread
 import numpy
 
