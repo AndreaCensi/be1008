@@ -14,7 +14,7 @@ Example script: ::
 Reducing
 --------
     
-How to get the reduced problem: ::
+How to get the reduced problem with random pixels: ::
 
     pg -m be1011 bpi_sample_random n=10000  bpi=${bpi}  file=${bpi}.10k
     

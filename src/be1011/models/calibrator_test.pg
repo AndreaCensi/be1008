@@ -64,7 +64,7 @@ import be1008
              --> |image_label title='sensel coord 3'| --> rgb_z
    
     cal.variance    --> |reshape_smart width=$sensel_cols| \
-             --> |scale| --> |resize width=$width| \
+             --> |scale min_value=0| --> |resize width=$width| \
              --> |image_label title='variance'| --> variance
    
     

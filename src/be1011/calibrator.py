@@ -1,7 +1,7 @@
 import numpy
 
 from procgraph import Block
-from be1011.random_extract import RandomExtract
+from .random_extract import RandomExtract
 
 #   1) choose random pixels as reference points
 #   2) plot these on the output
@@ -50,6 +50,9 @@ class Calibrator(Block):
             y_dot = y_dot.flatten()
         
         assert y.ndim == y_dot.ndim == 1
+        
+        # filter the peaks
+        y_dot = y_dot / numpy.abs(y_dot).sum()
         
         n = self.num_samples
         
