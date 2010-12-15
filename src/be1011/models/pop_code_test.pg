@@ -1,0 +1,16 @@
+--- model pop_code_test
+''' Tests the population code logic. '''
+config bpi       "HDF file containing standard problem instance."
+config edges     "Pickle file containing edges definitions."
+config file      "Video showing population code."
+ 
+import be1011
+
+ |hdfread file=$bpi signals="y"| --> |slice start=0 end=362| --> y 
+
+ y --> |popcode edges=$edges| --> yp
+ 
+ yp --> |low_pass alpha=0.1| --> |scale| --> |resize height=320 | --> \
+     |mencoder quiet=1 file=$file fps=30|
+ 
+ 

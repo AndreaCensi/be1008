@@ -26,13 +26,11 @@ def main():
     
     camera_figures(report)
     
-def camera_figures(report):
     
+def camera_figures(report):
     output_pattern_conf = 'out/camera_figures/conf_{variant}.tex'
     output_pattern_rep = 'out/camera_figures/report_{variant}.tex'
     graphics_path = 'out/camera_figures/'
-    
-    
     
     summary = 'out/camera_figures/conf_summary.tex'
     with Latex.document(summary, document_class='ieeeconf',
@@ -146,4 +144,4 @@ def write_variant(frag_file, variant_report, variant, graphics_path, conference)
 
         print "ciaop"
           
- 
+

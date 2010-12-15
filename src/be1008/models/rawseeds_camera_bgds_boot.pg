@@ -5,7 +5,7 @@ config prefix   = camera_bgds_boot "Subdirectory inside logdir where to put file
 config image_op = rgb2gray                 "How to obtain a scalar from RGB"
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
-#config display_fps = 0.2                   "Frames per second for movie"
+#config display_fps = 0.2                  "Frames per second for movie"
 
 import procgraph_cv
 import procgraph_rawseeds

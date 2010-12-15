@@ -34,6 +34,23 @@ Calibrator simple tests
  
 pg -m be1011 preprocess_ydot bpi=${bpi}  file=y_dot_smooth.bpi
 
+
+Testing the population code logic
+---------------------------------
+
+bpi=rawseeds_hdf/Bovisa_2008-09-01.4lasers.bpi
+pg -m be1011 pop_code_tests bpi=${bpi} edges=edges_sick.pickle file=out.avi
+
+
+
+
+
+
+
+
+
+
+
         
     
      
