@@ -86,6 +86,8 @@ def new_analysis(data, nclasses=100):
     U, S, V = numpy.linalg.svd(classes_correlation, full_matrices=0)
     
     # FIXME: U or V?
+    
+    # XXX: should I use this?
     classes_coords = U / numpy.sqrt(S)
     
     
@@ -151,7 +153,7 @@ def show_some_correlations(d, num=30, cols=6):
     f = r.figure('Correlations of some sensels.', cols=cols)
     
     s = d.R.sum(axis=0)
-    n = r.data('sum', d.toimg(s)).display('posneg')
+    r.data('sum', d.toimg(s)).display('posneg')
     f.sub('sum', caption="Sum of correlations")
     
     for i in range(num):
