@@ -1,0 +1,21 @@
+--- model hdf_wrap_bpi_filter
+''' 
+    Read ``y``, ``y_dot``, and ``u`` from one HDF file,
+    pipe them through the specified filter, and then write
+    them back to a different hdf file.
+'''
+config hdf                   "HDF file containing standard problem instance (y,y_dot,u)."
+config file                  "HDF output file containing sampled data."
+config bpi_filter = identity "Block to use as the filter."
+
+import be1011
+
+''' Get the signals from a HDF file. '''
+|log:hdfread file=$hdf signals='y,y_dot,u'| --> y, y_dot, u
+    
+''' Pass them to the specified filter. '''
+y, y_dot, u --> |bpi_filter:$bpi_filter| 
+
+''' Get the outputs and write them to another HDF file. '''    
+bpi_filter.y, bpi_filter.y_dot, bpi_filter.u --> |hdfwrite file=$file|
+    

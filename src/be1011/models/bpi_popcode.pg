@@ -1,0 +1,41 @@
+--- model bpi_popcode
+''' 
+    BPI filter that converts ``y`` to a population code representation.
+
+    The file ``edges`` should be a pickle containing the bin edges definitions.
+
+    The signal ``y_dot`` is discarded and recomputed from the new ``y``. This
+    might introduce some inaccuracy (I will deal with it if they are significant.)
+'''
+import be1011
+
+input y
+input y_dot
+input u
+
+output y
+output y_dot
+output u
+
+config edges "Pickle file containing edges definitions."
+
+''' Read the signals .'''
+    |input name=y    | --> y
+    |input name=u    | --> u
+    # y_dot is not used
+    #|input name=y_dot| --> y_dot
+
+    ''' Get the population code representation. '''
+    y --> |popcode edges=$edges| --> y_pc
+    
+    ''' Re-compute derivative in the new representation. '''
+    y_pc --> |derivative| --> y_dot_pc
+    
+    ''' Synchronize everything. '''
+    y_pc, y_dot_pc, u --> |sync| --> y2, y_dot2, u2
+    
+    # TODO: create a more synthetic syntax.
+''' Output everything '''
+    y2 --> |output name=y|
+    y_dot2 --> |output name=y_dot|
+    u2 --> |output name=u|
