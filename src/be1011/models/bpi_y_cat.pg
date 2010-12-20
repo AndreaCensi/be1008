@@ -1,0 +1,6 @@
+--- model bpi_y_cat
+''' Reads all the y data into one file for various statistics. '''
+config files 'File pattern for input HDF logs.'
+config output 'Output HDF log.'
+
+|hdfread_many files=$files signals='y'| --> |hdfwrite file=$output|

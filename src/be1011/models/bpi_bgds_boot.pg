@@ -1,0 +1,56 @@
+--- model bpi_bgds_boot
+
+config bpi 'BPI instance'
+config outdir 
+
+import be1008
+
+|hdfread file=$bpi signals='y,y_dot,u'| --> y_,y_dot_unused,u
+y_ --> |low_pass alpha=0.5| --> y
+y --> |derivative| --> |normalize_Linf| --> y_dot 
+
+y, y_dot, u --> |sync| --> |boot:generic_bgds_boot| --> \
+     |fps_data_limit fps=0.25| --> |pickle_group file="${outdir}/results.pickle"| 
+
+boot.G --> |fps_data_limit fps=0.25| --> G
+
+G --> |pickle file="${outdir}/G.pickle"|
+
+G --> |info| 
+G --> |bpi_bgds_boot_display_G i=[0,0,...] t='Linear velocity, hor. gradient'| --> G00
+G --> |bpi_bgds_boot_display_G i=[0,1,...] t='Linear velocity, ver. gradient'| --> G01
+G --> |bpi_bgds_boot_display_G i=[2,0,...] t='Angular velocity, hor. gradient'| --> G20
+G --> |bpi_bgds_boot_display_G i=[2,1,...] t='Angular velocity, ver. gradient'| --> G21
+
+boot.trP --> |fps_data_limit fps=0.25| --> |scale| --> |resize height=200| --> P_rgb
+
+G00,G01,G20,G21,P_rgb --> |sync| --> |grid cols=2| --> G_rgb
+
+y --> |scale| --> y_rgb
+y_dot --> |posneg| --> y_dot_rgb
+
+#u --> |history interval=5| --> |plot| -> u_rgb 
+#u --> |posneg| --> |resize width=100| --> u_rgb
+#u --> |reshape_smart width=1| --> |posneg| --> |resize height=100| -> u_rgb
+
+#y_rgb, u_rgb, y_dot_rgb  --> |sync| --> |grid cols=2| --> rgb
+
+G_rgb --> |mencoder file="${outdir}/G.avi"|
+
+#rgb --> |mencoder file="${outdir}/all.avi"|
+  
+--- model bpi_bgds_boot_display_G
+config t 'title'
+config i 'index'
+config height = 200
+input G
+output G_component_rgb
+
+|input name=G| --> |extract index=$i| --> \
+    |posneg| --> |resize height=$height| --> \
+    |image_label title=$t| --> \
+    |output name=G_component_rgb|
+
+
+
+ 

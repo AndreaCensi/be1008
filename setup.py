@@ -18,6 +18,9 @@ setup(
        'be_materials                = be1008.be_materials:main',
        'be_materials2               = be1008.be_materials2:main',
        'be_camera_figures           = be1008.camera_figure:main',
+       
+       'generic_bgds_boot_plots     = be1011.generic_bgds_boot_plots:main',
+       'compute_percentiles         = be1011.compute_percentiles:main',
        ]
        },
     install_requires=[],

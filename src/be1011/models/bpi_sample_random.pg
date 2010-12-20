@@ -1,3 +1,4 @@
+# TODO: rewrite as filter
 --- model bpi_sample_random
 ''' Samples a random set of sensels from the given BPI. '''
 

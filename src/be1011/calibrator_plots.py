@@ -1,15 +1,15 @@
+import os
+import numpy.linalg
+import itertools
 import cPickle as pickle
 from reprep import Report
 from optparse import OptionParser
-import os
-import numpy.linalg
-from be1011.random_extract import RandomExtract
-import itertools
-from be1011.fast_kendall_tau import fast_kendall_tau
+
+from .random_extract import RandomExtract
+from .fast_kendall_tau import fast_kendall_tau
 
 
-def main():
-    
+def main():    
     parser = OptionParser()
     
     parser.add_option("--outdir",

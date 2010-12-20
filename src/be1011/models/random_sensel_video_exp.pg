@@ -1,3 +1,4 @@
+# (random exp)
 --- model random_sensel_video_exp
 ''' Shows a selection of sensels from the streams. '''
 import be1008

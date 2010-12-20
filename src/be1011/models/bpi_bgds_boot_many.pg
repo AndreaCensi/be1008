@@ -1,0 +1,15 @@
+--- model bpi_bgds_boot_many
+
+config files 'BPI instance'
+config outdir 
+
+import be1008
+
+|hdfread_many files=$files signals='y,y_dot,u'| --> y_,y_dot_unused,u
+y_ --> |low_pass alpha=0.5| --> y
+y --> |derivative| --> |normalize_Linf| --> y_dot 
+
+y, y_dot, u --> |sync| --> |boot:generic_bgds_boot| --> \
+     |fps_data_limit fps=0.1| --> |pickle_group file="${outdir}/results.pickle"|
+     
+      

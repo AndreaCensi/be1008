@@ -124,8 +124,7 @@ class Calibrator(Block):
         self.x /= numpy.abs(self.x).max()
         self.y /= numpy.abs(self.y).max()
         self.z /= numpy.abs(self.z).max()
-        
-        
+          
         self.output.x_y = (self.y, self.z)
         self.output.x = self.x
         self.output.y = self.y

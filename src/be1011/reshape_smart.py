@@ -1,10 +1,12 @@
 import numpy
 
-from procgraph import COMPULSORY, register_simple_block
+from procgraph import COMPULSORY
+from procgraph.core.registrar_other import simple_block
 
 # TODO: case width = None -> sqrt
 # TODO: resize 2D
-def reshape_smart(x, width):
+@simple_block
+def reshape_smart(x, width=COMPULSORY):
     ''' Reshapes x into (?, width) if x is 1D.
     
         If x is 2D, it is left alone.
@@ -22,7 +24,3 @@ def reshape_smart(x, width):
     y.flat[0:n] = x
     
     return y 
-    
-    
-
-register_simple_block(reshape_smart, params={'width': COMPULSORY})

@@ -42,13 +42,34 @@ bpi=rawseeds_hdf/Bovisa_2008-09-01.4lasers.bpi
 pg -m be1011 pop_code_tests bpi=${bpi} edges=edges_sick.pickle file=out.avi
 
 
+Computing the population code files
+-----------------------------------
+
+Concatenate the files together:
+
+    pg -m be1011 bpi_y_cat \
+                 files="${PBENV_DATA}/rawseeds_hdf/*.sick.bpi" \
+                 output=rawseeds_hdf/sick-all.h5
 
 
+Running BGDS boot from bpi
+--------------------------
 
+Single file:
 
+    pg -m be1011 bpi_bgds_boot \
+             bpi="${PBENV_DATA}/rawseeds_hdf/Bovisa_2008-09-01.sickpc.bpi" 
+             outdir='tmp'
 
+Multiple files:
 
+    pg -m be1011 bpi_bgds_boot_many \
+        files="${PBENV_DATA}/rawseeds_hdf/*.sickpc.bpi" \
+        outdir='boot_sick/'
 
+Plotting and generating normalized:
+
+    generic_bgds_boot_plots --outdir boot_sickpc
 
 
         
