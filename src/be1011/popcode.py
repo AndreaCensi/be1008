@@ -47,7 +47,7 @@ def population_code_single(edges, x):
     i = bisect_left(edges, x) - 1
     if i < 0:
         i = 0
-    if i >= ncells:
+    if i >= ncells - 1:
         i = ncells - 1
         
     assert edges[i] <= x <= edges[i + 1]
@@ -55,7 +55,9 @@ def population_code_single(edges, x):
     tau = (x - edges[i]) / (edges[i + 1] - edges[i])
     
     result[i] = 1 - tau
-    result[i + 1] = tau
+    
+    if i < ncells - 1:
+        result[i + 1] = tau
 
     return result
     

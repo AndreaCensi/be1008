@@ -9,7 +9,7 @@ from procgraph import pg
 import procgraph_rawseeds
 import be1011 # XXX:
 
-from data_info import hdf_dir, logs
+from .data_info import hdf_dir, logs
 
 def convert_hdf2bpi(model, hdf, bpi, params):
     ''' Model: any procgraph model taking as config "hdf" and "file". '''
@@ -53,15 +53,19 @@ def main():
     Script = namedtuple('Script', 'job_prefix model input file_pattern params')
     
     scripts = [
-        Script('3cams', 'rawseeds2bpi_3cams',     '{logid}.h5', '{logid}.camera.bpi', {}),
-        Script('4lasers', 'rawseeds2bpi_4lasers', '{logid}.h5','{logid}.4lasers.bpi', {}),   
-        Script('frontal', 'rawseeds2bpi_frontal', '{logid}.h5','{logid}.frontal.bpi', {}),   
-        Script('sick_extract', 'bpi_extract',     
-               '{logid}.4lasers.bpi', '{logid}.sick.bpi', {}),   
+        Script('3cams', 'rawseeds2bpi_3cams', '{logid}.h5', '{logid}.camera.bpi', {}),
+        Script('4lasers', 'rawseeds2bpi_4lasers', '{logid}.h5', '{logid}.4lasers.bpi', {}),
+        Script('frontal', 'rawseeds2bpi_frontal', '{logid}.h5', '{logid}.frontal.bpi', {}),
+        Script('sick_extract', 'bpi_extract',
+               '{logid}.4lasers.bpi', '{logid}.sick.bpi', {}),
         Script('sickpc', 'hdf_wrap_bpi_filter',
-                '{logid}.sick.bpi', '{logid}.sickpc.bpi', 
-                {'bpi_filter': 'bpi_popcode', 
-                 'bpi_filter.edges': 'edges_sick.pickle' }  ),   
+                '{logid}.sick.bpi', '{logid}.sickpc.bpi',
+                {'bpi_filter': 'bpi_popcode',
+                 'bpi_filter.edges': 'edges_sick.pickle' }),
+        Script('sickpc_all', 'hdf_wrap_bpi_filter',
+                '{logid}.sick.bpi', '{logid}.sickpca.bpi',
+                {'bpi_filter': 'bpi_popcode',
+                 'bpi_filter.edges': 'edges_sick-all.pickle' }),
     ]
     
 

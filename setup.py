@@ -21,6 +21,7 @@ setup(
        
        'generic_bgds_boot_plots     = be1011.generic_bgds_boot_plots:main',
        'compute_percentiles         = be1011.compute_percentiles:main',
+       'hdf_jobs                    = be1011.hdf_jobs:main',
        ]
        },
     install_requires=[],
