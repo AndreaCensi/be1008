@@ -1,0 +1,53 @@
+--- model bpi_bgds_predict_sick
+config log = 'Bovisa_2008-09-01'
+config outdir 
+
+import be1008
+
+#      pc = "${PBENV_DATA}/rawseeds_hdf/${log}.sick.bpi"
+#|log:hdfread file=$pc signals='y,y_dot,u'|
+
+edges = "edges_sick-all.pickle"
+
+original = "${PBENV_DATA}/rawseeds_hdf/${log}.sick.bpi"
+|hdfread file=$original signals='y,u'| --> sick,u
+
+sick  --> |popcode edges=$edges| --> pc
+
+pc --> |low_pass alpha=0.5| --> y 
+# y --> |derivative| --> |normalize_Linf| --> y_dot 
+y --> |derivative| -->  y_dot
+
+y, y_dot, u --> |sync| --> |pred:generic_bgds_predict| 
+    pred.tensors = "${outdir}/tensors.pickle"
+
+y_dot            --> |posneg| --> |resize height=200| --> |image_label title='Derivative'          | --> y_dot_rgb
+pred.y_dot_pred  --> |posneg| --> |resize height=200| --> |image_label title='Derivative predicted'| --> y_dot_pred_rgb
+pred.error       --> |scale|  --> |resize height=200| --> |image_label title='Disagreement'        | --> error_rgb
+     
+     pred.error --> |expectation| --> error_stats
+     error_stats --> |scale| --> |resize height=200|  --> |image_label title='stats'               | --> error_stats_rgb
+
+#pred.error_sensel --> |plot y_max=0.1 width=720 height=200| --> sensel
+
+# XXX: tmp
+
+sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r-', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b-', origin: [0,0,-0.2]}]
+sick --> |laser_display width=320 height=240 title='' max_readings=20 groups=$sick_groups|  --> y_sick_rgb
+
+pred.error_sensel --> |low_pass alpha=0.5| --> |normalize_Linf| --> |laser_dot_display groups=$sick_groups| --> sensel
+
+y_dot_rgb, y_dot_pred_rgb, error_rgb, error_stats_rgb, sensel, y_sick_rgb --> \
+    |sync| --> |grid cols=2| --> rgb
+    
+
+    
+   
+    
+rgb --> |mencoder file="${outdir}/predictor_all.avi"| 
+
+rgb --> |fps_print|
+
+#pred. --> |pickle_group file="${outdir}/results.pickle"|
+     
+      

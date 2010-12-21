@@ -3,7 +3,7 @@ import os
 from compmake import comp, compmake_console, set_namespace
 from procgraph import pg
 
-import procgraph_rawseeds
+import procgraph_rawseeds #@UnusedImport
 
 from data_info import hdf_dir, logs, rawseeds_dir
 
@@ -38,7 +38,7 @@ def main():
         logdir = os.path.join(rawseeds_dir, log)
         hdf = os.path.join(hdf_dir, '%s.h5' % log)
         job_id = 'rawseeds2hdf-%s' % log
-        comp(convert_rawseeds2hdf,  logdir, hdf, job_id=job_id)
+        comp(convert_rawseeds2hdf, logdir, hdf, job_id=job_id)
         
     compmake_console()
 

@@ -18,7 +18,6 @@ How to get the reduced problem with random pixels: ::
 
     pg -m be1011 bpi_sample_random n=10000  bpi=${bpi}  file=${bpi}.10k
     
-     
 
 Calibrator simple tests
 ------------------------
@@ -51,6 +50,9 @@ Concatenate the files together:
                  files="${PBENV_DATA}/rawseeds_hdf/*.sick.bpi" \
                  output=rawseeds_hdf/sick-all.h5
 
+Compute the percentiles:
+
+    compute_percentiles --log rawseeds_hdf/sick-all.h5 --output edges_sick-all.pickle
 
 Running BGDS boot from bpi
 --------------------------
@@ -64,14 +66,21 @@ Single file:
 Multiple files:
 
     pg -m be1011 bpi_bgds_boot_many \
-        files="${PBENV_DATA}/rawseeds_hdf/*.sickpc.bpi" \
-        outdir='boot_sick/'
+        files="${PBENV_DATA}/rawseeds_hdf/*.sickpca.bpi" \
+        outdir='boot_sickpca/'
 
-Plotting and generating normalized:
+Plotting and generating normalized tensors:
 
     generic_bgds_boot_plots --outdir boot_sickpc
 
+This writes outdir/tensors.pickle.
 
-        
+Run predictor for sick/PC:
+
+pg -m be1011 bpi_bgds_predict_sick  log=Bicocca_2009-02-26a  outdir='boot_sickpca/'
     
+    
+    
+    # pg -m be1011 bpi_bgds_predict  bpi="${PBENV_DATA}/rawseeds_hdf/Bovisa_2008-09-01.sickpca.bpi" outdir='boot_sickpca/'
+     
      

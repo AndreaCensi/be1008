@@ -6,8 +6,8 @@ from collections import namedtuple
 from compmake import comp, compmake_console, set_namespace
 from procgraph import pg
 
-import procgraph_rawseeds
-import be1011 # XXX:
+import procgraph_rawseeds #@UnusedImport
+import be1011 # XXX: @UnusedImport
 
 from .data_info import hdf_dir, logs
 

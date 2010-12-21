@@ -7,6 +7,11 @@ from procgraph_numpy_ops.filters import outer
 from procgraph_numpy_ops.gradient1d import gradient1d
 from procgraph_cv.opencv_utils import gradient
 
+def check_inputs_synchronized(block):
+    for s in block.get_input_signals_names():
+        if block.get_input(s) is None:
+            raise BadInput("Signals not properly synchronized.", self, s)
+    
 class Generic(Block):
     Block.alias('generic_bgds_boot')
     
@@ -23,13 +28,10 @@ class Generic(Block):
         self.G = None
     
     def update(self):
-        # TODO: make utility function for this.
-        for s in ['y', 'y_dot', 'u']:
-            if self.get_input(s) is None:
-                raise BadInput("Signals not properly synchronized.", self, s)
+        check_inputs_synchronized(self)
         
-        y = self.input.y.astype('float32')
         y_dot = self.input.y_dot.astype('float32')
+        y = self.input.y.astype('float32')
         u = self.input.u.astype('float32')
         
         if self.G is None:

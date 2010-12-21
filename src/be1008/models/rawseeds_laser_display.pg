@@ -19,7 +19,7 @@ y_sick --> |plot y_min=0 y_max=20 title='Readings' ylabel=m format='b.' width=40
 
 
 --- model sick_show
-""" Displays the sick data on top of omnidirectional camera  """
+""" Displays the sick data on top of omnidirectional camera.  """
 config logdir "Rawseeds log dir"
 config width = 320 "Size of plotting"
 input  y_sick "Sick data"
@@ -32,15 +32,17 @@ sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r-', origin: [0
 y_sick_rgba --> |omni_superimpose logdir=$logdir width=$width| --> |output name=blend|
 
 --- model omni_superimpose
-""" Superimpose the input to an image from the omnidirectional camera. Useful to display the laser data."""
+""" Superimpose the input to an image from the omnidirectional camera. 
+    Useful to display the laser data.
+"""
 config logdir "Rawseeds log dir."
 config width = 320 "Camera signal width in pixels."
 input  in
 output rgbp
-
 
 |omni:RawseedsCam dir = "${logdir}/OMNI"| --> |resize width=$width| --> |flipud| --> omni
 
 |input name=in| --> rgba
 
 omni, rgba --> |sync| --> |blend| --> |output name=rgbp|
+

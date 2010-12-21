@@ -330,8 +330,7 @@ class OpenStruct:
         else:
             self.__dict__.update({i:v})
         return v # i like cascates :)
-    
-    
+   
 
 if __name__ == '__main__':
     main()
