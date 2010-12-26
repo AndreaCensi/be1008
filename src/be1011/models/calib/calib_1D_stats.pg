@@ -1,0 +1,19 @@
+--- model calib_1D_stats
+''' Computes the statistics necessary for calibration. '''
+config files 'Log files'
+config output 'Pickle output file'
+
+|hdfread_many files=$files signals="y,y_dot"| --> y, y_dot
+
+y   --> |covariance| --> y_cov
+y_dot --> |covariance| --> y_dot_cov
+y_dot --> |abs| --> |covariance| --> y_dot_abs_cov
+y_dot --> |sign| --> |covariance| --> y_dot_sign_cov
+
+
+y_cov, y_dot_cov, y_dot_sign_cov, y_dot_abs_cov \
+    --> |sync| \
+    --> |fps_data_limit fps=0.1|  \
+    --> |pickle_group file=$output|
+    
+     

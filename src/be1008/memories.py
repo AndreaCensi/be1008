@@ -63,9 +63,5 @@ class Memories(Block):
                     prefix=self.config.prefix)
         make_sure_dir_exists(filename)
         my_pickle_dump(data, filename)
-
-             
-             
-             
              
              

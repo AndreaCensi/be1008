@@ -20,6 +20,7 @@ setup(
        'be_camera_figures           = be1008.camera_figure:main',
        
        'generic_bgds_boot_plots     = be1011.generic_bgds_boot_plots:main',
+       'calib_1D_stats_plots        = be1011.calib_1D_stats_plots:main',
        'compute_percentiles         = be1011.compute_percentiles:main',
        'hdf_jobs                    = be1011.hdf_jobs:main',
        ]

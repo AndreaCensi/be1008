@@ -34,6 +34,16 @@ Calibrator simple tests
 pg -m be1011 preprocess_ydot bpi=${bpi}  file=y_dot_smooth.bpi
 
 
+Calibrator 1d tests (sick)
+--------------------------
+
+pg -m be1011 calib_1D_stats \
+             files="${PBENV_DATA}/rawseeds_hdf/*.sick.bpi" \
+             output=calib_sick/calib_1D_stats2.pickle
+
+calib_1D_stats_plots --outdir calib_sick --file calib_sick/calib_1D_stats.pickle
+
+
 Testing the population code logic
 ---------------------------------
 
@@ -68,6 +78,13 @@ Multiple files:
     pg -m be1011 bpi_bgds_boot_many \
         files="${PBENV_DATA}/rawseeds_hdf/*.sickpca.bpi" \
         outdir='boot_sickpca/'
+
+1d:
+
+pg -m be1011 bpi_bgds_boot_many \
+        files="${PBENV_DATA}/rawseeds_hdf/*.sick.bpi" \
+        outdir='boot_sick1d/'
+
 
 Plotting and generating normalized tensors:
 

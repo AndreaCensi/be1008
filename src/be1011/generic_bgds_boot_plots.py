@@ -177,6 +177,7 @@ def normalize_input(G, Q_inv):
     assert result.shape == G.shape
     return result
 
+
 def scale_score(x):
     y = x.copy()
     order = numpy.argsort(x.flat)
