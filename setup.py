@@ -23,6 +23,8 @@ setup(
        'calib_1D_stats_plots        = be1011.calib_1D_stats_plots:main',
        'compute_percentiles         = be1011.compute_percentiles:main',
        'hdf_jobs                    = be1011.hdf_jobs:main',
+       
+       'calib_main  = be1011.calib_main:main',
        ]
        },
     install_requires=[],

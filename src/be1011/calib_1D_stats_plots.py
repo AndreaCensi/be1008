@@ -54,29 +54,17 @@ def main():
     print("Writing to %r" % filename)
     r.to_html(filename)
 
-@contracts
+@contracts(theta='array[N]', returns='array[3xN]')
 def create_s_from_theta(theta):
-    ''' 
-        :type theta: array[N]
-        :rtype: array[3xN]
-    '''
     return numpy.vstack((numpy.cos(theta), numpy.sin(theta), 0 * theta))
 
-@contracts
+@contracts(S='array[3xN]', returns='array[NxN]')
 def get_cosine_matrix_from_s(S):
-    ''' 
-        :type S: array[3xN]
-        :rtype: array[NxN]
-    '''
     C = numpy.dot(S.T, S)
     return numpy.clip(C, -1, 1, C)
 
-@contracts
+@contracts(C='array[NxN]', returns='array[NxN]')
 def get_distance_matrix_from_cosine(C):
-    ''' 
-        :type C: array[NxN]
-        :rtype: array[NxN]
-    '''
     return numpy.real(numpy.arccos(C))
 
 def ground_truth_plots(d):
