@@ -41,8 +41,13 @@ pg -m be1011 calib_1D_stats \
              files="${PBENV_DATA}/rawseeds_hdf/*.sick.bpi" \
              output=calib_sick/calib_1D_stats2.pickle
 
-calib_1D_stats_plots --outdir calib_sick --file calib_sick/calib_1D_stats.pickle
+# Old processing:
+# calib_1D_stats_plots --outdir calib_sick --file calib_sick/calib_1D_stats.pickle
 
+New processing: ::
+
+    calib_main --data calib_sick/calib_1D_stats2.pickle \
+               --outdir calib_main_output
 
 Testing the population code logic
 ---------------------------------

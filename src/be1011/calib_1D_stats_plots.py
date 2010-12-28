@@ -1,14 +1,14 @@
 import cPickle as pickle
 from optparse import OptionParser
-
-from .calibrator_plots import OpenStruct
-from reprep import Report
 import os
 import numpy
+
+from reprep import Report
+from contracts import contracts, check
 from procgraph_statistics.cov2corr import cov2corr
-from contracts import contracts
-from contracts.main import check
-from be1011.generic_bgds_boot_plots import scale_score
+
+from .calibrator_plots import OpenStruct
+from .generic_bgds_boot_plots import scale_score
 
 def main():
     parser = OptionParser()
@@ -32,10 +32,7 @@ def main():
     #theta = numpy.linspace(0, numpy.pi * 2, n)
     theta = numpy.linspace(0, numpy.pi, n)    
     
-    d = OpenStruct(**data)
-    
-    
-    
+    d = OpenStruct(**data) 
     
     # groundtruth 
     d.theta = theta
@@ -58,12 +55,12 @@ def main():
 def create_s_from_theta(theta):
     return numpy.vstack((numpy.cos(theta), numpy.sin(theta), 0 * theta))
 
-@contracts(S='array[3xN]', returns='array[NxN]')
+@contracts(S='array[KxN],K<N', returns='array[NxN]')
 def get_cosine_matrix_from_s(S):
     C = numpy.dot(S.T, S)
     return numpy.clip(C, -1, 1, C)
 
-@contracts(C='array[NxN]', returns='array[NxN]')
+@contracts(C='array[NxN](>=-1,<=1)', returns='array[NxN]')
 def get_distance_matrix_from_cosine(C):
     return numpy.real(numpy.arccos(C))
 
