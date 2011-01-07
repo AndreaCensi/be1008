@@ -9,8 +9,7 @@ class PopulationCode(Block):
     ''' Converts the input into a population code. '''
     
     Block.alias('popcode')
-    
-    # Block.input('edges', 'Array specifying the population boundaries.')
+     
     Block.config('edges', 'Pickle file containing the array specifying the '
                           'population boundaries.')
     

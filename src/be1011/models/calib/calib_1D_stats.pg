@@ -1,7 +1,9 @@
 --- model calib_1D_stats
 ''' Computes the statistics necessary for calibration. '''
-config files 'Log files'
+config files 'Log files (pattern)'
 config output 'Pickle output file'
+config edges 'Pickle file containing the edges for the population code.'
+
 
 |hdfread_many files=$files signals="y,y_dot"| --> y, y_dot
 
@@ -10,8 +12,11 @@ y_dot --> |covariance| --> y_dot_cov
 y_dot --> |abs| --> |covariance| --> y_dot_abs_cov
 y_dot --> |sign| --> |covariance| --> y_dot_sign_cov
 
+y   --> |fps_data_limit fps=1| --> |popcode edges=$edges| --> y_pc
 
-y_cov, y_dot_cov, y_dot_sign_cov, y_dot_abs_cov \
+y_pc --> |pc_joint_stats| --> [single]single, [joint]joint
+
+single, joint , y_cov, y_dot_cov, y_dot_sign_cov, y_dot_abs_cov\
     --> |sync| \
     --> |fps_data_limit fps=0.1|  \
     --> |pickle_group file=$output|

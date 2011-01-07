@@ -6,13 +6,15 @@ import pickle
 def main():
     parser = OptionParser()
     parser.add_option("--log", help='HDF file containing table procgraph/y')
+    parser.add_option("--bins", type='int', default=100,
+                       help='Number of bins')
     parser.add_option("--output", help='pickle file with output')
     (options, args) = parser.parse_args() #@UnusedVariable
 
     h5 = tables.openFile(options.log)
     y = h5.root.procgraph.y[:]['value']
 
-    N = 100
+    N = options.bins
     percs = numpy.linspace(0, 100, N)
     
     edges = numpy.percentile(y.flat, list(percs))
