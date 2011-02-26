@@ -20,7 +20,7 @@ class PCHistogram(Block):
         
     def update(self):
 #        pc = (self.input.pc * 10).astype('int16')
-        pc = numpy.ceil(self.input.pc).astype('uint8')
+        pc = numpy.round(self.input.pc).astype('uint8')
         K, N = pc.shape 
         if self.joint is None:
             self.joint = numpy.zeros(shape=(N, N, K, K), dtype='uint16')
