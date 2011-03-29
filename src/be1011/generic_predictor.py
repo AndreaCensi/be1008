@@ -1,12 +1,10 @@
+import numpy
 import cPickle as pickle
 
 from procgraph import Block, BadConfig
 from contracts import check, check_multiple
 
-from .generic_bgds_boot import check_inputs_synchronized
-from be1011.generic_bgds_boot import generalized_gradient
-import numpy
-
+from .generic_bgds_boot import check_inputs_synchronized,generalized_gradient
 
 class GenericPredictor(Block):
     Block.alias('generic_bgds_predict')
@@ -52,23 +50,18 @@ class GenericPredictor(Block):
         # update covariance of gradients
         gy = generalized_gradient(y)
         
-        Tgy = numpy.tensordot([1, 1], T * gy , axes=(0, 1)) 
+        Tgy = np.tensordot([1, 1], T * gy , axes=(0, 1)) 
                 
-        y_dot_pred = numpy.tensordot(u, Tgy, axes=(0, 0))
-        
-#        print 'gy', gy.shape
-#        print 'Tgy', Tgy.shape
-#        print 'u', u.shape
-#        print 'y_dot_pred', y_dot_pred.shape
-
+        y_dot_pred = np.tensordot(u, Tgy, axes=(0, 0))
+         
         assert y_dot_pred.ndim == 2
         
-        error = numpy.maximum(0, -y_dot_pred * y_dot)
-        # error = numpy.abs(numpy.sign(y_dot_pred) - numpy.sign(y_dot))
+        error = np.maximum(0, -y_dot_pred * y_dot)
+        # error = np.abs(np.sign(y_dot_pred) - np.sign(y_dot))
         
         self.output.y_dot_pred = y_dot_pred
         self.output.error = error
-        self.output.error_sensel = numpy.sum(error, axis=0)
+        self.output.error_sensel = np.sum(error, axis=0)
         
         
         

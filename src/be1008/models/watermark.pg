@@ -5,7 +5,7 @@ output rgb 'image with overlaid information'
 config logdir 'Rawseeds logdir'
 config title  'Title description'
 
-import procgraph.components.pil
+import procgraph_pil
 
 |input name=rgb| --> |border| --> |text| --> |output name=rgb|
 

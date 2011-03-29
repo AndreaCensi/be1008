@@ -1,0 +1,47 @@
+--- model bpi_bgds_predict_sick2_display
+config log "Rawseeds log name"
+config outdir 
+
+omni_video="rawseeds/${log}/OMNI.avi"
+
+errors="${outdir}/error.h5"
+
+import procgraph_rawseeds
+import be1008
+
+width = 400
+
+|hdfread file=$errors signals="y,error_sensel"| --> y_sick, error_sensel
+|mplayer file=$omni_video| -->|resize width=$width| --> |flipud| --> omni
+
+ y_sick --> |plot y_min=0 y_max=20 title='Readings' ylabel=m format='b.' width=$width height=200| -->  y_sick_plot
+
+ error_sensel --> |real| --> |plot y_min=0 y_max=0.5  title='Disagreement'  format='r.' width=$width height=200| -->  error_sensel_plot
+
+y_sick_plot, error_sensel_plot --> |sync| --> |grid cols=1| --> right
+
+ 
+ 
+# """ Plotting """
+# y_sick --> |plot y_min=0 y_max=20 title='Readings' ylabel=m format='b.' width=400 height=400| -->  y_sick_plot
+#     y_sick --> |sick_show logdir=$logdir  width=400| --> y_sick_polar
+#     
+#     y_sick_polar, y_sick_plot  --> |sync| --> |grid cols=2|-->rgb
+
+sick_groups = [{ indices: [0,180], theta: [-1.57,+1.57], color: 'r-', origin: [0,0,0]}, { indices: [161,361], theta: [+1.57,+4.71], color: 'b-', origin: [0,0,-0.2]}]
+
+y_sick --> |laser_display width=$width height=$width title='' max_readings=20 groups=$sick_groups transparent=True|  --> sick_rgba
+
+
+omni, sick_rgba --> |sync| --> |blend| --> left
+
+
+
+left, right --> |grid cols=2| --> rgb
+
+
+rgb -->  |watermark logdir=$log title='Sick data'|  \
+    -->  |mencoder file="${outdir}/laser_detect.avi"|
+    
+    
+    

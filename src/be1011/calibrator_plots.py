@@ -54,9 +54,7 @@ def new_analysis(data, nclasses=100):
     
     assert (classes >= 0).all()
     assert (classes < nclasses).all()
-    
      
-    
     print("Computing class correlation...")
     classes_correlation = numpy.zeros((nclasses, nclasses))
     for c1, c2 in itertools.product(range(nclasses), range(nclasses)):

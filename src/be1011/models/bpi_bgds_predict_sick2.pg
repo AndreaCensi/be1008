@@ -1,0 +1,25 @@
+--- model bpi_bgds_predict_sick2
+""" Predicts and writes the prediction error to a file. """
+config log = 'Bovisa_2008-09-01'
+config outdir 
+config alpha = 0.5
+import be1008
+
+edges = "edges_sick-all.pickle"
+original = "${PBENV_DATA}/rawseeds_hdf/${log}.sick.bpi"
+tensors = "${outdir}/tensors.pickle"
+out = "${outdir}/error.h5"
+
+|hdfread file=$original signals='y,u'| --> sick,u
+
+""" Compute population code to obtain y """
+sick  --> |popcode edges=$edges| --> pc --> |low_pass alpha=$alpha| --> y 
+
+""" Compute derivative """
+y --> |derivative| -->  y_dot
+# y --> |derivative| --> |normalize_Linf| --> y_dot 
+
+y, y_dot, u --> |sync| --> |pred:generic_bgds_predict tensors=$tensors| 
+
+
+sick[y], u, pred.error_sensel --> |hdfwrite file=$out|

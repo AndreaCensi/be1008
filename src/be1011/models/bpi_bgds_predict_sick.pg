@@ -39,9 +39,6 @@ pred.error_sensel --> |low_pass alpha=0.5| --> |normalize_Linf| --> |laser_dot_d
 
 y_dot_rgb, y_dot_pred_rgb, error_rgb, error_stats_rgb, sensel, y_sick_rgb --> \
     |sync| --> |grid cols=2| --> rgb
-    
-
-    
    
     
 rgb --> |mencoder file="${outdir}/predictor_all.avi"| 

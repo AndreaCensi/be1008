@@ -70,21 +70,21 @@ Compute the percentiles:
 Running BGDS boot from bpi
 --------------------------
 
-Single file:
+Single file: ::
 
     pg -m be1011 bpi_bgds_boot \
              bpi="${PBENV_DATA}/rawseeds_hdf/Bovisa_2008-09-01.sickpc.bpi" 
              outdir='tmp'
 
-Multiple files:
+Multiple files: ::
 
     pg -m be1011 bpi_bgds_boot_many \
         files="${PBENV_DATA}/rawseeds_hdf/*.sickpca.bpi" \
         outdir='boot_sickpca/'
 
-1d:
+1d: ::
 
-pg -m be1011 bpi_bgds_boot_many \
+    pg -m be1011 bpi_bgds_boot_many \
         files="${PBENV_DATA}/rawseeds_hdf/*.sick.bpi" \
         outdir='boot_sick1d/'
 
@@ -96,11 +96,28 @@ Plotting and generating normalized tensors:
 This writes outdir/tensors.pickle.
 
 Run predictor for sick/PC:
+--------------------------
 
-pg -m be1011 bpi_bgds_predict_sick  log=Bicocca_2009-02-26a  outdir='boot_sickpca/'
+
+    pg -m be1011 bpi_bgds_predict_sick  log=Bicocca_2009-02-26a  outdir='boot_sickpca/'
     
-    
-    
-    # pg -m be1011 bpi_bgds_predict  bpi="${PBENV_DATA}/rawseeds_hdf/Bovisa_2008-09-01.sickpca.bpi" outdir='boot_sickpca/'
-     
+(2011-03-26) This only writes to logdir/predict.h5: ::
+
+    pg -m be1011 bpi_bgds_predict_sick2  \
+          log=Bicocca_2009-02-26a  outdir='boot_sickpca/'
+
+import tables
+f = tables.openFile('error.h5')
+e = f.root.procgraph.error_sensel
+e = np.abs(e[:]['value'])
+m = np.mean(e, axis=0)
+en=e/m
+pl.figure()
+pl.plot(m)
+pl.title('mean deviation')
+
+    pg -m be1011 bpi_bgds_predict_sick2_display \
+           outdir=boot_sickpca/ \
+           log=Bicocca_2009-02-26a
+
      

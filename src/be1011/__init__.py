@@ -1,5 +1,3 @@
-''' Bootstrapping experiments, fall 2010 '''
-
 from . import random_extract
 from . import reshape_smart
 

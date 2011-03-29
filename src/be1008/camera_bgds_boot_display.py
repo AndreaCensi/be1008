@@ -1,9 +1,7 @@
-import numpy
+import numpy, os
 from numpy import nonzero
-import os
 
 from reprep import Node
-from reprep.out.html import node_to_html_document  # XXX: new interface 
 
 from .utils import my_pickle_load, my_pickle_dump
 
@@ -146,7 +144,7 @@ def main():
             
     
     print "Writing on %s" % out_html
-    node_to_html_document(report, out_html)
+    report.to_html(out_html)
     #print "Writing on %s" % out_pickle
     my_pickle_dump(report, out_pickle) 
     
