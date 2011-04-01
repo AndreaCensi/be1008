@@ -1,0 +1,15 @@
+--- model bgds11_sick_plot
+""" Plots the range-finder data after population code. """
+config bpi "HDF file"
+config file "output file"
+config log "log name"
+
+import be1008
+
+|hdfread file=$bpi signals="y"| --> y
+
+y-->|scale|-->|flipud|-->|resize width=640 height=320| --> rgb
+
+
+
+rgb --> |watermark logdir=$log title="Range-finder + pop.code"| --> |mencoder file=$file|

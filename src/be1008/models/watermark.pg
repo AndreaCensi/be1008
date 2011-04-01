@@ -2,7 +2,7 @@
 """Adds some tracking information to the video."""
 input rgb 'image'
 output rgb 'image with overlaid information'
-config logdir 'Rawseeds logdir'
+config logdir 'Log name'
 config title  'Title description'
 
 import procgraph_pil

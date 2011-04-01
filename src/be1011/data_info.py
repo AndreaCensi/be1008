@@ -1,4 +1,3 @@
-
 rawseeds_dir = 'rawseeds'
 hdf_dir = 'rawseeds_hdf'
 

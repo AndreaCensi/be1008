@@ -1,7 +1,14 @@
 --- model bpi_bgds_boot
+"""
+    Learning and plotting of BGDS models. 
+    This is the one used for the range-finder data.
+
+    It assumes |u|=3 and uses u0 and u2.
+"""
 
 config bpi 'BPI instance'
 config outdir 
+config log = "" "log name"
 
 import be1008
 
@@ -22,9 +29,9 @@ G --> |bpi_bgds_boot_display_G i=[0,1,...] t='Linear velocity, ver. gradient'| -
 G --> |bpi_bgds_boot_display_G i=[2,0,...] t='Angular velocity, hor. gradient'| --> G20
 G --> |bpi_bgds_boot_display_G i=[2,1,...] t='Angular velocity, ver. gradient'| --> G21
 
-boot.trP --> |fps_data_limit fps=0.25| --> |scale| --> |resize height=200| --> P_rgb
+# boot.trP --> |fps_data_limit fps=0.25| --> |scale| --> |resize height=200| --> P_rgb
 
-G00,G01,G20,G21,P_rgb --> |sync| --> |grid cols=2| --> G_rgb
+G00,G01,G20,G21 --> |sync| --> |grid cols=2| --> G_rgb
 
 y --> |scale| --> y_rgb
 y_dot --> |posneg| --> y_dot_rgb
@@ -35,7 +42,8 @@ y_dot --> |posneg| --> y_dot_rgb
 
 #y_rgb, u_rgb, y_dot_rgb  --> |sync| --> |grid cols=2| --> rgb
 
-G_rgb --> |mencoder file="${outdir}/G.avi"|
+G_rgb --> |info| 
+G_rgb --> |watermark logdir=$log title="BGDS tensors learning"| --> |mencoder file="${outdir}/G.avi"|
 
 #rgb --> |mencoder file="${outdir}/all.avi"|
   

@@ -7,7 +7,7 @@ setup(
     author_email="andrea@cds.caltech.edu",
     version="1.0",
     package_dir={'':'src'},
-    packages=['be1008'],
+    packages=find_packages('src'),
     entry_points={
      'console_scripts': [
        'be_average_logs_results     = be1008.average_logs_results:main',
@@ -25,8 +25,9 @@ setup(
        'hdf_jobs                    = be1011.hdf_jobs:main',
        'calib_main  =                 be1011.calib_main:main',
        
+       'be1103_er1_convert = be1103_importing.er1_convert:main',
+
        'bv_generate_simulated       = be1102.generate_simulated:main',
-       
        
        ]
        },
