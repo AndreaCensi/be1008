@@ -3,10 +3,24 @@ import os
 import numpy
 
 def memory_map_file(filename):
-    """ Returns a memory-mapped numpy array. a file called filename + .dtype should exist """
+    """ 
+        Returns a memory-mapped numpy array. 
+        A file called filename + .dtype should exist 
+    """
     dtype = numpy.dtype(eval(open(filename + ".dtype").read()))
-    a = numpy.memmap(filename, dtype=dtype, mode='r')
-  
+
+    file_length = os.path.getsize(filename)
+    record_length = dtype.itemsize
+    num_available = file_length / record_length
+    if num_available * record_length != file_length:
+        msg = ("Warning: file %r has fractionary size. File: %d Record: %d"
+              "Num: %d Num*record: %d" % (filename,
+              file_length, record_length,
+              num_available, num_available * record_length))
+        print(msg)
+    
+    a = numpy.memmap(filename, dtype=dtype, mode='r', shape=(num_available,))
+    
     return a
 
 class NPYRead(Generator):

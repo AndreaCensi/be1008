@@ -41,12 +41,12 @@ config outdir
 |npyread file="${logdir}/video0.npy"| --> video0
 |npyread file="${logdir}/video1.npy"| --> video1
 
-odometry --> |info|
-video0 --> |info|
+#odometry --> |info|
+#video0 --> |info|
 
 odometry --> |hdfwrite file="${outdir}/odometry.h5"|
-  video0 --> |mencoder file="${outdir}/video0.avi"|
-  video1 --> |mencoder file="${outdir}/video1.avi"|
+video0 --> |mencoder file="${outdir}/video0.avi"|
+video1 --> |mencoder file="${outdir}/video1.avi"|
 
 ''')
 
@@ -67,11 +67,15 @@ def main():
         if os.path.exists(done_file):
             print('Skipping %r' % logdir)
             continue
-        
-        pg('er1convert', dict(logdir=logdir, outdir=outdir))
-        
-        with open(done_file, 'w') as f:
-            f.write('done :-)\n')
+
+        try:
+            pg('er1convert', dict(logdir=logdir, outdir=outdir))
+
+            with open(done_file, 'w') as f:
+                f.write('done :-)\n')
+        except Exception as e:
+            print e
+            continue
 
 if __name__ == '__main__':
     main()
