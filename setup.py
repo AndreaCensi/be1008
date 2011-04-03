@@ -27,6 +27,9 @@ setup(
        
        'be1103_er1_convert = be1103_importing.er1_convert:main',
 
+       'be1104_exp_manager = be1104_logset.exp_manager:main',
+
+
        'bv_generate_simulated       = be1102.generate_simulated:main',
        
        ]
