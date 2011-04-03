@@ -3,8 +3,7 @@ import yaml
 import os 
 import sys
 import glob
-
-import procgraph
+ 
 from procgraph.core.registrar import default_library
 from procgraph.core.model_loader import pg_look_for_models
 from procgraph.block_utils.file_io import make_sure_dir_exists
@@ -14,6 +13,10 @@ def model_info(block_type, library=default_library):
     return gen
 
 def block_name_config(x):
+    if not 'model' in x:
+        msg = 'Invalid config %r' % x
+        raise Exception(msg)
+
     model = x['model']
     if isinstance(model, list): # [model, {args}]
         return model[0], model[1]
@@ -23,66 +26,126 @@ def block_name_config(x):
 
 def names(signals):
     return [x.name for x in signals]
-    
+        
+def write_string_to_file(s, filename):
+    make_sure_dir_exists(filename)
+    with open(filename, 'w') as f:
+        f.write(s) 
 
-    
 def block_name_from_conf(x):
+    if not 'model' in x:
+        msg = 'Invalid config %r' % x
+        raise Exception(msg)
     model = x['model']
-    if isinstance(model, list): # [model, {args}]
-        return model[0]
-    else: return model
-
+    assert isinstance(model, list) and len(model) == 2
+    return model[0]
+    
 
 def exp_run(config):
     outdir = config['outdir']
     source = config['source']
     pres = config['presentation']
-    
-    def get_source_signals():
-        gen = model_info(block_name_from_conf(source['play'][0]))
-        return names(gen.output) 
-    
-    def get_pres_signals():
-        gen = model_info(block_name_from_conf(pres))
-        return names(gen.input), names(gen.output) 
         
-    # let's find the source signals
-    source_out = get_source_signals()
-    pres_in, pres_out = get_pres_signals()
-    
-    for x in pres_in:
-        if not x in source_out:
-            msg = 'Signal %r not found in %r.' % (x, source_out)
-            raise Exception(msg)
-    
-    print('Info about %r' % config['id'])
-    print('- source %r has signals: %r' % (source['id'], source_out))
-    print('-   pres %r has signals: %r, %r' % (pres['id'], pres_in, pres_out))
-        
-    M = create_source_model(source)
-    filename = os.path.join(outdir, '%s.pg' % source['id'])
-    make_sure_dir_exists(filename)
-    with open(filename, 'w') as f:
-        f.write(M) 
+    write_string_to_file(create_source_model(source),
+                         os.path.join(outdir, '%s.pg' % source['id']))
 
-
-    signals_so_far = list(pres_out) + list(source_out)
-    serialization = []
+    serialized_vars = []
     for i, stage in enumerate(config['stages']):
-        block = block_name_from_conf(stage)
-        gen = model_info(block)
-        inputs, outputs = names(gen.input), names(gen.output)
-        
-        for x in inputs:
-            if not x in pres_out:
-                msg = 'Signal %r not found in %r.' % (x, pres_out)
-                raise Exception(msg)
-        
-        signals_so_far.extend(outputs)
-        print(' * stage %d ' % i)
-        print('    - block %r has signals %r %r' % (block, inputs, outputs))
-        
-      
+        stage_model_name = '%s_stage%d' % (config['id'], i)
+        stage_model = create_stage_model(stage_model_name,
+                                                source, pres, stage,
+                                                serialized_vars,
+                                                outdir)
+        write_string_to_file(stage_model,
+                             os.path.join(outdir, '%s.pg' % stage_model_name))
+
+def create_stage_model(stage_model_name, source, pres, stage, serialized_vars, outdir):
+    source_block_name = 'source'
+    source_block_type = block_name_from_conf(source['play'][0])
+    source_block_generator = model_info(source_block_type)
+    source_block_output = names(source_block_generator.output) 
+
+    pres_block_name = 'presentation'
+    pres_block_type = block_name_from_conf(pres)
+    pres_block_generator = model_info(pres_block_type)
+    pres_block_input = names(pres_block_generator.input) 
+    pres_block_output = names(pres_block_generator.output) 
+    
+    stage_block_name = 'stage'
+    stage_block_type = block_name_from_conf(stage)
+    stage_block_generator = model_info(stage_block_type)
+    stage_block_input = names(stage_block_generator.input) 
+    stage_block_output = names(stage_block_generator.output) 
+    
+    
+    M = '''--- model %s \n''' % stage_model_name
+    # First add the source
+    M += model_string(source_block_name, source['id'], {}) + '\n\n'
+    
+    # Now add the presentation stage
+    pres_block_connections = []
+    for s in pres_block_input:
+        if not s in source_block_output:
+            raise Exception('Could not find signal %r in %r.' % 
+                            (s, source_block_output))
+        pres_block_connections.append((source_block_name, s, s))
+         
+    M += (signals_string(pres_block_connections) + 
+          ' --> ' + 
+          model_string_from_spec(pres_block_name, pres) + 
+          '\n\n')
+    
+    def serialization_filename(signal):
+        return os.path.join(outdir, 'variables', '%s.pickle' % signal) 
+
+    # Signals that we need for the processing stage
+    signal2serialization_blocks = {}
+    connections = [] 
+    for input_signal in stage_block_input:
+        if input_signal in source_block_output:
+            connections.append((source_block_name, input_signal, input_signal))
+        elif input_signal in pres_block_output:
+            connections.append((pres_block_name, input_signal, input_signal))
+        elif input_signal in serialized_vars:
+            if not input_signal in signal2serialization_blocks:
+                s_block_name = 'ser_%s' % input_signal
+                signal2serialization_blocks[input_signal] = s_block_name
+                M += model_string(s_block_name, 'pickle_load',
+                                  {'file': serialization_filename(input_signal)})
+                M += '\n\n'
+            s_block_name = signal2serialization_blocks[input_signal]
+            connections.append((s_block_name, 0, input_signal))
+        else: 
+            msg = 'Could not find candidate for signal %r.' % input_signal
+            raise Exception(msg)
+    M += (signals_string(connections) + 
+          ' --> ' + 
+          model_string_from_spec(stage_block_name, stage)) + '\n\n'
+    
+    # Now serialize the outputs of the stage
+    for output_signal in stage_block_output: 
+        assert not output_signal in serialized_vars
+        serialized_vars.append(output_signal)
+        connections = [(stage_block_name, output_signal, 0)]
+        filename = serialization_filename(output_signal)
+        M += (signals_string(connections) + 
+              ' --> ' + 
+              model_string('ser_%s' % output_signal,
+                           'pickle', {'file': filename})) + '\n\n'
+    return M
+
+def signals_string(signals):
+    return ", \\\n".join(['%s.%s[%s]' % (source, source_signal, dest) 
+                      for (source, source_signal, dest) in signals])
+
+def model_string(name, block_type, config):
+    params = " ".join(['%s=%r' % (k, v) for (k, v) in config.items()])
+    return '|%s:%s %s|' % (name, block_type, params)
+
+def model_string_from_spec(block_name, spec):
+    block_type, block_config = block_name_config(spec)
+    params = " ".join(['%s=%r' % (k, v) for (k, v) in block_config.items()])
+    return '|%s:%s %s|' % (block_name, block_type, params)
 
 def create_source_model(source):
     model_name = source['id']
@@ -96,13 +159,9 @@ def create_source_model(source):
         
     M += '\n'
         
-    def model_string(name, block_type, config):
-        params = " ".join(['%s=%r' % (k, v) for (k, v) in config.items()])
-        return '|%s:%s %s|' % (name, block_type, params)
         
     for n, log in enumerate(source['play']):
-        btype, bconfig = block_name_config(log)
-        M += model_string('source%d' % n, btype, bconfig) + '\n'
+        M += model_string_from_spec('source%d' % n, log) + '\n'
         
     M += '\n'
     
@@ -148,19 +207,7 @@ def exp_manager(configuration, outdir):
         c['presentation'] = presentations[pres]
 
         c['outdir'] = os.path.join(outdir, c['id'])
-        exp_run(c)
-           
-#    results = {}
-#    for d, f in itertools.product(data, filters):
-#        source = d['source']
-#        presentation = d['presentation']
-#        
-#        filter_name = f['model']
-#         
-#        key = (source, presentation, filter_name)
-#        results[key] = comp(exp_run, source, presentation, f)
-#        
-#    for d, f, a in itertools.product(data, filters):
+        exp_run(c) 
         
 def load_sources_config(dirs):
     sources = {}            
@@ -204,7 +251,8 @@ def main():
         print(e)
         sys.exit(1)
     
-    exp_manager(options.config, options.outdir)
+    outdir = os.path.realpath(options.outdir)
+    exp_manager(options.config, outdir)
     
     
 if __name__ == '__main__':
