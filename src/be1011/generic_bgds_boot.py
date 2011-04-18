@@ -12,7 +12,7 @@ def check_inputs_synchronized(block):
         if block.get_input(s) is None:
             raise BadInput("Signals not properly synchronized.", self, s)
     
-class Generic(Block):
+class GenericBGDSBoot(Block):
     Block.alias('generic_bgds_boot')
     
     Block.input('y')
@@ -21,7 +21,6 @@ class Generic(Block):
     
     Block.output('G')
     Block.output('P')
-    Block.output('trP')
     Block.output('Q')
     
     def init(self):
