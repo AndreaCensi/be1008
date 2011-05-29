@@ -1,9 +1,10 @@
-from numpy import  array
-from pybv import BVException, assert_reasonable_value, TexturedRaytracer, get_safe_pose
-import numpy as np
-from pybv.worlds.world_generation import create_random_world
 import os
 import tables
+from numpy import  array
+import numpy as np
+
+from pybv import BVException, TexturedRaytracer, get_safe_pose
+from pybv.worlds.world_generation import create_random_world
 
 
 class RandomPoseGenerator:

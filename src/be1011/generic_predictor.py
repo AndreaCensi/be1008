@@ -1,10 +1,10 @@
-import numpy
+import numpy as np
 import cPickle as pickle
 
 from procgraph import Block, BadConfig
 from contracts import check, check_multiple
 
-from .generic_bgds_boot import check_inputs_synchronized,generalized_gradient
+from .generic_bgds_boot import check_inputs_synchronized, generalized_gradient
 
 class GenericPredictor(Block):
     Block.alias('generic_bgds_predict')

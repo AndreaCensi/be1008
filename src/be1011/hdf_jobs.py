@@ -44,7 +44,7 @@ def main():
     parser.add_option("--model", default=None,
                       help="Only do this model")
     
-    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args() #@UnusedVariable
     
     if args:
         raise Exception('Extra arguments')

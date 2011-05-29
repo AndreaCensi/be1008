@@ -1,6 +1,4 @@
-import procgraph
-from procgraph import pg
-from procgraph.core.registrar_other import register_model_spec
+from procgraph import pg, register_model_spec
 import os
 from optparse import OptionParser
 
