@@ -35,14 +35,15 @@ register_model_spec('''
 config logdir 
 config outdir 
 
+|npyread file="${logdir}/angular_velocity.npy"| --> angular_velocity
+|npyread file="${logdir}/linear_velocity.npy"| --> linear_velocity
+
 |npyread file="${logdir}/odometry.npy"| --> odometry
 |npyread file="${logdir}/video0.npy"| --> video0
 |npyread file="${logdir}/video1.npy"| --> video1
 
-#odometry --> |info|
-#video0 --> |info|
-
-odometry --> |hdfwrite file="${outdir}/odometry.h5"|
+odometry, angular_velocity, linear_velocity --> \
+    |hdfwrite file="${outdir}/small_data.h5"|
 video0 --> |mencoder file="${outdir}/video0.avi"|
 video1 --> |mencoder file="${outdir}/video1.avi"|
 
@@ -58,6 +59,10 @@ def main():
     
     (options, args) = parser.parse_args()
     
+
+    if options.out is None:
+        raise Exception('Please supply out')
+
     for logdir in  dirs:
         logname = os.path.basename(logdir)
         outdir = os.path.join(options.out, logname)
