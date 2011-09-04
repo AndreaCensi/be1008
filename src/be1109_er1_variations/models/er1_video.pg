@@ -1,0 +1,13 @@
+--- model er1_video
+""" Creates a simple video of the ER1 logs. """
+config logdir "input logdir"
+config output "Output filename"
+config logname =  ""
+
+|log:er1_logread|
+
+log.commands -> |historyt interval=5| -> |plot width=200| -> commands_rgb
+
+log.video0, log.video1, commands_rgb -> |sync| -> |grid cols=3| --> out
+
+out --> |watermark logdir=${logname}| -> |mencoder file=$output|
