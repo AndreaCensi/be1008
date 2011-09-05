@@ -6,8 +6,17 @@ config logdir """Log directory"""
 output video0 ''' Front camera RGB. '''
 output video1  ''' Ceil camera RGB. '''
 output commands ''' Commands (xvel, yvel, angular) '''
+output odometry ''' Odometry '''
 
-|mplayer file="${logdir}/video0.avi"| -> |output name=front|
-|mplayer file="${logdir}/video1.avi"| -> |output name=ceil|
-|hdfread file="${logdir/odometry.h5"| -> odometry
- odometry --> |pose2commands| --> |output name=commands|
+|mplayer file="${logdir}/video0.avi"| -> video0 -> |output name=video0|
+|mplayer file="${logdir}/video1.avi"| -> |output name=video1|
+
+|other:hdfread file="${logdir}/odometry.h5"| -> |fps_limit fps=2| -> odometry
+
+ odometry --> |pose2commands| --> commands0, vx,vy,omega
+ 
+ video0, commands0 -> |async| -> video0_, commands
+ 
+ commands --> |output name=commands|
+
+ odometry --> |output name=odometry|

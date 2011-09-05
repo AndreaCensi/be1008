@@ -1,0 +1,16 @@
+--- model er1b_logread
+config logdir """Log directory"""
+
+output video0 ''' Front camera RGB. '''
+output video1  ''' Ceil camera RGB. '''
+output commands ''' Commands (xvel, angular) '''  
+
+|mplayer file="${logdir}/video0.avi"| -> video0 -> |output name=video0|
+|mplayer file="${logdir}/video1.avi"| -> |output name=video1|
+
+|small_data:hdfread file="${logdir}/small_data.h5"| 
+
+small_data.angular_velocity -> |discretize_command| -> avel
+small_data.linear_velocity  -> |discretize_command| -> lvel
+  
+avel, lvel --> |sync| -> |join| -> |output name=commands|

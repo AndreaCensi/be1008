@@ -1,0 +1,13 @@
+--- model estimate_commands_from_odometry
+#config fps = 1
+input odometry
+output avel
+output lvel
+
+|input name=odometry| -> |fps_limit fps=1| -> odometry
+
+ odometry --> |pose2commands| --> commands, vx,vy,omega
+  
+ 
+vx ->  |output name=avel|
+omega ->  |output name=lvel|

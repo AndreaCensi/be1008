@@ -26,8 +26,8 @@ setup(
        'calib_main  =                 be1011.calib_main:main',
        
        'be1103_er1_convert = be1103_importing.er1_convert:main',
+       'be1109_er1_run = be1109_er1_variations.run:main',
 
-       'be1104_exp_manager = be1104_logset.exp_manager:main',
 
 
        'bv_generate_simulated       = be1102.generate_simulated:main',
