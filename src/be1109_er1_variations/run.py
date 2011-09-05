@@ -38,9 +38,14 @@ def main():
     # what to run
     # interface is   {logdir, logname, outdir}
     conf2pg = {} 
-    conf2pg['conf0b'] = ['er1b_video0']
-    conf2pg['conf1b'] = ['er1b_video01']
-    conf2pg['conf2b'] = ['er1b_video01']
+    conf2pg['conf0b'] = ['er1b_video0', 'er1conv_video0_bw_full',
+                         'er1conv_video0_bw_small']
+    conf2pg['conf1b'] = ['er1b_video01',
+                         'er1conv_video0_bw_full',
+                         'er1conv_video0_bw_small',
+                         'er1conv_video01_bw_full',
+                         'er1conv_video01_bw_small']
+    conf2pg['conf2b'] = conf2pg['conf1b']
     
     for conf in conf2pg:
         logs = conf2logs[conf]
@@ -48,7 +53,7 @@ def main():
         
         for logdir, pg in itertools.product(logs, pgs): #@UndefinedVariable
             logname = os.path.basename(logdir)
-            outdir = os.path.join(options.outdir, conf, logname) 
+            outdir = os.path.join(options.outdir, conf) 
             
             job_id = '%s-%s-%s' % (conf, pg, logname)
             done_file = os.path.join(options.outdir, 'done', '%s-finished.txt' % job_id)

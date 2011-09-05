@@ -15,4 +15,4 @@ log.video0, log.video1, commands_rgb -> |sync| -> |grid cols=2| --> out
 
 
 out --> |watermark logdir=$logname title="Source data"| -> \
-	 |mencoder file="${outdir}/${logname}-video01.avi"|
+	 |mencoder file="${outdir}/video01/${logname}-video01.avi"|
