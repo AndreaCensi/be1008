@@ -4,9 +4,9 @@ import numpy as np
 @simple_block
 def discretize_command(x, zero_threshold=0.01):
     if np.abs(x) < zero_threshold:
-        return 0
+        return 0.0
     else:
-        return np.sign(x)
+        return float(np.sign(x))
 
 
 @simple_block

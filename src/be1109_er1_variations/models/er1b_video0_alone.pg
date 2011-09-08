@@ -1,0 +1,11 @@
+--- model er1b_video0_alone
+config logdir
+config logname 
+config outdir
+
+import be1008
+
+|log:er1b_logread logdir=$logdir|
+
+log.video0 --> |watermark logdir=$logname title="Video #0"| -> \
+	 |mencoder file="${outdir}/${logname}-video0a.avi"|

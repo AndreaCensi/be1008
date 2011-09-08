@@ -12,5 +12,9 @@ output commands ''' Commands (xvel, angular) '''
 
 small_data.angular_velocity -> |discretize_command| -> avel
 small_data.linear_velocity  -> |discretize_command| -> lvel
+
+# avel, lvel, small_data.angular_velocity, small_data.linear_velocity --> |print|
   
-avel, lvel --> |sync| -> |join| -> |output name=commands|
+avel, lvel --> |sync| -> |join| -> x -> |output name=commands|
+
+x -> |print|

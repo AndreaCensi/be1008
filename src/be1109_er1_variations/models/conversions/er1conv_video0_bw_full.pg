@@ -41,7 +41,8 @@ config outdir
 
 |log:er1b_logread logdir=$logdir|
 
-log.video0, log.video1 ->|sync|->|grid cols=1|-> |resize width=120| -> |rgb2gray| -> y
+log.video0, log.video1 ->|sync|-> \
+    |grid cols=1|-> |resize width=120| -> |rgb2gray| -> y
 
 log.commands[u], y[y] -> |sync| -> \
  |hdfwrite file="${outdir}/video01_bw_small/${logname}.h5"|
