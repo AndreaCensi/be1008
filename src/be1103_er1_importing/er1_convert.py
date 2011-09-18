@@ -50,6 +50,23 @@ video1 --> |mencoder file="${outdir}/video1.avi"|
 ''')
 
 
+register_model_spec('''
+--- model er1convert_simpler
+config logdir 
+config outdir 
+
+|npyread file="${logdir}/odometry.npy"| --> odometry
+|npyread file="${logdir}/video0.npy"| --> video0
+|npyread file="${logdir}/video1.npy"| --> video1
+
+odometry --> \
+    |hdfwrite file="${outdir}/small_data.h5"|
+video0 --> |mencoder file="${outdir}/video0.avi"|
+video1 --> |mencoder file="${outdir}/video1.avi"|
+
+''')
+
+
 def main():
     usage = 'Convert the old ER1 logs into the new format'
     

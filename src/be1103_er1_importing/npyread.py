@@ -80,3 +80,6 @@ class NPYRead(Generator):
             return (False, None)
         else:
             return (True, self.next_timestamp)
+
+    def finish(self):
+        del self.array

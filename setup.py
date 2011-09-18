@@ -25,7 +25,7 @@ setup(
        'hdf_jobs                    = be1011.hdf_jobs:main',
        'calib_main  =                 be1011.calib_main:main',
        
-       'be1103_er1_convert = be1103_importing.er1_convert:main',
+       'be1103_er1_convert = be1103_er1_importing.er1_convert:main',
 
        'be1104_exp_manager = be1104_logset.exp_manager:main',
 
