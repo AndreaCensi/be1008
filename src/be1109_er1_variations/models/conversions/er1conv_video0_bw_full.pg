@@ -1,0 +1,49 @@
+--- model er1conv_video0_bw_full 
+config logdir
+config logname
+config outdir 
+
+|log:er1b_logread logdir=$logdir|
+
+log.video0 -> |rgb2gray| -> y
+
+log.commands[u], y[y] -> |sync| -> \
+	|hdfwrite file="${outdir}/video0_bw_full/${logname}.h5"|
+	
+--- model er1conv_video01_bw_full 
+config logdir
+config logname
+config outdir 
+
+|log:er1b_logread logdir=$logdir|
+
+log.video0, log.video1 ->|sync|->|grid cols=1| -> |rgb2gray| -> y
+
+log.commands[u], y[y] -> |sync| -> \
+ |hdfwrite file="${outdir}/video01_bw_full/${logname}.h5"|
+
+--- model er1conv_video0_bw_small 
+config logdir
+config logname
+config outdir 
+
+|log:er1b_logread logdir=$logdir|
+
+log.video0 -> |resize width=120| -> |rgb2gray| -> y
+
+log.commands[u], y[y] -> |sync| -> \
+ |hdfwrite file="${outdir}/video0_bw_small/${logname}.h5"|
+
+--- model er1conv_video01_bw_small 
+config logdir
+config logname
+config outdir 
+
+|log:er1b_logread logdir=$logdir|
+
+log.video0, log.video1 ->|sync|-> \
+    |grid cols=1|-> |resize width=120| -> |rgb2gray| -> y
+
+log.commands[u], y[y] -> |sync| -> \
+ |hdfwrite file="${outdir}/video01_bw_small/${logname}.h5"|
+ 

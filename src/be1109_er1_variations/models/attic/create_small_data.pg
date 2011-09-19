@@ -1,0 +1,19 @@
+--- model create_small_data
+""" Reads odometry.h5, computes avel, lvel, puts in small_data.h5. """
+
+config logdir
+
+
+|other:hdfread file="${logdir}/odometry.h5"| -> odometry
+
+|mplayer file="${logdir}/video0.avi"| -> video0 
+
+odometry -> |cmds:estimate_commands_from_odometry|
+
+video0, cmds.lvel, cmds.avel -> |async| -> video0_, linear_velocity, angular_velocity
+
+
+odometry, linear_velocity, angular_velocity --> |hdfwrite file="${logdir}/small_data.h5"|
+
+
+

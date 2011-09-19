@@ -1,13 +1,13 @@
 from procgraph import Block, BadConfig, Generator
 import os
-import numpy
+import numpy as np
 
 def memory_map_file(filename):
     """ 
         Returns a memory-mapped numpy array. 
         A file called filename + .dtype should exist 
     """
-    dtype = numpy.dtype(eval(open(filename + ".dtype").read()))
+    dtype = np.dtype(eval(open(filename + ".dtype").read()))
 
     file_length = os.path.getsize(filename)
     record_length = dtype.itemsize
@@ -19,7 +19,7 @@ def memory_map_file(filename):
               num_available, num_available * record_length))
         print(msg)
     
-    a = numpy.memmap(filename, dtype=dtype, mode='r', shape=(num_available,))
+    a = np.memmap(filename, dtype=dtype, mode='r', shape=(num_available,))
     
     return a
 

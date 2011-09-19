@@ -10,4 +10,4 @@ log.commands -> |historyt interval=5| -> |plot width=200| -> commands_rgb
 
 log.video0, log.video1, commands_rgb -> |sync| -> |grid cols=3| --> out
 
-out --> |watermark logdir=${logname}| -> |mencoder file=$output|
+out --> |watermark logdir=$logname| -> |mencoder file=$output|

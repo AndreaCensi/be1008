@@ -1,0 +1,17 @@
+--- model er1_video0
+""" Creates a simple video of the ER1 logs. """
+config logdir "input logdir"
+config logname 
+config outdir "Output filename"
+
+import be1008
+
+|log:er1_logread logdir=$logdir| 
+
+log.commands -> |historyt interval=5| -> |plot title="commands" width=320 format='.'| -> commands_rgb
+log.odometry -> |historyt interval=5| -> |plot title="odometry" width=320 format='.'| -> odometry_rgb
+
+log.video0, commands_rgb -> |sync| -> |grid cols=3| --> out
+
+out --> |watermark logdir=$logname title="Source data"| -> \
+	 |mencoder file="${outdir}/${logname}-video01.avi"|
